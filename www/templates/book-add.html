@@ -4,10 +4,11 @@
         <h1 class="title">添加图书</h1>
     </ion-header-bar>
     <ion-content>
-        <label class="item item-input item-stacked-label">
-            <span class="item-img-add">
-            	<div class="item-img-input-wrap">
-            		<input type="file" accept="image/x-png, image/gif, image/jpeg">
+        <label class="item item-img-add">
+            <span class="img-add-block">
+            	<em class="icon ion-ios-plus-empty img-add-icon"></em>
+            	<div class="img-input-wrap">
+            		<input type="file" accept="image/x-png, image/gif, image/jpeg" class="img-add-input">
 	            </div>
             </span>
         </label>
@@ -15,7 +16,7 @@
             <input type="text" placeholder="书名">
         </label>
         <label class="item item-input">
-            <input type="text" placeholder="描述">
+			<textarea name="" rows="3" placeholder="描述"></textarea>
         </label>
         <label class="item">
             <span class="input-label">豆瓣评分</span>
