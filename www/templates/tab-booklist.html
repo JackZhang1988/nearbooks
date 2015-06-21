@@ -1,0 +1,23 @@
+<ion-view view-title="邻书">
+    <ion-nav-buttons side="primary">
+        <a class="button button-icon icon ion-map"></a>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="secondary">
+        <a class="button button-icon icon ion-plus-round" ng-click="openAddBookModal()"></a>
+    </ion-nav-buttons>
+    <ion-content class="padding">
+        <div class="list card" ng-repeat="book in booklist" data-id={{book.id}} ng-click="goDetail(book.id)">
+            <div class="item item-avatar">
+                <img src="../img/user1.jpg" alt="">
+                <h2>{{book.bookname}}</h2>
+            </div>
+            <div class="item item-body">
+                <img src="{{book.image[0]}}" alt="" class="full-image">
+                <p>
+                    作者：<span class="subdued bold-font">{{book.writer}}</span> 售价：
+                    <span class="subdued bold-font">{{book.price}}</span>
+                </p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
