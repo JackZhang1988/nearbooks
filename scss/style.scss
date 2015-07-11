@@ -1,0 +1,58 @@
+$img-add-size:70px;
+$img-add-border-color:#ccc;
+
+img{
+    width: 100%;
+}
+.item-img-add {
+    .img-add-block {
+        float: left;
+    	display: inline-block;
+        width: $img-add-size;
+        height: $img-add-size;
+        position: relative;
+        border: 1px dashed $img-add-border-color;
+        .img-add-icon {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 50%;
+            margin: auto;
+            overflow: auto;
+            height: 50px;
+            font-size: 50px;
+            line-height: 50px;
+            text-align: center;
+            color: $img-add-border-color;
+        }
+        .img-input-wrap {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 10;
+            overflow: hidden;
+            .img-add-input {
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+    .img-prev{
+        .prev-item{
+            width: $img-add-size;
+            height: $img-add-size;
+            list-style: none;
+            float: left;
+            margin-right:5px;
+            .prev-img{
+                width: 100%;
+                height: 100%;
+            }
+        }
+    }
+}

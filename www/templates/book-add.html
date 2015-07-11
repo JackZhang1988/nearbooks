@@ -5,10 +5,15 @@
     </ion-header-bar>
     <ion-content>
         <label class="item item-img-add">
+            <ul ng-repeat="img in prevImgList" ng-show="prevImgList.length" class="img-prev">
+                <li class="prev-item">
+                    <img src="{{img}}" alt="" class="prev-img">
+                </li>
+            </ul>
             <span class="img-add-block">
             	<em class="icon ion-ios-plus-empty img-add-icon"></em>
             	<div class="img-input-wrap">
-            		<input type="file" accept="image/x-png, image/gif, image/jpeg" class="img-add-input">
+            		<input type="file" accept="image/x-png, image/gif, image/jpeg" class="img-add-input" onchange="angular.element(this).scope().fileChange(this)">
 	            </div>
             </span>
         </label>
@@ -22,7 +27,7 @@
             <span class="input-label">豆瓣评分</span>
         </label>
         <div class="padding">
-            <button class="button button-block button-positive">
+            <button class="button button-block button-positive" ng-click="submitNew()">
                 提交
             </button>
         </div>

@@ -7676,7 +7676,11 @@ a.button {
   transition-duration: 0s; }
 
 /* my style */
+img {
+  width: 100%; }
+
 .item-img-add .img-add-block {
+  float: left;
   display: inline-block;
   width: 70px;
   height: 70px;
@@ -7708,3 +7712,12 @@ a.button {
     .item-img-add .img-add-block .img-input-wrap .img-add-input {
       width: 100%;
       height: 100%; }
+.item-img-add .img-prev .prev-item {
+  width: 70px;
+  height: 70px;
+  list-style: none;
+  float: left;
+  margin-right: 5px; }
+  .item-img-add .img-prev .prev-item .prev-img {
+    width: 100%;
+    height: 100%; }

@@ -4,21 +4,20 @@ Each tab's child <ion-nav-view> directive will have its own
 navigation history that also transitions its views in and out.
 -->
 <ion-tabs class="tabs-icon-top tabs-color-active-positive">
-
-  <!-- Booklist Tab -->
-  <ion-tab title="首页" icon-off="ion-home" icon-on="ion-home" href="#/tab/booklist">
-    <ion-nav-view name="tab-booklist"></ion-nav-view>
-  </ion-tab>
-
-  <!-- Chats Tab -->
-  <ion-tab title="Chats" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/chats">
-    <ion-nav-view name="tab-chats"></ion-nav-view>
-  </ion-tab>
-
-  <!-- Account Tab -->
-  <ion-tab title="我" icon-off="ion-ios-person-outline" icon-on="ion-ios-person" href="#/tab/account">
-    <ion-nav-view name="tab-account"></ion-nav-view>
-  </ion-tab>
-
-
+    <!-- Booklist Tab -->
+    <ion-tab title="附近" icon-off="ion-ios-bookmarks-outline" icon-on="ion-ios-bookmarks" href="#/tab/booklist">
+        <ion-nav-view name="tab-booklist"></ion-nav-view>
+    </ion-tab>
+    <!-- Collections Tab -->
+    <ion-tab title="精选" icon-off="ion-ios-star-outline" icon-on="ion-ios-star" href="#/tab/collections">
+        <ion-nav-view name="tab-collections"></ion-nav-view>
+    </ion-tab>
+    <!-- Chats Tab -->
+    <ion-tab title="消息" icon-off="ion-ios-chatboxes-outline" icon-on="ion-ios-chatboxes" href="#/tab/messages">
+        <ion-nav-view name="tab-messages"></ion-nav-view>
+    </ion-tab>
+    <!-- Account Tab -->
+    <ion-tab title="我" icon-off="ion-ios-person-outline" icon-on="ion-ios-person" href="#/tab/account">
+        <ion-nav-view name="tab-account"></ion-nav-view>
+    </ion-tab>
 </ion-tabs>

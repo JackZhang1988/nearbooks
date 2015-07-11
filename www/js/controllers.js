@@ -12,12 +12,26 @@ angular.module('starter.controllers', [])
     animation:'slide-in-up'
   }).then(function(modal){
     $scope.modal = modal;
+    $scope.prevImgList = [];
   })
+  $scope.fileChange = function(element){
+    var imgFile = element.files[0];
+    var reader = new FileReader();
+    reader.onload = function(e){
+      $scope.$apply(function(){
+        $scope.prevImgList.push(e.target.result);
+      });
+    }
+    reader.readAsDataURL(imgFile);
+  }
   $scope.openAddBookModal = function(){
     $scope.modal.show();
   }
   $scope.closeAddBookModal = function(){
     $scope.modal.hide();
+  }
+  $scope.submitNew = function(){
+    alert('successed');
   }
 }) 
 .controller('BookDetailCtrl',function($scope,$stateParams,Booklist){
@@ -25,6 +39,9 @@ angular.module('starter.controllers', [])
 })
 
 .controller('BookAddCtrl',function($scope){
+
+})
+.controller('MessagesCtrl',function($scope){
 
 })
 .controller('ChatsCtrl', function($scope, Chats) {
