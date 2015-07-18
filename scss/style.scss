@@ -1,13 +1,13 @@
 $img-add-size:70px;
 $img-add-border-color:#ccc;
-
-img{
+img {
     width: 100%;
 }
+
 .item-img-add {
     .img-add-block {
         float: left;
-    	display: inline-block;
+        display: inline-block;
         width: $img-add-size;
         height: $img-add-size;
         position: relative;
@@ -42,17 +42,21 @@ img{
             }
         }
     }
-    .img-prev{
-        .prev-item{
+    .img-prev {
+        .prev-item {
             width: $img-add-size;
             height: $img-add-size;
             list-style: none;
             float: left;
-            margin-right:5px;
-            .prev-img{
+            margin-right: 5px;
+            .prev-img {
                 width: 100%;
                 height: 100%;
             }
         }
+    }
+    .spinner svg {
+        width: $img-add-size;
+        height: $img-add-size;
     }
 }

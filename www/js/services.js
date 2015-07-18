@@ -1,4 +1,26 @@
 angular.module('starter.services', [])
+    .factory('Api',function($http, ApiEndpoint){
+        var addNewBook = function(data){
+            return $http({
+                method:'POST',
+                url:ApiEndpoint+'/book',
+                data:data
+            });
+        }
+        var addBookImg = function(imgData){
+            return $http({
+                method:'POST',
+                url:ApiEndpoint+'/bookImg',
+                data:imgData,
+                headers : { 'Content-Type': undefined },
+                transformRequest:angular.identity
+            });
+        }
+        return {
+            addNewBook:addNewBook,
+            addBookImg:addBookImg
+        }
+    })
     .factory('Booklist', function() {
         var Booklist = [{
             id: 1,

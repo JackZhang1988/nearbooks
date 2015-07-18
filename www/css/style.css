@@ -2,3 +2,10 @@
 .bold-font{
 	font-weight: bold;
 }
+
+.uploadimg-spinner svg {
+  width: 68px;
+  height: 68px;
+  line-height: 68px;
+  text-align: center;
+}

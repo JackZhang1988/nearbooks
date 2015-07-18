@@ -5,23 +5,26 @@
     </ion-header-bar>
     <ion-content>
         <label class="item item-img-add">
-            <ul ng-repeat="img in prevImgList" ng-show="prevImgList.length" class="img-prev">
+            <ul ng-repeat="imgUrl in prevImgList" ng-show="prevImgList.length" class="img-prev">
                 <li class="prev-item">
-                    <img src="{{img}}" alt="" class="prev-img">
+                    <img src="{{imgUrl}}" class="prev-img">
                 </li>
             </ul>
-            <span class="img-add-block">
-            	<em class="icon ion-ios-plus-empty img-add-icon"></em>
-            	<div class="img-input-wrap">
-            		<input type="file" accept="image/x-png, image/gif, image/jpeg" class="img-add-input" onchange="angular.element(this).scope().fileChange(this)">
-	            </div>
+            <ion-spinner ng-show="bookInfo.loading"></ion-spinner>
+            <span class="img-add-block" ng-show="!bookInfo.loading && prevImgList.length <= 3">
+                <em class="icon ion-ios-plus-empty img-add-icon"></em>
+                <div class="img-input-wrap">
+                <form action={{addNewBookAction}} enctype="multipart/form-data">
+                    <input type="file" accept="image/x-png, image/gif, image/jpeg" class="img-add-input" onchange="angular.element(this).scope().fileChange(this)">
+                </form>
+                </div>
             </span>
         </label>
         <label class="item item-input">
-            <input type="text" placeholder="书名">
+            <input type="text" placeholder="书名" name="name" ng-model="bookInfo.bookName">
         </label>
         <label class="item item-input">
-			<textarea name="" rows="3" placeholder="描述"></textarea>
+            <textarea name="" rows="3" placeholder="描述" name="desc" ng-model="bookInfo.bookDesc"></textarea>
         </label>
         <label class="item">
             <span class="input-label">豆瓣评分</span>
