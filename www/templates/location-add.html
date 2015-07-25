@@ -1,0 +1,22 @@
+<ion-modal-view>
+    <ion-header-bar class="bar-positive fix-buttons">
+        <a class="button button-icon icon ion-close-round" ng-click="closeAddLocationModal()"></a>
+        <h1 class="title">添加地址</h1>
+    </ion-header-bar>
+    <ion-content>
+        <label class="item item-input">
+            <input type="text" placeholder="输入地址" name="name" ng-model="location.name" ng-change="inputChange()">
+        </label>
+        <ul id="tipResult" class="list" ng-show="tipResult.length > 0">
+            <li ng-repeat="tip in tipResult" class="item" ng-click="selectLocation(tip)">{{tip.name}} <em class="item-note">{{tip.district}}</em></li>
+        </ul>
+        <div id="mapContainer" class="item">
+            
+        </div>
+        <div class="padding">
+            <button class="button button-block button-positive" ng-click="addAddr()">
+                提交
+            </button>
+        </div>
+    </ion-content>
+</ion-modal-view>

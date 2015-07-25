@@ -7724,3 +7724,8 @@ img {
 .item-img-add .spinner svg {
   width: 70px;
   height: 70px; }
+
+#mapContainer {
+  width: 100%;
+  height: 80%;
+  min-height: 300px; }

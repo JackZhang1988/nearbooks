@@ -2,29 +2,25 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,ApiEndpoint, Booklist, Api){
+.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,ApiEndpoint, Booklist, Api, Map){
 	$scope.booklist = Booklist.all();
 	$scope.goDetail = function(bookId){
 		$state.go('tab.book-detail',{bookId:bookId});
 	}	
   $scope.prevImgList = [];
-  $scope.bookInfo={};
+  $scope.bookInfo = {};
+
   $ionicModal.fromTemplateUrl('/templates/book-add.html',{
     scope:$scope,
     animation:'slide-in-up'
   }).then(function(modal){
-    $scope.modal = modal;
-  })
+    $scope.addBookModal = modal;
+  });
+
   $scope.addNewBookAction = ApiEndpoint+'/bookImg';
+
   $scope.fileChange = function(element){
     var imgFile = element.files[0];
-    // var reader = new FileReader();
-    // reader.onload = function(e){
-    //   $scope.$apply(function(){
-    //     $scope.prevImgList.push(e.target.result);
-    //   });
-    // }
-    // reader.readAsDataURL(imgFile);
     $scope.bookInfo.loading = true;
     var fd = new FormData();
     fd.append('file',element.files[0]);
@@ -41,11 +37,12 @@ angular.module('starter.controllers', [])
   $scope.openAddBookModal = function(){
     $scope.prevImgList = [];
     $scope.bookInfo={};
-    $scope.modal.show();
+    $scope.addBookModal.show();
   }
   $scope.closeAddBookModal = function(){
-    $scope.modal.hide();
+    $scope.addBookModal.hide();
   }
+
   function validate(){
     if($scope.prevImgList.length <= 0){
       return '至少上传一张图片!';
@@ -87,6 +84,58 @@ angular.module('starter.controllers', [])
     }else{
       $ionicPopup.alert({title:validateResut});
     }
+  }
+
+
+  $scope.location = {};
+  $ionicModal.fromTemplateUrl('/templates/location-add.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+  }).then(function(modal){
+    $scope.addLocationModal = modal;
+  });
+
+  var mapObj;
+  $scope.openAddLocationModal = function(){
+    $scope.addLocationModal.show().then(function(){
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(pos) {
+              mapObj = Map.mapInit(pos.coords);
+              Map.citySearch(function(result){
+                $scope.curCity = result.city;
+              })
+          }, function(error) {
+              alert(error.message);
+          }, {
+              enableHighAccuracy: true,
+              timeout: '5000'
+          });
+      }else{}
+
+    });
+  }
+  $scope.closeAddLocationModal = function(){
+    $scope.addLocationModal.hide();
+  }
+  $scope.inputChange = function(){
+    var ops={
+      city:$scope.curCity||''
+    }
+    Map.initAutoSearch($scope.location.name,ops,function(result){
+        $scope.tipResult = result.tips
+    },function(){
+        $scope.tipResult =[];
+    })
+  }
+  $scope.selectLocation = function(tip){
+    var location = tip.location.split(',');
+    Map.setCenter(mapObj,{
+      longitude:location[0],
+      latitude:location[1]
+    })
+    $scope.tipResult = [];
+    $scope.selectedLocation = $scope.location;
+    $scope.location.name = tip.name;
   }
 }) 
 .controller('BookDetailCtrl',function($scope,$stateParams,Booklist){
