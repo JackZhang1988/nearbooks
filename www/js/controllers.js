@@ -128,14 +128,43 @@ angular.module('starter.controllers', [])
     })
   }
   $scope.selectLocation = function(tip){
-    var location = tip.location.split(',');
+    $scope.location.geo = tip.location.split(',');
     Map.setCenter(mapObj,{
-      longitude:location[0],
-      latitude:location[1]
+      longitude:$scope.location.geo[0],
+      latitude:$scope.location.geo[1]
     })
     $scope.tipResult = [];
     $scope.selectedLocation = $scope.location;
     $scope.location.name = tip.name;
+  }
+  $scope.usrLocations = JSON.parse(window.localStorage.getItem('commonLocation'))||[];
+  if($scope.usrLocations.length){
+   $scope.location.name = $scope.usrLocations[0].name; 
+  }
+  $scope.submitLocation = function(){
+    $ionicLoading.show();
+    Api.addLocation({
+      userId:'mockId',
+      name:$scope.selectedLocation.name,
+      lng:$scope.selectedLocation.geo[0],
+      lat:$scope.selectedLocation.geo[1]
+    }).then(function(res){
+      $ionicLoading.hide();
+      if(res.status == 0){
+        $scope.usrLocations.push(res.data);
+        window.localStorage.setItem('commonLocation',JSON.stringify($scope.usrLocations));
+        $scope.addLocationModal.hide();
+      }
+    })
+    // $scope.bookInfo.location = $scope.selectedLocation;
+  }
+  $scope.showLocation=false;
+  $scope.triggeLocationShow = function(){
+    $scope.showLocation = !$scope.showLocation;
+  }
+  $scope.selectSuggestLocation = function(index){
+    $scope.location = $scope.usrLocations[index];
+    $scope.showLocation = false;
   }
 }) 
 .controller('BookDetailCtrl',function($scope,$stateParams,Booklist){

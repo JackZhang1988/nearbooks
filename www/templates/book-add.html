@@ -5,8 +5,8 @@
     </ion-header-bar>
     <ion-content>
         <label class="item item-img-add">
-            <ul ng-repeat="imgUrl in prevImgList" ng-show="prevImgList.length" class="img-prev">
-                <li class="prev-item">
+            <ul ng-show="prevImgList.length" class="img-prev">
+                <li class="prev-item" ng-repeat="imgUrl in prevImgList" >
                     <img src="{{imgUrl}}" class="prev-img">
                 </li>
             </ul>
@@ -29,12 +29,13 @@
         <label class="item">
             <span class="input-label">豆瓣评分</span>
         </label>
-        <div class="item">
-            <span class="input-label">地点</span>
-            <ul class="user-location">
-                <li ng-click="openAddLocationModal()">添加新地址</li>
-            </ul>
+        <div class="item" ng-click="triggeLocationShow()">
+            <span class="input-label">地点:{{location.name}}</span>
         </div>
+        <ul class="user-location list" ng-show="showLocation">
+            <li class="item" ng-repeat="ul in usrLocations track by $index" ng-click="selectSuggestLocation($index)">{{ul.name}}</li>
+            <li class="item" ng-click="openAddLocationModal()">添加新地址</li>
+        </ul>
         <div class="padding">
             <button class="button button-block button-positive" ng-click="submitNew()">
                 提交

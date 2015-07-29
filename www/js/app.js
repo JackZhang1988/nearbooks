@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
 
-.constant('ApiEndpoint','http://172.16.28.90:8100/api')
+.constant('ApiEndpoint','http://localhost:8100/api')
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
