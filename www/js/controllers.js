@@ -128,10 +128,10 @@ angular.module('starter.controllers', [])
     })
   }
   $scope.selectLocation = function(tip){
-    $scope.location.geo = tip.location.split(',');
+    $scope.location = tip.location;
     Map.setCenter(mapObj,{
-      longitude:$scope.location.geo[0],
-      latitude:$scope.location.geo[1]
+      longitude:$scope.location.lng,
+      latitude:$scope.location.lat
     })
     $scope.tipResult = [];
     $scope.selectedLocation = $scope.location;
@@ -146,14 +146,15 @@ angular.module('starter.controllers', [])
     Api.addLocation({
       userId:'mockId',
       name:$scope.selectedLocation.name,
-      lng:$scope.selectedLocation.geo[0],
-      lat:$scope.selectedLocation.geo[1]
+      lng:$scope.selectedLocation.lng,
+      lat:$scope.selectedLocation.lat
     }).then(function(res){
       $ionicLoading.hide();
       if(res.status == 0){
         $scope.usrLocations.push(res.data);
         window.localStorage.setItem('commonLocation',JSON.stringify($scope.usrLocations));
         $scope.addLocationModal.hide();
+        $scope.showLocation=false;
       }
     })
     // $scope.bookInfo.location = $scope.selectedLocation;

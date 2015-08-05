@@ -89,8 +89,6 @@ angular.module('starter.services', [])
                 data:imgData,
                 headers : { 'Content-Type': undefined },
                 transformRequest:angular.identity
-            }).then(function(res){
-                return res.data;
             });
         }
         var addLocation = function(location){
