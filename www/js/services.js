@@ -78,8 +78,6 @@ angular.module('starter.services', [])
                 method:'POST',
                 url:ApiEndpoint+'/book',
                 data:data
-            }).then(function(res){
-                return res.data;
             });
         }
         var addBookImg = function(imgData){
@@ -100,10 +98,20 @@ angular.module('starter.services', [])
                 return res.data;
             })
         }
+        var getAllBooks = function(data){
+            return $http({
+                method:'GET',
+                url:ApiEndpoint+'/book',
+                data:data
+            }).then(function(res){
+                return res.data;
+            })
+        }
         return {
             addNewBook:addNewBook,
             addBookImg:addBookImg,
-            addLocation:addLocation
+            addLocation:addLocation,
+            getAllBooks:getAllBooks
         }
     })
     .factory('Booklist', function() {

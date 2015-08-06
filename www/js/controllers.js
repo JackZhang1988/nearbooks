@@ -2,13 +2,35 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,ApiEndpoint, Booklist, Api, Map){
-	$scope.booklist = Booklist.all();
+.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,ApiEndpoint, Api, Map){
+	// $scope.booklist = Booklist.all(); // mock data
+  $scope.booklist =[];
+  $ionicLoading.show();
+  Api.getAllBooks().then(function(res){
+    $ionicLoading.hide();
+    if(res.status == 0){
+      $scope.booklist = res.data;
+    }
+  })
 	$scope.goDetail = function(bookId){
 		$state.go('tab.book-detail',{bookId:bookId});
 	}	
+  // 添加图片列表
   $scope.prevImgList = [];
+  // 添加的图书信息
   $scope.bookInfo = {};
+
+  $scope.location = {};
+
+  // 添加图片的接口地址
+  $scope.addNewBookAction = ApiEndpoint+'/bookImg';
+  // 用户保存过得位置信息，从localStorage 读取
+  $scope.usrLocations = JSON.parse(window.localStorage.getItem('commonLocation'))||[];
+  // 用户当前选择的地理信息
+  $scope.selectedLocation = $scope.usrLocations[0];
+  if($scope.usrLocations.length){
+   $scope.location.name = $scope.usrLocations[0].name; 
+  }
 
   $ionicModal.fromTemplateUrl('/templates/book-add.html',{
     scope:$scope,
@@ -17,7 +39,6 @@ angular.module('starter.controllers', [])
     $scope.addBookModal = modal;
   });
 
-  $scope.addNewBookAction = ApiEndpoint+'/bookImg';
 
   $scope.fileChange = function(element){
     var imgFile = element.files[0];
@@ -50,6 +71,9 @@ angular.module('starter.controllers', [])
     if(!$scope.bookInfo.bookName){
       return '请填写图书名!';
     }
+    if(!$scope.selectedLocation){
+      return '请填写图书位置信息';
+    }
     return 1;
   }
   $scope.submitNew = function(){
@@ -61,7 +85,8 @@ angular.module('starter.controllers', [])
       Api.addNewBook({
         bookImgs:$scope.prevImgList,
         bookName:$scope.bookInfo.bookName,
-        bookDesc:$scope.bookInfo.bookDesc
+        bookDesc:$scope.bookInfo.bookDesc,
+        lnglat:$scope.selectedLocation.lnglat
       }).success(function(res){
         $ionicLoading.hide();
         if(res.status == 0){
@@ -70,11 +95,11 @@ angular.module('starter.controllers', [])
             okText:'确定'
           });
           submitAlert.then(function(res){
-            $scope.modal.hide();
+            $scope.addBookModal.hide();
           })
           $timeout(function(){
             submitAlert.close();
-            $scope.modal.hide();
+            $scope.addBookModal.hide();
           },5000)
         }else{
           $ionicPopup.alert({title:res.err});
@@ -87,7 +112,6 @@ angular.module('starter.controllers', [])
   }
 
 
-  $scope.location = {};
   $ionicModal.fromTemplateUrl('/templates/location-add.html',{
     scope:$scope,
     animation:'slide-in-up'
@@ -134,12 +158,8 @@ angular.module('starter.controllers', [])
       latitude:$scope.location.lat
     })
     $scope.tipResult = [];
-    $scope.selectedLocation = $scope.location;
+    // $scope.selectedLocation = $scope.location;
     $scope.location.name = tip.name;
-  }
-  $scope.usrLocations = JSON.parse(window.localStorage.getItem('commonLocation'))||[];
-  if($scope.usrLocations.length){
-   $scope.location.name = $scope.usrLocations[0].name; 
   }
   $scope.submitLocation = function(){
     $ionicLoading.show();
