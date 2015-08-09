@@ -131,6 +131,13 @@ angular.module('starter.controllers', [])
         bookImgs:$scope.prevImgList,
         bookName:$scope.bookInfo.bookName,
         bookDesc:$scope.bookInfo.bookDesc,
+        doubanInfo: {
+            writer: $scope.bookInfo.writer,
+            price: $scope.bookInfo.price,
+            url: $scope.bookInfo.doubanUrl,
+            summary: $scope.bookInfo.summary,
+            rating: $scope.bookInfo.doubanRating
+        },
         lnglat:$scope.selectedLocation.lnglat
       }).success(function(res){
         $ionicLoading.hide();
