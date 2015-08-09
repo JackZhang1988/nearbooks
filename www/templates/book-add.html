@@ -21,13 +21,20 @@
             </span>
         </label>
         <label class="item item-input">
-            <input type="text" placeholder="书名" name="name" ng-model="bookInfo.bookName">
+            <input type="text" placeholder="书名" name="name" ng-model="bookInfo.bookName" ng-change="getDoubanInfo()">
         </label>
+        <ul class="list" ng-show="doubanSuggestShow">
+            <li class="item" ng-repeat="book in doubanSuggestBooks" ng-click="doubanBookSelected($index)">
+                <h2>{{book.title}}</h2>
+                <p>作者:{{book.author[0]}},价格:{{book.price}},<strong>评分:{{book.rating.average}}</strong></p>
+            </li>
+        </ul>
         <label class="item item-input">
             <textarea name="" rows="3" placeholder="描述" name="desc" ng-model="bookInfo.bookDesc"></textarea>
         </label>
         <label class="item">
-            <span class="input-label">豆瓣评分</span>
+            <span>豆瓣评分</span>
+            <span class="badge badge-energized">{{bookInfo.doubanRating}}</span>
         </label>
         <div class="item" ng-click="triggeLocationShow()">
             <span class="input-label">地点:{{location.name}}</span>

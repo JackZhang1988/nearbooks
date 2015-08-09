@@ -67,6 +67,23 @@ angular.module('starter.controllers', [])
     $scope.addBookModal = modal;
   });
 
+  $scope.getDoubanInfo = function(){
+    Api.getDoubanInfo($scope.bookInfo.bookName).then(function(res){
+      $scope.doubanSuggestShow = true;
+      $scope.doubanSuggestBooks = res.books;
+    })
+  }
+
+  $scope.doubanBookSelected =function(index){
+    $scope.doubanSuggestShow = false;
+    var doubanBook = $scope.doubanSuggestBooks[index];
+    $scope.bookInfo.bookName = doubanBook.title;
+    $scope.bookInfo.writer = doubanBook.author[0];
+    $scope.bookInfo.price = doubanBook.price;
+    $scope.bookInfo.doubanUrl = doubanBook.alt;
+    $scope.bookInfo.summary = doubanBook.summary;
+    $scope.bookInfo.doubanRating = doubanBook.rating.average;
+  }
 
   $scope.fileChange = function(element){
     var imgFile = element.files[0];
