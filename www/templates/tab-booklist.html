@@ -9,10 +9,10 @@
         <div class="list card" ng-repeat="book in booklist" data-id={{book.id}} ng-click="goDetail(book.id)">
             <div class="item item-avatar">
                 <img src="../img/user1.jpg" alt="">
-                <h2>{{book.bookname}}</h2>
+                <h2>{{book.name}}</h2>
             </div>
             <div class="item item-body">
-                <img src="{{book.image[0]}}" alt="" class="full-image">
+                <img src="{{book.bookImgs[0]}}" alt="" class="full-image">
                 <p>
                     作者：<span class="subdued bold-font">{{book.writer}}</span> 售价：
                     <span class="subdued bold-font">{{book.price}}</span>

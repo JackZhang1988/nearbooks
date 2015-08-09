@@ -2,16 +2,44 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,ApiEndpoint, Api, Map){
-	// $scope.booklist = Booklist.all(); // mock data
+.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, ApiEndpoint ,Api, Map){
+
+  var lnglat = {};
+  $ionicPlatform.ready(function() {
+      var posOptions = {
+          timeout: 5000,
+          enableHighAccuracy: false
+      };
+      $cordovaGeolocation
+          .getCurrentPosition(posOptions)
+          .then(function(position) {
+              lnglat = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+              }
+              Api.getAllBooks(lnglat).then(function(res){
+                $ionicLoading.hide();
+                if(res.status == 0){
+                  $scope.booklist = res.data;
+                }
+              })
+          }, function(err) {
+              // error
+              Api.getAllBooks().then(function(res){
+                $ionicLoading.hide();
+                if(res.status == 0){
+                  $scope.booklist = res.data;
+                }
+              })
+          });
+
+
+  });
+  // $scope.booklist = Booklist.all(); // mock data
   $scope.booklist =[];
   $ionicLoading.show();
-  Api.getAllBooks().then(function(res){
-    $ionicLoading.hide();
-    if(res.status == 0){
-      $scope.booklist = res.data;
-    }
-  })
+    
+
 	$scope.goDetail = function(bookId){
 		$state.go('tab.book-detail',{bookId:bookId});
 	}	

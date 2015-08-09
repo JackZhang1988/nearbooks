@@ -102,7 +102,7 @@ angular.module('starter.services', [])
             return $http({
                 method:'GET',
                 url:ApiEndpoint+'/book',
-                data:data
+                params:data
             }).then(function(res){
                 return res.data;
             })
