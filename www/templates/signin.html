@@ -1,0 +1,24 @@
+<ion-view view-title="注册" name="signin-view">
+    <ion-content>
+        <div class="list">
+            <label class="item item-input">
+                <input type="text" placeholder="用户名" ng-model="data.name">
+            </label>
+            <label class="item item-input">
+                <input type="tel" placeholder="手机号" ng-model="data.phone">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="密码" ng-model="data.password">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="再次输入您的密码" ng-model="data.password2">
+            </label>
+            <label class="item assertive" ng-show="err">
+              {{err}}
+            </label>
+        </div>
+        <div class="padding">
+          <button class="button button-block button-calm padding" ng-click="signin()">登陆</button>
+        </div>
+    </ion-content>
+</ion-view>

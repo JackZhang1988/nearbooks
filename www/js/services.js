@@ -160,26 +160,25 @@ angular.module('starter.services', [])
             }
         };
     })
-    .service('LoginService', function($q) {
+    .service('UserService', function($http, ApiEndpoint) {
         return {
-            loginUser: function(name, pw) {
-                var deferred = $q.defer();
-                var promise = deferred.promise;
-                // todo server validation
-                if (name == 'user' && pw == '123') {
-                    deferred.resolve('Welcome ' + name + '!');
-                } else {
-                    deferred.reject('Wrong credentials.');
-                }
-                promise.success = function(fn) {
-                    promise.then(fn);
-                    return promise;
-                }
-                promise.error = function(fn) {
-                    promise.then(null, fn);
-                    return promise;
-                }
-                return promise;
+            loginUser: function(data) {
+                return $http({
+                    method: 'POST',
+                    data: data,
+                    url: ApiEndpoint + '/user/login'
+                }).then(function(res) {
+                    return res.data;
+                })
+            },
+            signinUser: function(data) {
+                return $http({
+                    method: 'POST',
+                    data: data,
+                    url: ApiEndpoint + '/user/signin'
+                }).then(function(res) {
+                    return res.data;
+                })
             }
         }
     })

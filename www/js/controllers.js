@@ -146,7 +146,7 @@ angular.module('starter.controllers', [])
             title:'提交成功',
             okText:'确定'
           });
-          submitAlert.then(function(res){
+          submitAlert.then(function(){
             $scope.addBookModal.hide();
           })
           $timeout(function(){
@@ -240,11 +240,11 @@ angular.module('starter.controllers', [])
     $scope.showLocation = false;
   }
 }) 
-.controller('LoginCtrl', function($scope,LoginService,$ionicPopup,$state) {
+.controller('LoginCtrl', function($scope,UserService,$ionicPopup,$state) {
     $scope.data = {};
  
     $scope.login = function() {
-        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
+        UserService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
             $state.go('tab.account');
         }).error(function(data) {
             var alertPopup = $ionicPopup.alert({
@@ -252,6 +252,51 @@ angular.module('starter.controllers', [])
                 template: '请检查你的用户名和密码!'
             });
         });
+    }
+})
+.controller('SigninCtrl', function($scope,UserService,$ionicPopup,$state){
+    $scope.data={};
+    $scope.err='';
+    $scope.$watch('data',function(newValue, oldValue){
+      if(newValue == oldValue){
+        return;
+      }
+      if(!$scope.data.name){
+        $scope.err = '用户名不能为空';
+      }else if(!$scope.data.phone){
+        $scope.err = '手机号不能为空';
+      }else if(!$scope.data.password){
+        $scope.err = '密码不能为空';
+      }else if($scope.data.password != $scope.data.password2){
+        console.log('password2 not same');
+        $scope.err ='密码不一致';
+      }else{
+        $scope.err = '';
+      }
+    },true)
+    $scope.signin = function(){
+      if (!$scope.err) {
+        UserService.signinUser({
+          name:$scope.data.name,
+          phone:$scope.data.phone,
+          password:$scope.data.password
+        }).then(function(res){
+          if(res.status == 0){
+            var alertPopup = $ionicPopup.alert({
+                title: '注册成功!',
+                template: '现在就去登陆吧'
+            });
+            alertPopup.then(function(){
+              $state.go('login',{phone:$scope.data.phone});
+            })
+          }else{
+            $ionicPopup.alert({
+                title: '注册失败!',
+                template: res.err
+            });
+          }
+        })       
+      };
     }
 })
 .controller('BookDetailCtrl',function($scope,$stateParams,Booklist){
