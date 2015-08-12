@@ -240,6 +240,20 @@ angular.module('starter.controllers', [])
     $scope.showLocation = false;
   }
 }) 
+.controller('LoginCtrl', function($scope,LoginService,$ionicPopup,$state) {
+    $scope.data = {};
+ 
+    $scope.login = function() {
+        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
+            $state.go('tab.account');
+        }).error(function(data) {
+            var alertPopup = $ionicPopup.alert({
+                title: '登陆失败!',
+                template: '请检查你的用户名和密码!'
+            });
+        });
+    }
+})
 .controller('BookDetailCtrl',function($scope,$stateParams,Booklist){
 	$scope.book = Booklist.get($stateParams.bookId);
 })

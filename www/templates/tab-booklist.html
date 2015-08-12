@@ -6,7 +6,7 @@
         <a class="button button-icon icon ion-plus-round" ng-click="openAddBookModal()"></a>
     </ion-nav-buttons>
     <ion-content>
-        <div class="list" ng-repeat="book in booklist" data-id={{book.id}} ng-click="goDetail(book.id)">
+        <div class="list card" ng-repeat="book in booklist" data-id={{book.id}} ng-click="goDetail(book.id)">
             <div class="item item-avatar">
                 <img src="../img/user1.jpg" alt="">
                 <h2>{{book.name}}</h2>

@@ -113,7 +113,7 @@ angular.module('starter.services', [])
             return $http({
                 method: 'JSONP',
                 url: 'https://api.douban.com/v2/book/search?q=' + keywords + '&count=5&&callback=JSON_CALLBACK'
-            }).then(function(res){
+            }).then(function(res) {
                 return res.data;
             })
         }
@@ -159,4 +159,27 @@ angular.module('starter.services', [])
                 return $q.reject(rejection);
             }
         };
+    })
+    .service('LoginService', function($q) {
+        return {
+            loginUser: function(name, pw) {
+                var deferred = $q.defer();
+                var promise = deferred.promise;
+                // todo server validation
+                if (name == 'user' && pw == '123') {
+                    deferred.resolve('Welcome ' + name + '!');
+                } else {
+                    deferred.reject('Wrong credentials.');
+                }
+                promise.success = function(fn) {
+                    promise.then(fn);
+                    return promise;
+                }
+                promise.error = function(fn) {
+                    promise.then(null, fn);
+                    return promise;
+                }
+                return promise;
+            }
+        }
     })
