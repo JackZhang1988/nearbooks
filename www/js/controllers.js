@@ -39,10 +39,6 @@ angular.module('starter.controllers', [])
   $scope.booklist =[];
   $ionicLoading.show();
     
-
-	$scope.goDetail = function(bookId){
-		$state.go('tab.book-detail',{bookId:bookId});
-	}	
   // 添加图片列表
   $scope.prevImgList = [];
   // 添加的图书信息
@@ -304,8 +300,39 @@ angular.module('starter.controllers', [])
       };
     }
 })
-.controller('BookDetailCtrl',function($scope,$stateParams,Booklist){
-	$scope.book = Booklist.get($stateParams.bookId);
+.controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api){
+	$scope.book = {};
+  if(!$stateParams.id){
+    $state.go('/');
+  }else{
+    Api.getBookById($stateParams.id).then(function(res){
+      if(res.status == 0){
+        $scope.book = res.data;
+        $ionicSlideBoxDelegate.update();
+      }else{
+        $ionicPopup.alert({
+            title: '获取图书失败!',
+            template: res.err
+        }).then(function(){
+          $state.go('/');
+        });
+      }
+    })
+  }
+  $ionicModal.fromTemplateUrl('/templates/slider-modal.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+  }).then(function(modal){
+    $scope.slideModal = modal;
+  })
+  $scope.showSlideModal = function(index){
+    console.log('show modal');
+    $scope.slideModal.show();
+  }
+
+  $scope.closeSlideModal = function() {
+    $scope.slideModal.hide();
+  };
 })
 
 .controller('BookAddCtrl',function($scope){

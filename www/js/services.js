@@ -73,56 +73,63 @@ angular.module('starter.services', [])
         }
     })
     .factory('Api', function($http, ApiEndpoint) {
-        var addNewBook = function(data) {
-            return $http({
-                method: 'POST',
-                url: ApiEndpoint + '/book',
-                data: data
-            });
-        }
-        var addBookImg = function(imgData) {
-            return $http({
-                method: 'POST',
-                url: ApiEndpoint + '/book/bookImg',
-                data: imgData,
-                headers: {
-                    'Content-Type': undefined
-                },
-                transformRequest: angular.identity
-            });
-        }
-        var addLocation = function(location) {
-            return $http({
-                method: 'POST',
-                url: ApiEndpoint + '/user/location',
-                data: location
-            }).then(function(res) {
-                return res.data;
-            })
-        }
-        var getAllBooks = function(data) {
-            return $http({
-                method: 'GET',
-                url: ApiEndpoint + '/book',
-                params: data
-            }).then(function(res) {
-                return res.data;
-            })
-        }
-        var getDoubanInfo = function(keywords) {
-            return $http({
-                method: 'JSONP',
-                url: 'https://api.douban.com/v2/book/search?q=' + keywords + '&count=5&&callback=JSON_CALLBACK'
-            }).then(function(res) {
-                return res.data;
-            })
-        }
+
         return {
-            addNewBook: addNewBook,
-            addBookImg: addBookImg,
-            addLocation: addLocation,
-            getAllBooks: getAllBooks,
-            getDoubanInfo: getDoubanInfo
+            addNewBook: function(data) {
+                return $http({
+                    method: 'POST',
+                    url: ApiEndpoint + '/book',
+                    data: data
+                });
+            },
+            addBookImg: function(imgData) {
+                return $http({
+                    method: 'POST',
+                    url: ApiEndpoint + '/book/bookImg',
+                    data: imgData,
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    transformRequest: angular.identity
+                });
+            },
+            addLocation: function(location) {
+                return $http({
+                    method: 'POST',
+                    url: ApiEndpoint + '/user/location',
+                    data: location
+                }).then(function(res) {
+                    return res.data;
+                })
+            },
+            getAllBooks: function(data) {
+                return $http({
+                    method: 'GET',
+                    url: ApiEndpoint + '/book/list',
+                    params: data
+                }).then(function(res) {
+                    return res.data;
+                })
+            },
+            getBookById:function(id){
+                return $http({
+                    method:'GET',
+                    url:ApiEndpoint +'/book/item',
+                    params:{
+                        id:id
+                    }
+                }).then(function(res){
+                    return res.data;
+                })
+            },
+            getDoubanInfo: function(keywords) {
+                return $http({
+                    method: 'JSONP',
+                    url: 'https://api.douban.com/v2/book/search?q=' + keywords + '&count=5&&callback=JSON_CALLBACK'
+                }).then(function(res) {
+                    return res.data;
+                })
+            }
         }
     })
     .factory('jsonpInterceptor', function($timeout, $window) {

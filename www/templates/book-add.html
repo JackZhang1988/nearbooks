@@ -7,7 +7,7 @@
         <label class="item item-img-add">
             <ul ng-show="prevImgList.length" class="img-prev">
                 <li class="prev-item" ng-repeat="imgUrl in prevImgList" >
-                    <img src="{{imgUrl}}" class="prev-img">
+                    <img ng-src="{{imgUrl}}" class="prev-img">
                 </li>
             </ul>
             <ion-spinner ng-show="bookInfo.loading"></ion-spinner>

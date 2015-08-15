@@ -6,13 +6,13 @@
         <a class="button button-icon icon ion-plus-round" ng-click="openAddBookModal()"></a>
     </ion-nav-buttons>
     <ion-content>
-        <div class="list card" ng-repeat="book in booklist" data-id={{book.id}} ng-click="goDetail(book.id)">
+        <div class="list card" ng-repeat="book in booklist">
             <div class="item item-avatar">
                 <img src="../img/user1.jpg" alt="">
                 <h2>{{book.name}}</h2>
             </div>
-            <a class="item item-thumbnail-left" href="#">
-                <img src="{{book.bookImgs[0]}}">
+            <a class="item item-thumbnail-left" ui-sref="tab.bookdetail({id:book._id})">
+                <img ng-src="{{book.bookImgs[0]}}">
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
             </a>

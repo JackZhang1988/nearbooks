@@ -63,8 +63,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
-  .state('tab.book-detail',{
-    url:'/books/:bookId',
+  .state('tab.bookdetail',{
+    url:'/book/:id',
     views:{
       'tab-booklist':{
         templateUrl:'templates/book-detail.html',

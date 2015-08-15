@@ -4,12 +4,19 @@
   The FriendsCtrl pulls data from the Friends service (service.js)
   The Friends service returns an array of friend data
 -->
-<ion-view view-title="{{book.bookname}}">
-  <ion-content class="padding">
-    <img ng-src="{{book.image[0]}}" style="width:100%;">
-    <p>
-      {{book.bookname}}
-    </p>
-    <location></location>
-  </ion-content>
+<ion-view view-title="{{book.name}}">
+    <ion-content>
+        <ion-slide-box>
+            <ion-slide ng-repeat="img in book.bookImgs" does-continue="true">
+                <div class="img-slider-wrap" style="background:url({{img}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
+                    <div class="img-slider-mask">
+                    </div>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+        <p>
+            {{book.name}}
+        </p>
+        <location></location>
+    </ion-content>
 </ion-view>
