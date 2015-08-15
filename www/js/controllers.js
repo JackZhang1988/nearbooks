@@ -240,11 +240,15 @@ angular.module('starter.controllers', [])
     $scope.showLocation = false;
   }
 }) 
-.controller('LoginCtrl', function($scope,UserService,$ionicPopup,$state) {
+.controller('LoginCtrl', function($scope,UserService,$ionicPopup,$state,$window) {
     $scope.data = {};
  
     $scope.login = function() {
-        UserService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
+        UserService.loginUser({
+            name: $scope.data.username,
+            password: $scope.data.password
+        }).then(function(data) {
+            $window.localStorage.token = data.token;
             $state.go('tab.account');
         }).error(function(data) {
             var alertPopup = $ionicPopup.alert({
@@ -253,6 +257,7 @@ angular.module('starter.controllers', [])
             });
         });
     }
+
 })
 .controller('SigninCtrl', function($scope,UserService,$ionicPopup,$state){
     $scope.data={};
