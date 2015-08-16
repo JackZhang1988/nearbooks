@@ -23,8 +23,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
-
+.config(function($stateProvider, $urlRouterProvider, $httpProvider,jwtInterceptorProvider) {
+    jwtInterceptorProvider.tokenGetter = function() {
+        return localStorage.getItem('token');
+    }
+    $httpProvider.interceptors.push('jwtInterceptor');
     // support douban jsonp
     $httpProvider.interceptors.push('jsonpInterceptor');
 

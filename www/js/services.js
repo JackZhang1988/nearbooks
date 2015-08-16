@@ -197,6 +197,9 @@ angular.module('starter.services', ['angular-jwt'])
             },
             doLogin: function() {
                 $state.go('login');
+            },
+            getUser:function(){
+                return JSON.parse($window.localStorage.user);
             }
         }
     })

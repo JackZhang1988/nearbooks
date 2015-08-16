@@ -1,7 +1,5 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function($scope) {})
-
 .controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, ApiEndpoint ,Api, Map,UserService){
 
   var lnglat = {};
@@ -101,6 +99,7 @@ angular.module('starter.controllers', [])
       $scope.prevImgList = [];
       $scope.bookInfo={};
       $scope.addBookModal.show();
+      $scope.user = UserService.getUser();
     }else{
       UserService.doLogin();
     }
@@ -138,7 +137,8 @@ angular.module('starter.controllers', [])
             summary: $scope.bookInfo.summary,
             rating: $scope.bookInfo.doubanRating
         },
-        lnglat:$scope.selectedLocation.lnglat
+        lnglat:$scope.selectedLocation.lnglat,
+        userId:$scope.user._id
       }).success(function(res){
         $ionicLoading.hide();
         if(res.status == 0){
@@ -249,7 +249,7 @@ angular.module('starter.controllers', [])
             password: $scope.data.password
         }).then(function(data) {
             $window.localStorage.token = data.token;
-            $window.localStorage.user = data.user;
+            $window.localStorage.user = JSON.stringify(data.user);
             $state.go('tab.account');
         },function(data) {
             var alertPopup = $ionicPopup.alert({
