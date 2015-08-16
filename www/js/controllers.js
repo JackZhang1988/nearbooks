@@ -2,7 +2,7 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function($scope) {})
 
-.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, ApiEndpoint ,Api, Map){
+.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, ApiEndpoint ,Api, Map,UserService){
 
   var lnglat = {};
   $ionicPlatform.ready(function() {
@@ -97,9 +97,13 @@ angular.module('starter.controllers', [])
     })
   }
   $scope.openAddBookModal = function(){
-    $scope.prevImgList = [];
-    $scope.bookInfo={};
-    $scope.addBookModal.show();
+    if(UserService.isLogin()){
+      $scope.prevImgList = [];
+      $scope.bookInfo={};
+      $scope.addBookModal.show();
+    }else{
+      UserService.doLogin();
+    }
   }
   $scope.closeAddBookModal = function(){
     $scope.addBookModal.hide();
@@ -245,8 +249,9 @@ angular.module('starter.controllers', [])
             password: $scope.data.password
         }).then(function(data) {
             $window.localStorage.token = data.token;
+            $window.localStorage.user = data.user;
             $state.go('tab.account');
-        }).error(function(data) {
+        },function(data) {
             var alertPopup = $ionicPopup.alert({
                 title: '登陆失败!',
                 template: '请检查你的用户名和密码!'

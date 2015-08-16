@@ -1,4 +1,4 @@
-angular.module('starter.services', [])
+angular.module('starter.services', ['angular-jwt'])
     .factory('Map', function() {
         var mapObj;
         var mapInit = function(pos) {
@@ -111,14 +111,14 @@ angular.module('starter.services', [])
                     return res.data;
                 })
             },
-            getBookById:function(id){
+            getBookById: function(id) {
                 return $http({
-                    method:'GET',
-                    url:ApiEndpoint +'/book/item',
-                    params:{
-                        id:id
+                    method: 'GET',
+                    url: ApiEndpoint + '/book/item',
+                    params: {
+                        id: id
                     }
-                }).then(function(res){
+                }).then(function(res) {
                     return res.data;
                 })
             },
@@ -167,7 +167,7 @@ angular.module('starter.services', [])
             }
         };
     })
-    .service('UserService', function($http, ApiEndpoint) {
+    .service('UserService', function($http, ApiEndpoint, $window, $state, jwtHelper) {
         return {
             loginUser: function(data) {
                 return $http({
@@ -186,6 +186,17 @@ angular.module('starter.services', [])
                 }).then(function(res) {
                     return res.data;
                 })
+            },
+            isLogin: function() {
+                var token = $window.localStorage.token;
+                return token ? (jwtHelper.isTokenExpired(token) ? false : true) : false;
+            },
+            loginOut: function() {
+                $window.localStorage.token = null;
+                $window.localStorage.user = null;
+            },
+            doLogin: function() {
+                $state.go('login');
             }
         }
     })

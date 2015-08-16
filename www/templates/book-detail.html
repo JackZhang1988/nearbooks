@@ -14,9 +14,20 @@
                 </div>
             </ion-slide>
         </ion-slide-box>
-        <p>
-            {{book.name}}
-        </p>
+        <div class="book-info">
+            <h3 class="title">{{book.name}}</h3>
+            <div class="book-user-info">
+                <img ng-src="{{user.avatar}}" alt="">
+                <div>{{user.name}}</div>
+            </div>
+        </div>
+        <div class="douban-info">
+            <span>豆瓣书评：</span>
+            <label class="rating"></label>
+        </div>
         <location></location>
+        <div class="footer">
+            <button>我要借</button>
+        </div>
     </ion-content>
 </ion-view>
