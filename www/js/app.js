@@ -47,7 +47,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             templateUrl: 'templates/login.html'
         })
 
-
+        .state('bookdetail', {
+            url: '/book/:id',
+            templateUrl: 'templates/book-detail.html',
+            controller: 'BookDetailCtrl'
+        })
     // setup an abstract state for the tabs directive
     .state('tab', {
         url: "/tab",

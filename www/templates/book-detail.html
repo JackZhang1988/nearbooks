@@ -1,33 +1,27 @@
-<!--
-  This template loads for the 'tab.friend-detail' state (app.js)
-  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
-  The FriendsCtrl pulls data from the Friends service (service.js)
-  The Friends service returns an array of friend data
--->
-<ion-view view-title="{{book.name}}">
-    <ion-content>
-        <ion-slide-box>
-            <ion-slide ng-repeat="img in book.bookImgs" does-continue="true">
-                <div class="img-slider-wrap" style="background:url({{img}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
-                    <div class="img-slider-mask">
-                    </div>
+<ion-view view-title="{{book.name}}" name="book-detail">
+<ion-content>
+    <ion-slide-box>
+        <ion-slide ng-repeat="img in book.bookImgs" does-continue="true">
+            <div class="img-slider-wrap" style="background:url({{img}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
+                <div class="img-slider-mask">
                 </div>
-            </ion-slide>
-        </ion-slide-box>
-        <div class="book-info">
-            <h3 class="title">{{book.name}}</h3>
-            <div class="book-user-info">
-                <img ng-src="{{user.avatar}}" alt="">
-                <div>{{user.name}}</div>
             </div>
+        </ion-slide>
+    </ion-slide-box>
+    <div class="book-info">
+        <h3 class="title">{{book.name}}</h3>
+        <div class="book-user-info">
+            <img ng-src="{{user.avatar}}" alt="">
+            <div>{{user.name}}</div>
         </div>
-        <div class="douban-info">
-            <span>豆瓣书评：</span>
-            <label class="rating"></label>
-        </div>
-        <location></location>
-        <div class="footer">
-            <button>我要借</button>
-        </div>
-    </ion-content>
+    </div>
+    <div class="douban-info">
+        <span>豆瓣书评：</span>
+        <label class="rating"></label>
+    </div>
+    <location></location>
+</ion-content>
+<div class="bar bar-footer">
+  <button class="button button-clear pull-right">我要借</button>
+</div>
 </ion-view>

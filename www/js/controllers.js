@@ -138,7 +138,7 @@ angular.module('starter.controllers', [])
             rating: $scope.bookInfo.doubanRating
         },
         lnglat:$scope.selectedLocation.lnglat,
-        userId:$scope.user._id
+        _user:$scope.user._id
       }).success(function(res){
         $ionicLoading.hide();
         if(res.status == 0){
@@ -216,7 +216,7 @@ angular.module('starter.controllers', [])
   $scope.submitLocation = function(){
     $ionicLoading.show();
     Api.addLocation({
-      userId:'mockId',
+      _user:$scope.user._id,
       name:$scope.selectedLocation.name,
       lng:$scope.selectedLocation.lng,
       lat:$scope.selectedLocation.lat

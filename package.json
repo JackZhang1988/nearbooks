@@ -16,10 +16,10 @@
     "shelljs": "^0.3.0"
   },
   "cordovaPlugins": [
-    "com.ionic.keyboard",
     "org.apache.cordova.console",
     "org.apache.cordova.device",
-    "cordova-plugin-geolocation"
+    "cordova-plugin-geolocation",
+    "ionic-plugin-keyboard"
   ],
   "cordovaPlatforms": [
     "ios"
