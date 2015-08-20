@@ -70,15 +70,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 }
             }
         })
-        .state('tab.bookdetail', {
-            url: '/book/:id',
-            views: {
-                'tab-booklist': {
-                    templateUrl: 'templates/book-detail.html',
-                    controller: 'BookDetailCtrl'
-                }
-            }
-        })
+        // .state('tab.bookdetail', {
+        //     url: '/book/:id',
+        //     views: {
+        //         'tab-booklist': {
+        //             templateUrl: 'templates/book-detail.html',
+        //             controller: 'BookDetailCtrl'
+        //         }
+        //     }
+        // })
         .state('tab.messages', {
             url: '/messages',
             views: {

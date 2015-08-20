@@ -1,27 +1,32 @@
 <ion-view view-title="{{book.name}}" name="book-detail">
-<ion-content>
-    <ion-slide-box>
-        <ion-slide ng-repeat="img in book.bookImgs" does-continue="true">
-            <div class="img-slider-wrap" style="background:url({{img}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
-                <div class="img-slider-mask">
+    <ion-nav-buttons side="primary">
+        <a class="button" ng-click="goBack()">
+            <i class="ion-arrow-left-c"></i>
+        </a>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-slide-box>
+            <ion-slide ng-repeat="img in book.bookImgs" does-continue="true">
+                <div class="img-slider-wrap" style="background:url({{img}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
+                    <div class="img-slider-mask">
+                    </div>
                 </div>
+            </ion-slide>
+        </ion-slide-box>
+        <div class="book-info">
+            <h3 class="title">{{book.name}}</h3>
+            <div class="book-user-info">
+                <img ng-src="{{user.avatar}}" alt="">
+                <div>{{user.name}}</div>
             </div>
-        </ion-slide>
-    </ion-slide-box>
-    <div class="book-info">
-        <h3 class="title">{{book.name}}</h3>
-        <div class="book-user-info">
-            <img ng-src="{{user.avatar}}" alt="">
-            <div>{{user.name}}</div>
         </div>
+        <div class="douban-info">
+            <span>豆瓣书评：</span>
+            <label class="rating"></label>
+        </div>
+        <location></location>
+    </ion-content>
+    <div class="bar bar-footer">
+        <button class="button button-clear pull-right">我要借</button>
     </div>
-    <div class="douban-info">
-        <span>豆瓣书评：</span>
-        <label class="rating"></label>
-    </div>
-    <location></location>
-</ion-content>
-<div class="bar bar-footer">
-  <button class="button button-clear pull-right">我要借</button>
-</div>
 </ion-view>

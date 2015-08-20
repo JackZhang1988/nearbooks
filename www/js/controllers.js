@@ -305,8 +305,11 @@ angular.module('starter.controllers', [])
       };
     }
 })
-.controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api){
+.controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicHistory,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api){
 	$scope.book = {};
+  $scope.goBack = function(){
+    $ionicHistory.goBack();
+  }
   if(!$stateParams.id){
     $state.go('/');
   }else{
