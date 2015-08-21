@@ -1,3 +1,4 @@
+@import './slider.scss';
 $img-add-size:70px;
 $img-add-border-color:#ccc;
 img {
@@ -67,54 +68,44 @@ img {
     min-height: 300px;
 }
 
-.img-slider-wrap {
-    height: 60vh;
-    position: relative;
-    .img-slider-mask {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.1);
+.accordion-icon {
+    width: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.book-info {
+    padding: 10px 15px;
+    .title {
+        text-align: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #ddd;
+    }
+    .book-user-info {
+        margin: 0 auto;
+        width: 65px;
+        text-align: center;
+        .avatar {
+            border-radius: 50%;
+        }
+    }
+    .book-desc {
+        margin-top: 10px;
+    }
+    .douban-info {
+        border: 1px solid rgba(0, 0, 0, 0.17);
+        box-shadow: none;
+        margin: 20px 0;
+        .douban-rating {
+            font-size: 16px;
+            .rating {
+                float: right;
+            }
+        }
     }
 }
 
-.transparent {
-  background: rgba(0, 0, 0, 0.7) !important;
-}
-.image-modal {
-  width: 100% !important;
-  height: 100%;
-  top: 0 !important;
-  left: 0 !important;
-}
-.fullscreen-image {
-  max-width: 100%;
-  max-height: 100%;
-  bottom: 0;
-  left: 0;
-  margin: auto;
-  overflow: auto;
-  position: fixed;
-  right: 0;
-  top: 0;
-}
-.slider {
-  width: 100%;
-  height: 100%;
-}
-
-
-/* Fix modal backdrop for smaller devices */
-@media (max-width: 679px) {
-  .active .modal-backdrop-bg {
-    opacity: .5;
-  }
-  .modal-backdrop-bg {
-    -webkit-transition: opacity 300ms ease-in-out;
-    transition: opacity 300ms ease-in-out;
-    background-color: #000;
-    opacity: 0;
-  }
+#borrowBtn {
+    min-width: 150px;
+    font-size: 16px;
 }

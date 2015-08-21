@@ -1,8 +1,8 @@
-<ion-view view-title="{{book.name}}" name="book-detail">
+<ion-view view-title="{{book.name}}" name="book-detail" animation="slide-left-right">
     <ion-nav-buttons side="primary">
-        <a class="button" ng-click="goBack()">
-            <i class="ion-arrow-left-c"></i>
-        </a>
+        <button ng-click="goBack()" nav-direction="back" class="button back-button buttons button-clear header-item">
+            <i class="icon ion-ios-arrow-back"></i>
+        </button>
     </ion-nav-buttons>
     <ion-content>
         <ion-slide-box>
@@ -16,17 +16,25 @@
         <div class="book-info">
             <h3 class="title">{{book.name}}</h3>
             <div class="book-user-info">
-                <img ng-src="{{user.avatar}}" alt="">
+                <img src="../img/user1.jpg" alt="" class="avatar">
                 <div>{{user.name}}</div>
             </div>
+            <div class="book-desc">{{book.desc}}</div>
+            <div class="card douban-info">
+                <div class="item item-text-wrap" ng-click="summaryShow=!summaryShow">
+                    <span>豆瓣评分：</span>
+                    <span class="badge badge-assertive rating">{{book.doubanInfo.rating}}</span>
+                    <span class="ion accordion-icon" ng-class="{'ion-ios-arrow-up':summaryShow,'ion-ios-arrow-down':!summaryShow}"></span>
+                </div>
+                <p class="item item-text-wrap" ng-show="summaryShow">内容简介：{{book.doubanInfo.summary}}</p>
+            </div>
+            <div class="hr">
+                <span>取物地址</span>   
+            </div>
+            <img ng-src="{{book.locationImg}}" alt="" class="book-location-img">
         </div>
-        <div class="douban-info">
-            <span>豆瓣书评：</span>
-            <label class="rating"></label>
-        </div>
-        <location></location>
     </ion-content>
-    <div class="bar bar-footer">
-        <button class="button button-clear pull-right">我要借</button>
-    </div>
+    <ion-footer-bar class="bar">
+        <button class="button button-balanced button-large pull-right" id="borrowBtn">我想借</button>
+    </ion-footer-bar>
 </ion-view>

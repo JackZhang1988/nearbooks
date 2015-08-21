@@ -308,7 +308,8 @@ angular.module('starter.controllers', [])
 .controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicHistory,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api){
 	$scope.book = {};
   $scope.goBack = function(){
-    $ionicHistory.goBack();
+    $ionicHistory.goBack(-1);
+    // window.history.go(-1);
   }
   if(!$stateParams.id){
     $state.go('/');
@@ -316,6 +317,8 @@ angular.module('starter.controllers', [])
     Api.getBookById($stateParams.id).then(function(res){
       if(res.status == 0){
         $scope.book = res.data;
+        $scope.book.locationImg = 'http://restapi.amap.com/v3/staticmap?zoom=10&size=200*100&markers=mid,0x008000,A:'+res.data.lnglat[0]+','+ res.data.lnglat[1]+'&key=ee95e52bf08006f63fd29bcfbcf21df0'
+        $scope.user = res.data._user;
         $ionicSlideBoxDelegate.update();
       }else{
         $ionicPopup.alert({
@@ -364,4 +367,4 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
-});
+})
