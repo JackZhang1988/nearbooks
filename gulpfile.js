@@ -12,11 +12,11 @@ var replaceFiles = ['./www/js/app.js'];
 var paths = {
   sass: ['./scss/**/*.scss']
 };
-
+var localhost = 'localhost';
 gulp.task('add-proxy', function() {
   return replace({
-    regex: "http://localhost:3000/api",
-    replacement: "http://localhost:8100/api",
+    regex: "http://"+ localhost+":3000/api",
+    replacement: "http://"+ localhost+":8100/api",
     paths: replaceFiles,
     recursive: false,
     silent: false,
@@ -25,8 +25,8 @@ gulp.task('add-proxy', function() {
 
 gulp.task('remove-proxy', function() {
   return replace({
-    regex: "http://localhost:8100/api",
-    replacement: "http://localhost:3000/api",
+    regex: "http://"+ localhost+":8100/api",
+    replacement: "http://"+ localhost+":3000/api",
     paths: replaceFiles,
     recursive: false,
     silent: false,

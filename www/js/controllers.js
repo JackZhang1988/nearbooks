@@ -305,11 +305,12 @@ angular.module('starter.controllers', [])
       };
     }
 })
-.controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicHistory,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api){
+.controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api,Map,UserService){
 	$scope.book = {};
+  $scope.curUser = UserService.getUser();
   $scope.goBack = function(){
-    $ionicHistory.goBack(-1);
-    // window.history.go(-1);
+    // $ionicHistory.goBack(-1);
+    window.history.go(-1);
   }
   if(!$stateParams.id){
     $state.go('/');
@@ -325,7 +326,7 @@ angular.module('starter.controllers', [])
             title: '获取图书失败!',
             template: res.err
         }).then(function(){
-          $state.go('/');
+          $state.go('tab.booklist');
         });
       }
     })
@@ -344,6 +345,52 @@ angular.module('starter.controllers', [])
   $scope.closeSlideModal = function() {
     $scope.slideModal.hide();
   };
+
+  $ionicModal.fromTemplateUrl('/templates/map-modal.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+  }).then(function(modal){
+    $scope.mapModal = modal;
+  })
+  $scope.showMapModal = function(pos){
+    var mapObj;
+    $scope.mapModal.show().then(function(){
+        mapObj = Map.mapInit({
+          longitude:$scope.book.lnglat[0],
+          latitude:$scope.book.lnglat[1]
+        });
+        Map.initGeolocation(mapObj);
+    })
+  }
+  $scope.closeMapModal = function(){
+    $scope.mapModal.hide();
+  }
+
+  document.addEventListener("deviceready", function () {
+    var scheme;
+    $cordovaAppAvailability.check('twitter://')
+      .then(function() {
+        // is available
+      }, function () {
+        // not available
+      });
+  }, false);
+
+  $scope.borrow = function(){
+    Api.borrowBook({
+      ownerId:$scope.user._id,
+      bookId:$scope.book._id,
+      borrowerId:$scope.curUser._id
+    }).then(function(res){
+      if(res.status == 0){
+        $ionicPopup.alert({
+          title: '结束申请发送成功'
+        }).then(function(){
+          $state.go('tab.booklist');
+        });
+      }
+    })
+  }
 })
 
 .controller('BookAddCtrl',function($scope){
