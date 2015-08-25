@@ -24,6 +24,10 @@
     {
       "locator": "https://github.com/phonegap-build/PushPlugin.git",
       "id": "com.phonegap.plugins.PushPlugin"
+    },
+    {
+      "id": "cn.jpush.phonegap.JPushPlugin",
+      "locator": "./jpush-phonegap-plugin"
     }
   ],
   "cordovaPlatforms": [

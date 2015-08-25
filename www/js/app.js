@@ -20,10 +20,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             // org.apache.cordova.statusbar required
             StatusBar.styleLightContent();
         }
+        //启动极光推送服务 
+
+        window.plugins.jPushPlugin.init();
+        //调试模式 
+
+        window.plugins.jPushPlugin.setDebugMode(true);
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider,jwtInterceptorProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
     jwtInterceptorProvider.tokenGetter = function() {
         return localStorage.getItem('token');
     }
@@ -49,17 +55,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             templateUrl: 'templates/login.html'
         })
 
-        .state('bookdetail', {
+    .state('bookdetail', {
             url: '/book/:id',
             templateUrl: 'templates/book-detail.html',
             controller: 'BookDetailCtrl'
         })
-    // setup an abstract state for the tabs directive
-    .state('tab', {
-        url: "/tab",
-        abstract: true,
-        templateUrl: "templates/tabs.html"
-    })
+        // setup an abstract state for the tabs directive
+        .state('tab', {
+            url: "/tab",
+            abstract: true,
+            templateUrl: "templates/tabs.html"
+        })
 
     // Each tab has its own nav history stack:
 
