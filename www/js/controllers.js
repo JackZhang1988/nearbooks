@@ -1,6 +1,5 @@
 angular.module('starter.controllers', [])
-
-.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, ApiEndpoint ,Api, Map,UserService){
+.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, ApiEndpoint, ImgUrl, Api, Map,UserService){
 
   var lnglat = {};
   $ionicPlatform.ready(function() {
@@ -88,6 +87,7 @@ angular.module('starter.controllers', [])
       console.log(res);
       if(res.status == 0){
         $scope.bookInfo.loading=false;
+        // $scope.bookImgList = res.data.url;
         $scope.prevImgList.push(res.data.url)
       }
     }).error(function(err){
@@ -173,10 +173,16 @@ angular.module('starter.controllers', [])
 
   var mapObj;
   $scope.openAddLocationModal = function(){
+    $scope.selectedLocation={};
     $scope.addLocationModal.show().then(function(){
       if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(function(pos) {
               mapObj = Map.mapInit(pos.coords);
+              $scope.selectedLocation.lnglat=[pos.coords.longitude,pos.coords.latitude];
+              Map.getLngLatInfo(pos.coords,function(result){
+                $scope.selectedLocation.name =result.regeocode.formattedAddress;
+                $scope.location.name = result.regeocode.formattedAddress;
+              })
               Map.citySearch(function(result){
                 $scope.curCity = result.city;
               })
@@ -210,7 +216,7 @@ angular.module('starter.controllers', [])
       latitude:$scope.location.lat
     })
     $scope.tipResult = [];
-    // $scope.selectedLocation = $scope.location;
+    $scope.selectedLocation = $scope.location;
     $scope.location.name = tip.name;
   }
   $scope.submitLocation = function(){

@@ -7,7 +7,7 @@
     <ion-content>
         <ion-slide-box>
             <ion-slide ng-repeat="img in book.bookImgs" does-continue="true">
-                <div class="img-slider-wrap" style="background:url({{img}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
+                <div class="img-slider-wrap" style="background:url({{img|addserverhost}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
                     <div class="img-slider-mask">
                     </div>
                 </div>

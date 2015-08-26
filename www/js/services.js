@@ -1,6 +1,6 @@
 angular.module('starter.services', ['angular-jwt'])
     .factory('Map', function() {
-        var mapObj;
+        var mapObj={};
         var mapInit = function(pos) {
             mapObj = new AMap.Map('mapContainer', {
                 rotateEnable: true,
@@ -60,11 +60,15 @@ angular.module('starter.services', ['angular-jwt'])
             });
         }
         var setCenter = function(mapObj, pos) {
-            setMaker(mapObj, pos);
-            var lg = new AMap.LngLat(pos.longitude, pos.latitude);
-            mapObj.setCenter(lg);
+            try{
+                setMaker(mapObj, pos);
+                var lg = new AMap.LngLat(pos.longitude, pos.latitude);
+                mapObj.setCenter(lg);
+            } catch (e){
+
+            }
         }
-        var initGeolocation = function(mapObj,onComplete,onError) {
+        var initGeolocation = function(mapObj, onComplete, onError) {
             mapObj.plugin('AMap.Geolocation', function() {
                 geolocation = new AMap.Geolocation({
                     enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -84,13 +88,30 @@ angular.module('starter.services', ['angular-jwt'])
                 AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
             });
         }
+        var geocoder;
+        var getLngLatInfo = function(pos,geocoder_callBack){
+            var lnglatXY = new AMap.LngLat(pos.longitude, pos.latitude);
+            //加载地理编码插件 
+            mapObj.plugin(["AMap.Geocoder"], function() {
+                geocoder = new AMap.Geocoder({
+                    radius: 1000, //以已知坐标为中心点，radius为半径，返回范围内兴趣点和道路信息 
+                    extensions: "all" //返回地址描述以及附近兴趣点和道路信息，默认"base" 
+                });
+                //返回地理编码结果 
+                AMap.event.addListener(geocoder, "complete", geocoder_callBack);
+                //逆地理编码 
+                geocoder.getAddress(lnglatXY);
+            });
+            
+        }
         return {
             mapInit: mapInit,
             initAutoSearch: initAutoSearch,
             citySearch: citySearch,
             setMaker: setMaker,
             setCenter: setCenter,
-            initGeolocation:initGeolocation
+            initGeolocation: initGeolocation,
+            getLngLatInfo:getLngLatInfo
         }
     })
     .factory('Api', function($http, ApiEndpoint) {
@@ -151,12 +172,12 @@ angular.module('starter.services', ['angular-jwt'])
                     return res.data;
                 })
             },
-            borrowBook:function(data){
+            borrowBook: function(data) {
                 return $http({
-                    method:'POST',
-                    url:ApiEndpoint+'/book/borrowBook',
-                    data:data
-                }).then(function(res){
+                    method: 'POST',
+                    url: ApiEndpoint + '/book/borrowBook',
+                    data: data
+                }).then(function(res) {
                     return res.data;
                 })
             }

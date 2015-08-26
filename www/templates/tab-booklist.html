@@ -1,8 +1,8 @@
 <ion-view view-title="邻书">
-    <ion-nav-buttons side="primary">
+<!--     <ion-nav-buttons side="primary">
         <a class="button button-icon icon ion-map"></a>
     </ion-nav-buttons>
-    <ion-nav-buttons side="secondary">
+ -->    <ion-nav-buttons side="secondary">
         <a class="button button-icon icon ion-plus-round" ng-click="openAddBookModal()"></a>
     </ion-nav-buttons>
     <ion-content>
@@ -12,7 +12,7 @@
                 <h2>{{book.name}}</h2>
             </div>
             <a class="item item-thumbnail-left" ui-sref="bookdetail({id:book._id})">
-                <img ng-src="{{book.bookImgs[0]}}">
+                <img ng-src="{{book.bookImgs[0] | addserverhost}}">
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
             </a>

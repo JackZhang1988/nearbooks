@@ -13,6 +13,7 @@ var paths = {
   sass: ['./scss/**/*.scss']
 };
 var localhost = 'localhost';
+var serverhost = 'http://192.168.1.103:3000';
 gulp.task('add-proxy', function() {
   return replace({
     regex: "http://"+ localhost+":3000/api",
@@ -27,6 +28,25 @@ gulp.task('remove-proxy', function() {
   return replace({
     regex: "http://"+ localhost+":8100/api",
     replacement: "http://"+ localhost+":3000/api",
+    paths: replaceFiles,
+    recursive: false,
+    silent: false,
+  });
+})
+
+gulp.task('add-serverhost', function() {
+  return replace({
+    regex: "serverhost",
+    replacement: serverhost,
+    paths: replaceFiles,
+    recursive: false,
+    silent: false,
+  });
+})
+gulp.task('remove-serverhost', function() {
+  return replace({
+    regex: serverhost,
+    replacement: "serverhost",
     paths: replaceFiles,
     recursive: false,
     silent: false,
