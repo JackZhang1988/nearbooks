@@ -8,11 +8,5 @@
   "watchPatterns": [
     "www/**/*",
     "!www/lib/**/*"
-  ],
-  "proxies": [
-    {
-      "path": "/api",
-      "proxyUrl": "http://localhost:3000/api"
-    }
   ]
 }

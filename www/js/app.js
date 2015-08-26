@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova'])
 
-.constant('ApiEndpoint', 'http://localhost:8100/api')
+.constant('ApiEndpoint', 'http://172.16.28.80:3000/api')
 
 .run(function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -21,15 +21,29 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             StatusBar.styleLightContent();
         }
         //启动极光推送服务 
+        document.addEventListener('deviceready', function(data) {
+            window.plugins.jPushPlugin.init();
+            //调试模式 
 
-        window.plugins.jPushPlugin.init();
-        //调试模式 
+            window.plugins.jPushPlugin.setDebugMode(true);
 
-        window.plugins.jPushPlugin.setDebugMode(true);
+        }, false);
     });
 })
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, jwtInterceptorProvider) {
+    $sceDelegateProvider.resourceUrlWhitelist([
+        // Allow same origin resource loads.
+        'self',
+        // Allow loading from our assets domain.  Notice the difference between * and **.
+        'http://172.16.28.80:3000/**'
+    ]);
+
+    // The blacklist overrides the whitelist so the open redirect here is blocked.
+    // $sceDelegateProvider.resourceUrlBlacklist([
+    //     'http://myapp.example.com/clickThru**'
+    // ]);
+
     jwtInterceptorProvider.tokenGetter = function() {
         return localStorage.getItem('token');
     }
