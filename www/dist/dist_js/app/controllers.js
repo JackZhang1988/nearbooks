@@ -1,5 +1,5 @@
 angular.module('starter.controllers', [])
-.controller('BookListCtrl',function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map,UserService){
+.controller('BookListCtrl',['$scope', '$state', '$ionicModal', '$ionicPopup', '$timeout', '$ionicLoading', '$cordovaGeolocation', '$ionicPlatform', '$timeout', 'ApiEndpoint', 'ImgUrl', 'Api', 'Map', 'UserService', function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map,UserService){
 
   var lnglat = {};
   $ionicPlatform.ready(function() {
@@ -245,8 +245,8 @@ angular.module('starter.controllers', [])
     $scope.location = $scope.usrLocations[index];
     $scope.showLocation = false;
   }
-}) 
-.controller('LoginCtrl', function($scope,UserService,$ionicPopup,$state,$window) {
+}]) 
+.controller('LoginCtrl', ['$scope', 'UserService', '$ionicPopup', '$state', '$window', function($scope,UserService,$ionicPopup,$state,$window) {
     $scope.data = {};
  
     $scope.login = function() {
@@ -265,8 +265,8 @@ angular.module('starter.controllers', [])
         });
     }
 
-})
-.controller('SigninCtrl', function($scope,UserService,$ionicPopup,$state){
+}])
+.controller('SigninCtrl', ['$scope', 'UserService', '$ionicPopup', '$state', function($scope,UserService,$ionicPopup,$state){
     $scope.data={};
     $scope.err='';
     $scope.$watch('data',function(newValue, oldValue){
@@ -310,8 +310,8 @@ angular.module('starter.controllers', [])
         })       
       };
     }
-})
-.controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api,Map,UserService){
+}])
+.controller('BookDetailCtrl',['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicSlideBoxDelegate', '$ionicModal', 'Api', 'Map', 'UserService', function($scope,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api,Map,UserService){
 	$scope.book = {};
   $scope.curUser = UserService.getUser();
   $scope.goBack = function(){
@@ -397,21 +397,21 @@ angular.module('starter.controllers', [])
       }
     })
   }
-})
+}])
 
-.controller('ChatsCtrl', function($scope, Chats) {
+.controller('ChatsCtrl', ['$scope', 'Chats', function($scope, Chats) {
   $scope.chats = Chats.all();
   $scope.remove = function(chat) {
     Chats.remove(chat);
   }
-})
+}])
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('ChatDetailCtrl', ['$scope', '$stateParams', 'Chats', function($scope, $stateParams, Chats) {
   $scope.chat = Chats.get($stateParams.chatId);
-})
+}])
 
-.controller('AccountCtrl', function($scope) {
+.controller('AccountCtrl', ['$scope', function($scope) {
   $scope.settings = {
     enableFriends: true
   };
-})
+}])

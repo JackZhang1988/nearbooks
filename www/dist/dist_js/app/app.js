@@ -7,10 +7,10 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'templates','addserverFilter'])
 
-.constant('ApiEndpoint', '<%=serverhost%>/api')
-.constant('ImgUrl','<%=serverhost%>')
+.constant('ApiEndpoint', 'http://192.168.1.102:3000/api')
+.constant('ImgUrl','http://192.168.1.102:3000')
 
-.run(function($ionicPlatform) {
+.run(['$ionicPlatform', function($ionicPlatform) {
     $ionicPlatform.ready(function() {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -30,14 +30,14 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
         }, false);
     });
-})
+}])
 
-.config(function($stateProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, jwtInterceptorProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$sceDelegateProvider', 'jwtInterceptorProvider', function($stateProvider, $urlRouterProvider, $httpProvider, $sceDelegateProvider, jwtInterceptorProvider) {
     $sceDelegateProvider.resourceUrlWhitelist([
         // Allow same origin resource loads.
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
-        '<%=serverhost%>/**'
+        'http://192.168.1.102:3000/**'
     ]);
 
     // The blacklist overrides the whitelist so the open redirect here is blocked.
@@ -119,4 +119,4 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/booklist');
 
-});
+}]);
