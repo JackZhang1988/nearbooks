@@ -411,14 +411,29 @@ angular.module('starter.controllers', [])
 })
 
 .controller('MessagesCtrl', function($scope,SocketService,UserService){
-  $scope.msgList = [];
+  $scope.msgList = {}; // todo: 合并相同用户的msg
   var user = UserService.getUser();
+  function handleMsg(msg){
+    // todo: 优化时间格式，改为 xx天前 xx小时前
+    if(!msg) return null;
+    switch(msg.content.contentType){
+      case 'book':
+        msg.output = '我想借《'+msg.content.info.bookName+'》';
+        return msg;
+      case 'text':
+        msg.output = msg.content.info;
+        return msg;
+      default:
+        msg.output = msg.content.info;
+        return msg;
+    }
+  }
   if(user){
     SocketService.on('init',function(msg){
-      $scope.msgList.push(msg);
+       $scope.msgList[msg.id] = handleMsg(msg);
     })
     SocketService.on('msg:borrow',function(msg){
-      $scope.msgList.push(msg);
+       $scope.msgList[msg.id] = handleMsg(msg);
     })
   }
 })

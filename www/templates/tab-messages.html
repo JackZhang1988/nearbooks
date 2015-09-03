@@ -4,7 +4,8 @@
             <a class="item item-avatar" href="#" ng-repeat="msg in msgList">
                 <img src="img/user1.jpg">
                 <h2>{{msg.sender}}</h2>
-                <p>{{msg.detail}}</p>
+                <p>{{msg.output}}</p>
+                <p>{{msg.date | date:'MM-dd HH:mm'}}</p>
             </a>
         </div>
     </ion-content>
