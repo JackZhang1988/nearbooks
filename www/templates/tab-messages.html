@@ -1,10 +1,10 @@
 <ion-view view-title="我的消息">
     <ion-content class="has-header">
         <div class="list">
-            <a class="item item-avatar" href="#">
+            <a class="item item-avatar" href="#" ng-repeat="msg in msgList">
                 <img src="img/user1.jpg">
-                <h2>jianbo</h2>
-                <p>我的消息</p>
+                <h2>{{msg.sender}}</h2>
+                <p>{{msg.detail}}</p>
             </a>
         </div>
     </ion-content>

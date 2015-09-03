@@ -1,6 +1,6 @@
 angular.module('starter.services', ['angular-jwt'])
     .factory('Map', function() {
-        var mapObj={};
+        var mapObj = {};
         var mapInit = function(pos) {
             mapObj = new AMap.Map('mapContainer', {
                 rotateEnable: true,
@@ -60,11 +60,11 @@ angular.module('starter.services', ['angular-jwt'])
             });
         }
         var setCenter = function(mapObj, pos) {
-            try{
+            try {
                 setMaker(mapObj, pos);
                 var lg = new AMap.LngLat(pos.longitude, pos.latitude);
                 mapObj.setCenter(lg);
-            } catch (e){
+            } catch (e) {
 
             }
         }
@@ -89,7 +89,7 @@ angular.module('starter.services', ['angular-jwt'])
             });
         }
         var geocoder;
-        var getLngLatInfo = function(pos,geocoder_callBack){
+        var getLngLatInfo = function(pos, geocoder_callBack) {
             var lnglatXY = new AMap.LngLat(pos.longitude, pos.latitude);
             //加载地理编码插件 
             mapObj.plugin(["AMap.Geocoder"], function() {
@@ -102,7 +102,7 @@ angular.module('starter.services', ['angular-jwt'])
                 //逆地理编码 
                 geocoder.getAddress(lnglatXY);
             });
-            
+
         }
         return {
             mapInit: mapInit,
@@ -111,7 +111,7 @@ angular.module('starter.services', ['angular-jwt'])
             setMaker: setMaker,
             setCenter: setCenter,
             initGeolocation: initGeolocation,
-            getLngLatInfo:getLngLatInfo
+            getLngLatInfo: getLngLatInfo
         }
     })
     .factory('Api', function($http, ApiEndpoint) {
@@ -253,4 +253,27 @@ angular.module('starter.services', ['angular-jwt'])
                 return JSON.parse($window.localStorage.user);
             }
         }
+    })
+    .factory('socket', function($rootScope) {
+        var socket = io.connect('<%=serverhost%>');
+        return {
+            on: function(eventName, callback) {
+                socket.on(eventName, function() {
+                    var args = arguments;
+                    $rootScope.$apply(function() {
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            emit: function(eventName, data, callback) {
+                socket.emit(eventName, data, function() {
+                    var args = arguments;
+                    $rootScope.$apply(function() {
+                        if (callback) {
+                            callback.apply(socket, args);
+                        }
+                    });
+                })
+            }
+        };
     })

@@ -390,7 +390,7 @@ angular.module('starter.controllers', [])
     }).then(function(res){
       if(res.status == 0){
         $ionicPopup.alert({
-          title: '结束申请发送成功'
+          title: '申请成功'
         }).then(function(){
           $state.go('tab.booklist');
         });
@@ -410,8 +410,11 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('MessagesCtrl', function($scope){
-  
+.controller('MessagesCtrl', function($scope,socket){
+  $scope.msgList = [];
+  socket.on('init',function(msg){
+    $scope.msgList.push(msg);
+  })
 })
 
 .controller('AccountCtrl', function($scope) {
