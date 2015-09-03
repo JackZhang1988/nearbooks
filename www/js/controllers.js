@@ -410,11 +410,17 @@ angular.module('starter.controllers', [])
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('MessagesCtrl', function($scope,socket){
+.controller('MessagesCtrl', function($scope,SocketService,UserService){
   $scope.msgList = [];
-  socket.on('init',function(msg){
-    $scope.msgList.push(msg);
-  })
+  var user = UserService.getUser();
+  if(user){
+    SocketService.on('init',function(msg){
+      $scope.msgList.push(msg);
+    })
+    SocketService.on('msg:borrow',function(msg){
+      $scope.msgList.push(msg);
+    })
+  }
 })
 
 .controller('AccountCtrl', function($scope) {

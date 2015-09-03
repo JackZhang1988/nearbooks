@@ -254,8 +254,12 @@ angular.module('starter.services', ['angular-jwt'])
             }
         }
     })
-    .factory('socket', function($rootScope) {
+    .factory('SocketService', function($rootScope,UserService) {
+        var user = UserService.getUser();
         var socket = io.connect('<%=serverhost%>');
+        if(user._id){
+            socket.emit('join',{userId:user._id});
+        }
         return {
             on: function(eventName, callback) {
                 socket.on(eventName, function() {
