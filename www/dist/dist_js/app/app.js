@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'templates','addserverFilter'])
 
-.constant('ApiEndpoint', 'http://192.168.1.102:3000/api')
-.constant('ImgUrl','http://192.168.1.102:3000')
+.constant('ApiEndpoint', 'http://172.16.28.80:3000/api')
+.constant('ImgUrl','http://172.16.28.80:3000')
 
 .run(['$ionicPlatform', function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -37,7 +37,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         // Allow same origin resource loads.
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
-        'http://192.168.1.102:3000/**'
+        'http://172.16.28.80:3000/**'
     ]);
 
     // The blacklist overrides the whitelist so the open redirect here is blocked.
