@@ -121,6 +121,423 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 }]);
 
+angular.module('starter.controllers', [])
+.controller('BookListCtrl',['$scope', '$state', '$ionicModal', '$ionicPopup', '$timeout', '$ionicLoading', '$cordovaGeolocation', '$ionicPlatform', '$timeout', 'ApiEndpoint', 'ImgUrl', 'Api', 'Map', 'UserService', function($scope,$state,$ionicModal,$ionicPopup,$timeout,$ionicLoading,$cordovaGeolocation,$ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map,UserService){
+
+  var lnglat = {};
+  $ionicPlatform.ready(function() {
+      var posOptions = {
+          timeout: 5000,
+          enableHighAccuracy: false
+      };
+      $cordovaGeolocation
+          .getCurrentPosition(posOptions)
+          .then(function(position) {
+              lnglat = {
+                  lat: position.coords.latitude,
+                  lng: position.coords.longitude
+              }
+              Api.getAllBooks(lnglat).then(function(res){
+                $ionicLoading.hide();
+                if(res.status == 0){
+                  $scope.booklist = res.data;
+                }
+              })
+          }, function(err) {
+              // error
+              Api.getAllBooks().then(function(res){
+                $ionicLoading.hide();
+                if(res.status == 0){
+                  $scope.booklist = res.data;
+                }
+              })
+          });
+
+
+  });
+  // $scope.booklist = Booklist.all(); // mock data
+  $scope.booklist =[];
+  $ionicLoading.show();
+    
+  // 添加图片列表
+  $scope.prevImgList = [];
+  // 添加的图书信息
+  $scope.bookInfo = {};
+
+  $scope.location = {};
+
+  // 添加图片的接口地址
+  $scope.addNewBookAction = ApiEndpoint+'/bookImg';
+  // 用户保存过得位置信息，从localStorage 读取
+  $scope.usrLocations = JSON.parse(window.localStorage.getItem('commonLocation'))||[];
+  // 用户当前选择的地理信息
+  $scope.selectedLocation = $scope.usrLocations[0];
+  if($scope.usrLocations.length){
+   $scope.location.name = $scope.usrLocations[0].name; 
+  }
+
+  $ionicModal.fromTemplateUrl('/templates/book-add.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+  }).then(function(modal){
+    $scope.addBookModal = modal;
+  });
+
+  $scope.getDoubanInfo = function(){
+    Api.getDoubanInfo($scope.bookInfo.bookName).then(function(res){
+      $scope.doubanSuggestShow = true;
+      $scope.doubanSuggestBooks = res.books;
+    })
+  }
+
+  $scope.doubanBookSelected =function(index){
+    $scope.doubanSuggestShow = false;
+    var doubanBook = $scope.doubanSuggestBooks[index];
+    $scope.bookInfo.bookName = doubanBook.title;
+    $scope.bookInfo.writer = doubanBook.author[0];
+    $scope.bookInfo.price = doubanBook.price;
+    $scope.bookInfo.doubanUrl = doubanBook.alt;
+    $scope.bookInfo.summary = doubanBook.summary;
+    $scope.bookInfo.doubanRating = doubanBook.rating.average;
+  }
+
+  $scope.fileChange = function(element){
+    var imgFile = element.files[0];
+    $scope.bookInfo.loading = true;
+    var fd = new FormData();
+    fd.append('file',element.files[0]);
+    Api.addBookImg(fd).success(function(res){
+      console.log(res);
+      if(res.status == 0){
+        $scope.bookInfo.loading=false;
+        // $scope.bookImgList = res.data.url;
+        $scope.prevImgList.push(res.data.url)
+      }
+    }).error(function(err){
+      $scope.bookInfo.loading= false;
+    })
+  }
+  $scope.openAddBookModal = function(){
+    if(UserService.isLogin()){
+      $scope.prevImgList = [];
+      $scope.bookInfo={};
+      $scope.addBookModal.show();
+      $scope.user = UserService.getUser();
+    }else{
+      UserService.doLogin();
+    }
+  }
+  $scope.closeAddBookModal = function(){
+    $scope.addBookModal.hide();
+  }
+
+  function validate(){
+    if($scope.prevImgList.length <= 0){
+      return '至少上传一张图片!';
+    }
+    if(!$scope.bookInfo.bookName){
+      return '请填写图书名!';
+    }
+    if(!$scope.selectedLocation){
+      return '请填写图书位置信息';
+    }
+    return 1;
+  }
+  $scope.submitNew = function(){
+    console.log('submitNew');
+    var validateResut = validate();
+    if(validateResut === 1){
+      $ionicLoading.show();
+
+      Api.addNewBook({
+        bookImgs:$scope.prevImgList,
+        bookName:$scope.bookInfo.bookName,
+        bookDesc:$scope.bookInfo.bookDesc,
+        doubanInfo: {
+            writer: $scope.bookInfo.writer,
+            price: $scope.bookInfo.price,
+            url: $scope.bookInfo.doubanUrl,
+            summary: $scope.bookInfo.summary,
+            rating: $scope.bookInfo.doubanRating
+        },
+        lnglat:$scope.selectedLocation.lnglat,
+        _user:$scope.user._id
+      }).success(function(res){
+        $ionicLoading.hide();
+        if(res.status == 0){
+          var submitAlert = $ionicPopup.alert({
+            title:'提交成功',
+            okText:'确定'
+          });
+          submitAlert.then(function(){
+            $scope.addBookModal.hide();
+          })
+          $timeout(function(){
+            submitAlert.close();
+            $scope.addBookModal.hide();
+          },5000)
+        }else{
+          $ionicPopup.alert({title:res.err});
+        }
+      })
+      
+    }else{
+      $ionicPopup.alert({title:validateResut});
+    }
+  }
+
+
+  $ionicModal.fromTemplateUrl('/templates/location-add.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+  }).then(function(modal){
+    $scope.addLocationModal = modal;
+  });
+
+  var mapObj;
+  $scope.openAddLocationModal = function(){
+    $scope.selectedLocation={};
+    $scope.addLocationModal.show().then(function(){
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(pos) {
+              mapObj = Map.mapInit(pos.coords);
+              $scope.selectedLocation.lnglat=[pos.coords.longitude,pos.coords.latitude];
+              Map.getLngLatInfo(pos.coords,function(result){
+                $scope.selectedLocation.name =result.regeocode.formattedAddress;
+                $scope.location.name = result.regeocode.formattedAddress;
+              })
+              Map.citySearch(function(result){
+                $scope.curCity = result.city;
+              })
+          }, function(error) {
+              alert(error.message);
+          }, {
+              enableHighAccuracy: true,
+              timeout: '5000'
+          });
+      }else{}
+
+    });
+  }
+  $scope.closeAddLocationModal = function(){
+    $scope.addLocationModal.hide();
+  }
+  $scope.inputChange = function(){
+    var ops={
+      city:$scope.curCity||''
+    }
+    Map.initAutoSearch($scope.location.name,ops,function(result){
+        $scope.tipResult = result.tips
+    },function(){
+        $scope.tipResult =[];
+    })
+  }
+  $scope.selectLocation = function(tip){
+    $scope.location = tip.location;
+    Map.setCenter(mapObj,{
+      longitude:$scope.location.lng,
+      latitude:$scope.location.lat
+    })
+    $scope.tipResult = [];
+    $scope.selectedLocation = $scope.location;
+    $scope.location.name = tip.name;
+  }
+  $scope.submitLocation = function(){
+    $ionicLoading.show();
+    Api.addLocation({
+      _user:$scope.user._id,
+      name:$scope.selectedLocation.name,
+      lng:$scope.selectedLocation.lng,
+      lat:$scope.selectedLocation.lat
+    }).then(function(res){
+      $ionicLoading.hide();
+      if(res.status == 0){
+        $scope.usrLocations.push(res.data);
+        window.localStorage.setItem('commonLocation',JSON.stringify($scope.usrLocations));
+        $scope.addLocationModal.hide();
+        $scope.showLocation=false;
+      }
+    })
+    // $scope.bookInfo.location = $scope.selectedLocation;
+  }
+  $scope.showLocation=false;
+  $scope.triggeLocationShow = function(){
+    $scope.showLocation = !$scope.showLocation;
+  }
+  $scope.selectSuggestLocation = function(index){
+    $scope.location = $scope.usrLocations[index];
+    $scope.showLocation = false;
+  }
+}]) 
+.controller('LoginCtrl', ['$scope', 'UserService', '$ionicPopup', '$state', '$window', function($scope,UserService,$ionicPopup,$state,$window) {
+    $scope.data = {};
+ 
+    $scope.login = function() {
+        UserService.loginUser({
+            name: $scope.data.username,
+            password: $scope.data.password
+        }).then(function(data) {
+            $window.localStorage.token = data.token;
+            $window.localStorage.user = JSON.stringify(data.user);
+            $state.go('tab.account');
+        },function(data) {
+            var alertPopup = $ionicPopup.alert({
+                title: '登陆失败!',
+                template: '请检查你的用户名和密码!'
+            });
+        });
+    }
+
+}])
+.controller('SigninCtrl', ['$scope', 'UserService', '$ionicPopup', '$state', function($scope,UserService,$ionicPopup,$state){
+    $scope.data={};
+    $scope.err='';
+    $scope.$watch('data',function(newValue, oldValue){
+      if(newValue == oldValue){
+        return;
+      }
+      if(!$scope.data.name){
+        $scope.err = '用户名不能为空';
+      }else if(!$scope.data.phone){
+        $scope.err = '手机号不能为空';
+      }else if(!$scope.data.password){
+        $scope.err = '密码不能为空';
+      }else if($scope.data.password != $scope.data.password2){
+        console.log('password2 not same');
+        $scope.err ='密码不一致';
+      }else{
+        $scope.err = '';
+      }
+    },true)
+    $scope.signin = function(){
+      if (!$scope.err) {
+        UserService.signinUser({
+          name:$scope.data.name,
+          phone:$scope.data.phone,
+          password:$scope.data.password
+        }).then(function(res){
+          if(res.status == 0){
+            var alertPopup = $ionicPopup.alert({
+                title: '注册成功!',
+                template: '现在就去登陆吧'
+            });
+            alertPopup.then(function(){
+              $state.go('login',{phone:$scope.data.phone});
+            })
+          }else{
+            $ionicPopup.alert({
+                title: '注册失败!',
+                template: res.err
+            });
+          }
+        })       
+      };
+    }
+}])
+.controller('BookDetailCtrl',['$scope', '$state', '$stateParams', '$ionicPopup', '$ionicSlideBoxDelegate', '$ionicModal', 'Api', 'Map', 'UserService', function($scope,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api,Map,UserService){
+	$scope.book = {};
+  $scope.curUser = UserService.getUser();
+  $scope.goBack = function(){
+    // $ionicHistory.goBack(-1);
+    window.history.go(-1);
+  }
+  if(!$stateParams.id){
+    $state.go('/');
+  }else{
+    Api.getBookById($stateParams.id).then(function(res){
+      if(res.status == 0){
+        $scope.book = res.data;
+        $scope.book.locationImg = 'http://restapi.amap.com/v3/staticmap?zoom=10&size=200*100&markers=mid,0x008000,A:'+res.data.lnglat[0]+','+ res.data.lnglat[1]+'&key=ee95e52bf08006f63fd29bcfbcf21df0'
+        $scope.user = res.data._user;
+        $ionicSlideBoxDelegate.update();
+      }else{
+        $ionicPopup.alert({
+            title: '获取图书失败!',
+            template: res.err
+        }).then(function(){
+          $state.go('tab.booklist');
+        });
+      }
+    })
+  }
+  $ionicModal.fromTemplateUrl('/templates/slider-modal.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+  }).then(function(modal){
+    $scope.slideModal = modal;
+  })
+  $scope.showSlideModal = function(index){
+    console.log('show modal');
+    $scope.slideModal.show();
+  }
+
+  $scope.closeSlideModal = function() {
+    $scope.slideModal.hide();
+  };
+
+  $ionicModal.fromTemplateUrl('/templates/map-modal.html',{
+    scope:$scope,
+    animation:'slide-in-up'
+  }).then(function(modal){
+    $scope.mapModal = modal;
+  })
+  $scope.showMapModal = function(pos){
+    var mapObj;
+    $scope.mapModal.show().then(function(){
+        mapObj = Map.mapInit({
+          longitude:$scope.book.lnglat[0],
+          latitude:$scope.book.lnglat[1]
+        });
+        Map.initGeolocation(mapObj);
+    })
+  }
+  $scope.closeMapModal = function(){
+    $scope.mapModal.hide();
+  }
+
+  document.addEventListener("deviceready", function () {
+    var scheme;
+    $cordovaAppAvailability.check('twitter://')
+      .then(function() {
+        // is available
+      }, function () {
+        // not available
+      });
+  }, false);
+
+  $scope.borrow = function(){
+    Api.borrowBook({
+      ownerId:$scope.user._id,
+      bookId:$scope.book._id,
+      borrowerId:$scope.curUser._id
+    }).then(function(res){
+      if(res.status == 0){
+        $ionicPopup.alert({
+          title: '结束申请发送成功'
+        }).then(function(){
+          $state.go('tab.booklist');
+        });
+      }
+    })
+  }
+}])
+
+.controller('ChatsCtrl', ['$scope', 'Chats', function($scope, Chats) {
+  $scope.chats = Chats.all();
+  $scope.remove = function(chat) {
+    Chats.remove(chat);
+  }
+}])
+
+.controller('ChatDetailCtrl', ['$scope', '$stateParams', 'Chats', function($scope, $stateParams, Chats) {
+  $scope.chat = Chats.get($stateParams.chatId);
+}])
+
+.controller('AccountCtrl', ['$scope', function($scope) {
+  $scope.settings = {
+    enableFriends: true
+  };
+}])
 
 angular.module('starter.services', ['angular-jwt'])
     .factory('Map', function() {
@@ -380,7 +797,7 @@ angular.module('starter.services', ['angular-jwt'])
     }])
 
 
-angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("book-add.html","<ion-modal-view>\n    <ion-header-bar class=\"bar-positive fix-buttons\">\n        <a class=\"button button-icon icon ion-close-round\" ng-click=\"closeAddBookModal()\"></a>\n        <h1 class=\"title\">添加图书</h1>\n    </ion-header-bar>\n    <ion-content>\n        <label class=\"item item-img-add\">\n            <ul ng-show=\"prevImgList.length\" class=\"img-prev\">\n                <li class=\"prev-item\" ng-repeat=\"imgUrl in prevImgList\" >\n                    <img ng-src=\"{{imgUrl | addserverhost}}\" class=\"prev-img\">\n                </li>\n            </ul>\n            <ion-spinner ng-show=\"bookInfo.loading\"></ion-spinner>\n            <span class=\"img-add-block\" ng-show=\"!bookInfo.loading && prevImgList.length <= 3\">\n                <em class=\"icon ion-ios-plus-empty img-add-icon\"></em>\n                <div class=\"img-input-wrap\">\n                <form action={{addNewBookAction}} enctype=\"multipart/form-data\">\n                    <input type=\"file\" accept=\"image/x-png, image/gif, image/jpeg\" class=\"img-add-input\" onchange=\"angular.element(this).scope().fileChange(this)\">\n                </form>\n                </div>\n            </span>\n        </label>\n        <label class=\"item item-input\">\n            <input type=\"text\" placeholder=\"书名\" name=\"name\" ng-model=\"bookInfo.bookName\" ng-change=\"getDoubanInfo()\">\n        </label>\n        <ul class=\"list\" ng-show=\"doubanSuggestShow\">\n            <li class=\"item\" ng-repeat=\"book in doubanSuggestBooks\" ng-click=\"doubanBookSelected($index)\">\n                <h2>{{book.title}}</h2>\n                <p>作者:{{book.author[0]}},价格:{{book.price}},<strong>评分:{{book.rating.average}}</strong></p>\n            </li>\n        </ul>\n        <label class=\"item item-input\">\n            <textarea name=\"\" rows=\"3\" placeholder=\"描述\" name=\"desc\" ng-model=\"bookInfo.bookDesc\"></textarea>\n        </label>\n        <label class=\"item\">\n            <span>豆瓣评分</span>\n            <span class=\"badge badge-energized\">{{bookInfo.doubanRating}}</span>\n        </label>\n        <div class=\"item\" ng-click=\"triggeLocationShow()\">\n            <span class=\"input-label\">地点:{{location.name}}</span>\n        </div>\n        <ul class=\"user-location list\" ng-show=\"showLocation\">\n            <li class=\"item\" ng-repeat=\"ul in usrLocations track by $index\" ng-click=\"selectSuggestLocation($index)\">{{ul.name}}</li>\n            <li class=\"item\" ng-click=\"openAddLocationModal()\">添加新地址</li>\n        </ul>\n        <div class=\"padding\">\n            <button class=\"button button-block button-positive\" ng-click=\"submitNew()\">\n                提交\n            </button>\n        </div>\n    </ion-content>\n</ion-modal-view>\n");
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("book-add.html","<ion-modal-view>\n    <ion-header-bar class=\"bar-positive fix-buttons\">\n        <a class=\"button button-icon icon ion-close-round\" ng-click=\"closeAddBookModal()\"></a>\n        <h1 class=\"title\">添加图书</h1>\n    </ion-header-bar>\n    <ion-content>\n        <label class=\"item item-img-add\">\n            <ul ng-show=\"prevImgList.length\" class=\"img-prev\">\n                <li class=\"prev-item\" ng-repeat=\"imgUrl in prevImgList\" >\n                    <img ng-src=\"{{imgUrl | addserverhost}}\" class=\"prev-img\">\n                </li>\n            </ul>\n            <ion-spinner ng-show=\"bookInfo.loading\"></ion-spinner>\n            <span class=\"img-add-block\" ng-show=\"!bookInfo.loading && prevImgList.length <= 3\">\n                <em class=\"icon ion-ios-plus-empty img-add-icon\"></em>\n                <div class=\"img-input-wrap\">\n                <form action={{addNewBookAction}} enctype=\"multipart/form-data\" class=\"img-add-input\">\n                    <input type=\"file\" accept=\"image/x-png, image/gif, image/jpeg\" class=\"img-add-input\" onchange=\"angular.element(this).scope().fileChange(this)\">\n                </form>\n                </div>\n            </span>\n        </label>\n        <label class=\"item item-input\">\n            <input type=\"text\" placeholder=\"书名\" name=\"name\" ng-model=\"bookInfo.bookName\" ng-change=\"getDoubanInfo()\">\n        </label>\n        <ul class=\"list\" ng-show=\"doubanSuggestShow\">\n            <li class=\"item\" ng-repeat=\"book in doubanSuggestBooks\" ng-click=\"doubanBookSelected($index)\">\n                <h2>{{book.title}}</h2>\n                <p>作者:{{book.author[0]}},价格:{{book.price}},<strong>评分:{{book.rating.average}}</strong></p>\n            </li>\n        </ul>\n        <label class=\"item item-input\">\n            <textarea name=\"\" rows=\"3\" placeholder=\"描述\" name=\"desc\" ng-model=\"bookInfo.bookDesc\"></textarea>\n        </label>\n        <label class=\"item\">\n            <span>豆瓣评分</span>\n            <span class=\"badge badge-energized\">{{bookInfo.doubanRating}}</span>\n        </label>\n        <div class=\"item\" ng-click=\"triggeLocationShow()\">\n            <span class=\"input-label\">地点:{{location.name}}</span>\n        </div>\n        <ul class=\"user-location list\" ng-show=\"showLocation\">\n            <li class=\"item\" ng-repeat=\"ul in usrLocations track by $index\" ng-click=\"selectSuggestLocation($index)\">{{ul.name}}</li>\n            <li class=\"item\" ng-click=\"openAddLocationModal()\">添加新地址</li>\n        </ul>\n        <div class=\"padding\">\n            <button class=\"button button-block button-positive\" ng-click=\"submitNew()\">\n                提交\n            </button>\n        </div>\n    </ion-content>\n</ion-modal-view>\n");
 $templateCache.put("book-detail.html","<ion-view view-title=\"{{book.name}}\" name=\"book-detail\" animation=\"slide-left-right\">\n    <ion-nav-buttons side=\"primary\">\n        <button ng-click=\"goBack()\" class=\"button back-button buttons button-clear header-item\">\n            <i class=\"icon ion-ios-arrow-back\"></i>\n        </button>\n    </ion-nav-buttons>\n    <ion-content>\n        <ion-slide-box>\n            <ion-slide ng-repeat=\"img in book.bookImgs\" does-continue=\"true\">\n                <div class=\"img-slider-wrap\" style=\"background:url({{img|addserverhost}}) no-repeat;background-size:cover;\" ng-click=\"showSlideModal($index)\">\n                    <div class=\"img-slider-mask\">\n                    </div>\n                </div>\n            </ion-slide>\n        </ion-slide-box>\n        <div class=\"book-info\">\n            <h3 class=\"title\">{{book.name}}</h3>\n            <div class=\"book-user-info\">\n                <img src=\"../img/user1.jpg\" alt=\"\" class=\"avatar\">\n                <div>{{user.name}}</div>\n            </div>\n            <div class=\"book-desc\">{{book.desc}}</div>\n            <div class=\"card douban-info\">\n                <div class=\"item item-text-wrap\" ng-click=\"summaryShow=!summaryShow\">\n                    <span>豆瓣评分：</span>\n                    <span class=\"badge badge-assertive rating\">{{book.doubanInfo.rating}}</span>\n                    <span class=\"ion accordion-icon\" ng-class=\"{\'ion-ios-arrow-up\':summaryShow,\'ion-ios-arrow-down\':!summaryShow}\"></span>\n                </div>\n                <p class=\"item item-text-wrap\" ng-show=\"summaryShow\">内容简介：{{book.doubanInfo.summary}}</p>\n            </div>\n            <div class=\"hr\">\n                <span>取物地址</span>   \n            </div>\n            <img ng-src=\"{{book.locationImg}}\" alt=\"\" class=\"book-location-img\" ng-click=\"showMapModal()\">\n        </div>\n    </ion-content>\n    <ion-footer-bar class=\"bar\" ng-show=\"curUser._id != user._id\">\n        <button class=\"button button-balanced button-large pull-right\" id=\"borrowBtn\" ng-click=\"borrow()\">我想借</button>\n    </ion-footer-bar>\n</ion-view>\n");
 $templateCache.put("chat-detail.html","<!--\n  This template loads for the \'tab.friend-detail\' state (app.js)\n  \'friend\' is a $scope variable created in the FriendsCtrl controller (controllers.js)\n  The FriendsCtrl pulls data from the Friends service (service.js)\n  The Friends service returns an array of friend data\n-->\n<ion-view view-title=\"{{chat.name}}\">\n  <ion-content class=\"padding\">\n    <img ng-src=\"{{chat.face}}\" style=\"width: 64px; height: 64px\">\n    <p>\n      {{chat.lastText}}\n    </p>\n  </ion-content>\n</ion-view>\n");
 $templateCache.put("location-add.html","<ion-modal-view>\n    <ion-header-bar class=\"bar-positive fix-buttons\">\n        <a class=\"button button-icon icon ion-close-round\" ng-click=\"closeAddLocationModal()\"></a>\n        <h1 class=\"title\">添加地址</h1>\n    </ion-header-bar>\n    <ion-content>\n        <label class=\"item item-input\">\n            <input type=\"text\" placeholder=\"输入地址\" name=\"name\" ng-model=\"location.name\" ng-change=\"inputChange()\">\n        </label>\n        <ul id=\"tipResult\" class=\"list\" ng-show=\"tipResult.length > 0\">\n            <li ng-repeat=\"tip in tipResult\" class=\"item\" ng-click=\"selectLocation(tip)\">{{tip.name}} <em class=\"item-note\">{{tip.district}}</em></li>\n        </ul>\n        <div id=\"mapContainer\" class=\"item\">\n            \n        </div>\n        <div class=\"padding\">\n            <button class=\"button button-block button-positive\" ng-click=\"submitLocation()\">\n                提交\n            </button>\n        </div>\n    </ion-content>\n</ion-modal-view>\n");
@@ -388,7 +805,7 @@ $templateCache.put("login.html","<ion-view view-title=\"登陆\" name=\"login-vi
 $templateCache.put("map-modal.html","<ion-modal-view>\n    <ion-header-bar class=\"bar-positive fix-buttons\">\n        <a class=\"button button-icon icon ion-close-round\" ng-click=\"closeMapModal()\"></a>\n        <h1 class=\"title\">地图</h1>\n    </ion-header-bar>\n    <ion-content>\n        \n        <div id=\"mapContainer\" class=\"item full-map\">\n            \n        </div>\n        \n    </ion-content>\n</ion-modal-view>\n");
 $templateCache.put("signin.html","<ion-view view-title=\"注册\" name=\"signin-view\">\n    <ion-content>\n        <div class=\"list\">\n            <label class=\"item item-input\">\n                <input type=\"text\" placeholder=\"用户名\" ng-model=\"data.name\">\n            </label>\n            <label class=\"item item-input\">\n                <input type=\"tel\" placeholder=\"手机号\" ng-model=\"data.phone\">\n            </label>\n            <label class=\"item item-input\">\n                <input type=\"password\" placeholder=\"密码\" ng-model=\"data.password\">\n            </label>\n            <label class=\"item item-input\">\n                <input type=\"password\" placeholder=\"再次输入您的密码\" ng-model=\"data.password2\">\n            </label>\n            <label class=\"item assertive\" ng-show=\"err\">\n              {{err}}\n            </label>\n        </div>\n        <div class=\"padding\">\n          <button class=\"button button-block button-calm padding\" ng-click=\"signin()\">登陆</button>\n        </div>\n    </ion-content>\n</ion-view>\n");
 $templateCache.put("slider-modal.html","<div class=\"modal image-modal transparent\" ng-click=\"closeSlideModal()\">\n    <ion-slide-box>\n        <ion-slide ng-repeat=\"oImage in book.bookImgs\">\n            <img ng-src=\"{{oImage|addserverhost}}\" class=\"fullscreen-image\" />\n        </ion-slide>\n    </ion-slide-box>\n</div>\n");
-$templateCache.put("tab-account.html","<ion-view view-title=\"我\">\n  <ion-content class=\"padding\">\n	<a href=\"#login\" class=\"button button-block button-calm\">登陆</a>\n	<a href=\"#signin\" class=\"button button-block button-balanced\">注册</a>\n  </ion-content>\n</ion-view>\n");
+$templateCache.put("tab-account.html","<ion-view view-title=\"我\">\n  <ion-content class=\"has-header\">\n	<a href=\"#login\" class=\"button button-block button-calm\">登陆</a>\n	<a href=\"#signin\" class=\"button button-block button-balanced\">注册</a>\n  </ion-content>\n</ion-view>\n");
 $templateCache.put("tab-booklist.html","<ion-view view-title=\"邻书\" align-title=\"center\">\n<!--     <ion-nav-buttons side=\"primary\">\n        <a class=\"button button-icon icon ion-map\"></a>\n    </ion-nav-buttons>\n -->    <ion-nav-buttons side=\"secondary\">\n        <a class=\"button button-icon icon ion-plus-round\" ng-click=\"openAddBookModal()\"></a>\n    </ion-nav-buttons>\n    <ion-content>\n        <div class=\"list card\" ng-repeat=\"book in booklist\">\n            <div class=\"item item-avatar\">\n                <img src=\"../img/user1.jpg\" alt=\"\">\n                <h2>{{book.name}}</h2>\n            </div>\n            <a class=\"item item-thumbnail-left\" ui-sref=\"bookdetail({id:book._id})\">\n                <img ng-src=\"{{book.bookImgs[0] | addserverhost}}\">\n                <h2>{{book.name}}</h2>\n                <p>{{book.desc}}</p>\n            </a>\n        </div>\n    </ion-content>\n</ion-view>\n");
-$templateCache.put("tab-messages.html","<ion-view view-title=\"Chats\">\n  <ion-content>\n    <div class=\"list\">\n\n    <a class=\"item item-avatar\" href=\"#\">\n      <img src=\"img/user1.jpg\">\n      <h2>Venkman</h2>\n      <p>Back off, man. I\'m a scientist.</p>\n    </a>\n\n</div>\n  </ion-content>\n</ion-view>\n");
+$templateCache.put("tab-messages.html","<ion-view view-title=\"我的消息\">\n    <ion-content class=\"has-header\">\n        <div class=\"list\">\n            <a class=\"item item-avatar\" href=\"#\">\n                <img src=\"img/user1.jpg\">\n                <h2>jianbo</h2>\n                <p>我的消息</p>\n            </a>\n        </div>\n    </ion-content>\n</ion-view>\n");
 $templateCache.put("tabs.html","<!--\nCreate tabs with an icon and label, using the tabs-positive style.\nEach tab\'s child <ion-nav-view> directive will have its own\nnavigation history that also transitions its views in and out.\n-->\n<ion-tabs class=\"tabs-icon-top tabs-color-active-positive\">\n    <!-- Booklist Tab -->\n    <ion-tab title=\"附近\" icon-off=\"ion-ios-bookmarks-outline\" icon-on=\"ion-ios-bookmarks\" href=\"#/tab/booklist\">\n        <ion-nav-view name=\"tab-booklist\"></ion-nav-view>\n    </ion-tab>\n    <!-- Collections Tab -->\n    <ion-tab title=\"精选\" icon-off=\"ion-ios-star-outline\" icon-on=\"ion-ios-star\" href=\"#/tab/collections\">\n        <ion-nav-view name=\"tab-collections\"></ion-nav-view>\n    </ion-tab>\n    <!-- Chats Tab -->\n    <ion-tab title=\"消息\" icon-off=\"ion-ios-chatboxes-outline\" icon-on=\"ion-ios-chatboxes\" href=\"#/tab/messages\">\n        <ion-nav-view name=\"tab-messages\"></ion-nav-view>\n    </ion-tab>\n    <!-- Account Tab -->\n    <ion-tab title=\"我\" icon-off=\"ion-ios-person-outline\" icon-on=\"ion-ios-person\" href=\"#/tab/account\">\n        <ion-nav-view name=\"tab-account\"></ion-nav-view>\n    </ion-tab>\n</ion-tabs>\n");}]);

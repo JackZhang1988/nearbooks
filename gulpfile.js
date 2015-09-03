@@ -16,7 +16,7 @@ var uglify = require('gulp-uglify');
 
 var paths = {
     sass: ['./scss/**/*.scss'],
-    templateCache: ['./www/templates/**/*.html'],
+    templatecache: ['./www/templates/*.html'],
     useref: ['./www/*.html'],
     src_js: './www/js/**/*.js',
     ng_annotate: ['./www/js/**/*.js'],
@@ -35,7 +35,7 @@ gulp.task('ng_annotate', function(done) {
         .on('end', done);
 });
 gulp.task('templatecache', function(done) {
-    gulp.src('./www/templates/**/*.html')
+    gulp.src(paths.templatecache)
         .pipe(templateCache({
             standalone: true
         }))
@@ -72,6 +72,7 @@ gulp.task('sass', function(done) {
 });
 
 gulp.task('watch', function() {
+    console.log('watch run');
     gulp.watch(paths.sass, ['sass']);
     gulp.watch(paths.templatecache, ['templatecache']);
     gulp.watch(paths.ng_annotate, ['ng_annotate']);
