@@ -164,7 +164,7 @@ angular.module('starter.controllers', [])
   }
 
 
-  $ionicModal.fromTemplateUrl('/templates/location-add.html',{
+  $ionicModal.fromTemplateUrl('/templates/modal-location-add.html',{
     scope:$scope,
     animation:'slide-in-up'
   }).then(function(modal){
@@ -337,7 +337,7 @@ angular.module('starter.controllers', [])
       }
     })
   }
-  $ionicModal.fromTemplateUrl('/templates/slider-modal.html',{
+  $ionicModal.fromTemplateUrl('/templates/modal-slider.html',{
     scope:$scope,
     animation:'slide-in-up'
   }).then(function(modal){
@@ -352,7 +352,7 @@ angular.module('starter.controllers', [])
     $scope.slideModal.hide();
   };
 
-  $ionicModal.fromTemplateUrl('/templates/map-modal.html',{
+  $ionicModal.fromTemplateUrl('/templates/modal-map.html',{
     scope:$scope,
     animation:'slide-in-up'
   }).then(function(modal){
