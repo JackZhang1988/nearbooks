@@ -102,6 +102,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 }
             }
         })
+        .state('chat',{
+            url:'/chat/:sender',
+            controller:'ChatCtrl',
+            templateUrl:'chat-detail.html'
+        })
 
     .state('tab.account', {
         url: '/account',

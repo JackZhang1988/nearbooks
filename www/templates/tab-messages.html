@@ -1,9 +1,9 @@
 <ion-view view-title="我的消息">
     <ion-content class="has-header">
         <div class="list">
-            <a class="item item-avatar" href="#" ng-repeat="msg in msgList">
+            <a class="item item-avatar" ui-sref="chat({sender:msg.sender.id})" ng-repeat="msg in msgList">
                 <img src="img/user1.jpg">
-                <h2>{{msg.sender}}</h2>
+                <h2>{{msg.sender.name}}</h2>
                 <p>{{msg.output}}</p>
                 <p>{{msg.date | date:'MM-dd HH:mm'}}</p>
             </a>

@@ -180,6 +180,24 @@ angular.module('starter.services', ['angular-jwt'])
                 }).then(function(res) {
                     return res.data;
                 })
+            },
+            getChatMsgs:function(data){
+                return $http({
+                    method:'GET',
+                    url: ApiEndpoint + '/chat/msg',
+                    params:data
+                }).then(function(res){
+                    return res.data;
+                })
+            },
+            sendChatMsg:function(data){
+                return $http({
+                    method:'POST',
+                    url: ApiEndpoint + '/chat/msg',
+                    data:data
+                }).then(function(res){
+                    return res.data;
+                })
             }
         }
     })
