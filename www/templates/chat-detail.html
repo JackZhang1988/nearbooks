@@ -1,4 +1,4 @@
-<ion-view  id="userMessagesView" cache-view="false" view-title="<i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{user.name}}</div>">
+<ion-view  id="userMessagesView" cache-view="false" view-title="<i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{toUser.name}}</div>">
     <div class="loader-center" ng-if="!doneLoading">
         <div class="loader">
             <i class="icon ion-loading-c"></i>
@@ -9,7 +9,7 @@
             <div ng-if="user._id !== message.sender">
                 <img class="profile-pic left" src="../img/user2.png"/>
                 <div class="chat-bubble left">
-                    <div class="message" ng-bind-html="message.content[0].info">
+                    <div class="message" ng-bind-html="message.content.info">
                     </div>
                     <!-- <div class="message-detail">
                         <span class="bold">{{user.name}}</span>,
@@ -20,7 +20,7 @@
             <div ng-if="user._id === message.sender">
                 <img class="profile-pic right" src="../img/user1.jpg"/>
                 <div class="chat-bubble right">
-                    <div class="message" ng-bind-html="message.content[0].info">
+                    <div class="message" ng-bind-html="message.content.info">
                     </div>
                     <!-- <div class="message-detail">
                         <span class="bold">{{user.name}}</span>,

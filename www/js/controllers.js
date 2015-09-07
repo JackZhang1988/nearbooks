@@ -440,11 +440,22 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ChatCtrl',function($scope,$stateParams,$ionicPopup, $ionicScrollDelegate, $timeout, Api,UserService){
+.controller('ChatCtrl',function($scope,$state, $stateParams,$ionicPopup, $ionicScrollDelegate, $timeout, Api,UserService,SocketService){
   if($stateParams.sender){
     $scope.user = UserService.getUser();
+    if($stateParams.sender == $scope.user._id){
+      $ionicPopup.alert({
+          title: '不能和自己聊天'
+      }).then(function() {
+          $state.go('tab.messages');
+      });
+      return;
+    }
+    $scope.toUser = {
+      _id:$stateParams.sender,
+      name:$stateParams.name
+    }
     var chatUsers = [$stateParams.sender,$scope.user._id].sort();
-    // $scope.toUser  = $stateParams.sender;
     
     var viewScroll = $ionicScrollDelegate.$getByHandle('userMessageScroll');
     var txtInput;
@@ -462,26 +473,33 @@ angular.module('starter.controllers', [])
       });
     }
 
+    SocketService.on('msg:chat',function(res){
+      $scope.messages.push({
+        sender:res.sender,
+        content:res.content
+      })
+    })
     $scope.sendMessage = function(){
       keepKeyboardOpen();
       $scope.messages.push({
-        chatUsers:chatUsers,
         sender:$scope.user._id,
-        content:[{
+        content:{
           contentType:'text',
           info:$scope.input.message
-        }]
+        }
       });
+
       Api.sendChatMsg({
         chatUsers:chatUsers,
         sender:$scope.user._id,
+        receiver:$scope.toUser._id,
         content:{
           contentType:'text',
           info:$scope.input.message
         }
       }).then(function(res){
         if(res.status == 0){
-          console.log('消息发送成功',res.chat.content[0].info);
+          console.log('消息发送成功',res.chat.content.info);
         }
       })
       $scope.input.message = '';
