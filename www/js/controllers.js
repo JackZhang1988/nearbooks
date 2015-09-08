@@ -408,34 +408,27 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
+.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, Api) {
   $scope.chat = Chats.get($stateParams.chatId);
 })
 
-.controller('MessagesCtrl', function($scope,SocketService,UserService){
-  $scope.msgList = {}; // todo: 合并相同用户的msg
+.controller('MessagesCtrl', function($scope,SocketService,Api,UserService){
+  $scope.msgList = []; // todo: 合并相同用户的msg
   var user = UserService.getUser();
-  function handleMsg(msg){
-    // todo: 优化时间格式，改为 xx天前 xx小时前
-    if(!msg) return null;
-    switch(msg.content.contentType){
-      case 'book':
-        msg.output = '我想借《'+msg.content.info.bookName+'》';
-        return msg;
-      case 'text':
-        msg.output = msg.content.info;
-        return msg;
-      default:
-        msg.output = msg.content.info;
-        return msg;
-    }
-  }
   if(user){
-    SocketService.on('init',function(msg){
-       $scope.msgList[msg.id] = handleMsg(msg);
-    })
+    // test socket
+    // SocketService.on('init',function(msg){
+    //    $scope.msgList[msg.id] = handleMsg(msg);
+    // })
     SocketService.on('msg:borrow',function(msg){
-       $scope.msgList[msg.id] = handleMsg(msg);
+       // $scope.msgList[msg.id] = handleMsg(msg);
+       $scope.msgList.push(msg);
+    });
+    Api.getToUserMsgs(user._id).then(function(res){
+      if(res.status == 0){
+        $scope.msgList = $scope.msgList.concat(res.chatList);
+        console.log($scope.msgList);
+      }
     })
   }
 })
@@ -478,6 +471,9 @@ angular.module('starter.controllers', [])
         sender:res.sender,
         content:res.content
       })
+      $timeout(function() {
+        viewScroll.scrollBottom();
+      }, 0);
     })
     $scope.sendMessage = function(){
       keepKeyboardOpen();

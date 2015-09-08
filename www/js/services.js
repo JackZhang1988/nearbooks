@@ -184,7 +184,7 @@ angular.module('starter.services', ['angular-jwt'])
             getChatMsgs:function(data){
                 return $http({
                     method:'GET',
-                    url: ApiEndpoint + '/chat/msg',
+                    url: ApiEndpoint + '/chat/msgBetweenUsers',
                     params:data
                 }).then(function(res){
                     return res.data;
@@ -193,10 +193,21 @@ angular.module('starter.services', ['angular-jwt'])
             sendChatMsg:function(data){
                 return $http({
                     method:'POST',
-                    url: ApiEndpoint + '/chat/msg',
+                    url: ApiEndpoint + '/chat/msgBetweenUsers',
                     data:data
                 }).then(function(res){
                     return res.data;
+                })
+            },
+            getToUserMsgs:function(userId){
+                return $http({
+                    method:'GET',
+                    url: ApiEndpoint + '/chat/msgToUser',
+                    params:{
+                        userId:userId
+                    }
+                }).then(function(res){
+                    return res.data
                 })
             }
         }
