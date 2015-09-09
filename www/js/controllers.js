@@ -401,17 +401,6 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('ChatsCtrl', function($scope, Chats) {
-  $scope.chats = Chats.all();
-  $scope.remove = function(chat) {
-    Chats.remove(chat);
-  }
-})
-
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats, Api) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-
 .controller('MessagesCtrl', function($scope,SocketService,Api,UserService){
   $scope.msgList = []; // todo: 合并相同用户的msg
   var user = UserService.getUser();
@@ -444,6 +433,7 @@ angular.module('starter.controllers', [])
       });
       return;
     }
+
     $scope.toUser = {
       _id:$stateParams.sender,
       name:$stateParams.name
@@ -475,6 +465,12 @@ angular.module('starter.controllers', [])
         viewScroll.scrollBottom();
       }, 0);
     })
+
+    SocketService.on('msg:borrow',function(msg){
+       // $scope.msgList[msg.id] = handleMsg(msg);
+       $scope.messages.push(msg);
+    });
+
     $scope.sendMessage = function(){
       keepKeyboardOpen();
       $scope.messages.push({
@@ -516,6 +512,9 @@ angular.module('starter.controllers', [])
       }).then(function(res){
         if(res.status == 0){
           $scope.messages = res.chatList;
+          $timeout(function() {
+            viewScroll.scrollBottom();
+          }, 0);
         }else{
           $ionicPopup.alert({
             title: '获取聊天信息失败'
@@ -545,4 +544,33 @@ angular.module('starter.controllers', [])
   $scope.settings = {
     enableFriends: true
   };
+})
+
+.controller('BorrowHistoryCtrl', function($scope,$stateParams,Api,UserService){
+  $scope.bHis = {};
+  $scope.curUser = UserService.getUser();
+  if(!$stateParams.id){
+    $state.go('/');
+  }else{
+    Api.getBorrowHistory($stateParams.id).then(function(res){
+      if(res.statue == 0){
+        $scope.bHis = res.bHis
+        switch($scope.bHis.status){
+          case 'ASK_BORROW':
+            $scope.bHis.statusStr = '申请借用';
+            break;
+          case 'REFUSE_BORROW':
+            if($scope.curUser._id == res.bHis.owner){
+              $scope.bHis.statusStr = '你取消了申请';
+            }else{
+              $scope.bHis.statusStr = '对方取消了申请';
+            }
+            break;
+          default:
+            $scope.bHis.statusStr = '';
+            break;
+        }
+      }
+    })
+  }
 })

@@ -9,8 +9,10 @@
             <div ng-if="user._id !== message.sender">
                 <img class="profile-pic left" src="../img/user2.png"/>
                 <div class="chat-bubble left">
-                    <div class="message" ng-bind-html="message.content.info">
-                    </div>
+                    <!-- <div class="message" ng-bind-html="message.content.info">
+                    </div> -->
+                    <chat-msg content="message.content">
+                    </chat-msg>
                     <!-- <div class="message-detail">
                         <span class="bold">{{user.name}}</span>,
                         <span></span>
@@ -20,8 +22,8 @@
             <div ng-if="user._id === message.sender">
                 <img class="profile-pic right" src="../img/user1.jpg"/>
                 <div class="chat-bubble right">
-                    <div class="message" ng-bind-html="message.content.info">
-                    </div>
+                    <chat-msg content="message.content">
+                    </chat-msg>
                     <!-- <div class="message-detail">
                         <span class="bold">{{user.name}}</span>,
                         <span></span>

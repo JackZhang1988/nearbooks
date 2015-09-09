@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'ngCordova', 'templates','appFilters','angular.filter'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filter', 'starter.directive','ngCordova', 'templates','angular.filter'])
 
 .constant('ApiEndpoint', '<%=serverhost%>/api')
 .constant('ImgUrl','<%=serverhost%>')
@@ -70,21 +70,27 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             templateUrl: 'login.html'
         })
 
-    .state('bookdetail', {
+        .state('bookdetail', {
             url: '/book/:id',
             templateUrl: 'book-detail.html',
             controller: 'BookDetailCtrl'
         })
+        
+        .state('borrowhistory',{
+            url:'/borrowhistory/:id',
+            templateUrl:'borrow-history.html',
+            controller:'BorrowHistoryCtrl'
+        })
+
         // setup an abstract state for the tabs directive
         .state('tab', {
             url: "/tab",
             abstract: true,
             templateUrl: "tabs.html"
         })
+        // Each tab has its own nav history stack:
 
-    // Each tab has its own nav history stack:
-
-    .state('tab.booklist', {
+        .state('tab.booklist', {
             url: '/booklist',
             views: {
                 'tab-booklist': {
@@ -108,18 +114,18 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             templateUrl:'chat-detail.html'
         })
 
-    .state('tab.account', {
-        url: '/account',
-        views: {
-            'tab-account': {
-                templateUrl: 'tab-account.html',
-                controller: 'AccountCtrl'
+        .state('tab.account', {
+            url: '/account',
+            views: {
+                'tab-account': {
+                    templateUrl: 'tab-account.html',
+                    controller: 'AccountCtrl'
+                }
+            },
+            data: {
+                requireLogin: true
             }
-        },
-        data: {
-            requireLogin: true
-        }
-    });
+        });
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/tab/booklist');

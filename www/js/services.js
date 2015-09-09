@@ -209,6 +209,17 @@ angular.module('starter.services', ['angular-jwt'])
                 }).then(function(res){
                     return res.data
                 })
+            },
+            getBorrowHistory:function(borrowId){
+                return $http({
+                    method:'GET',
+                    url: ApiEndpoint +'/book/borrowHistory',
+                    params:{
+                        id:borrowId
+                    }
+                }).then(function(res){
+                    return res.data
+                })
             }
         }
     })
