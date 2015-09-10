@@ -30,25 +30,33 @@ angular.module('starter.directive', [])
         }
     })
     .directive('borrowAction', function($compile){
-        function getActionTpl(status,curUser){
-            switch(status){
+        function getActionTpl(scope){
+            switch(scope.bHis.status){
                 case 'ASK_BORROW':
-                    // if(curUser == )
-                    return '<button class="button" ng-click="refuse()">拒绝</button><button class="button button-balanced" ng-click="agress()">同意</button>'
+                    if(scope.curUser._id == scope.bHis.owner){
+                        return '<button class="button" ng-click="refuseApply()">拒绝</button><button class="button button-balanced" ng-click="agressApply()">同意</button>'
+                    }else if(scope.curUser._id == bHis.borrower){
+                        return '<button class="button button-balanced" ng-click="cancelApply()">取消申请</button>'
+                    }
                 case 'REFUSE_BORROW':
                     return '';
                 case 'BORROWING':
-                    return '<button class="button button-calm">结束申请</button>'
+                    if(scope.curUser._id == scope.bHis.owner){
+                        return '<button class="button button-calm">取消申请</button>'
+                    }
+                default:
+                    return '';
             }
         }
         return {
-            restrict: 'EA',
-            scope:{
-                history:'=',
-                curUser:'='
-            },
+            restrict: 'A',
+            scope:true,
             transclude:true,
-            link: function(scope, element, attrs){
+            link: function($scope, element, attrs){
+                $scope.$watch('bHis',function(){
+                    element.html(getActionTpl($scope));
+                    $compile(element.contents())($scope);
+                })
             }
         }
     })

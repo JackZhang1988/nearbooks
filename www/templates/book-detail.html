@@ -35,6 +35,6 @@
         </div>
     </ion-content>
     <ion-footer-bar class="bar" ng-show="curUser._id != user._id">
-        <button class="button button-balanced button-large pull-right" id="borrowBtn" ng-click="borrow()">我想借</button>
+        <button class="button button-balanced button-large pull-right" id="borrowBtn" ng-click="borrow()" ng-disabled="book.status != 'CAN_BORROW'">{{bookActionStr}}</button>
     </ion-footer-bar>
 </ion-view>

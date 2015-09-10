@@ -220,6 +220,15 @@ angular.module('starter.services', ['angular-jwt'])
                 }).then(function(res){
                     return res.data
                 })
+            },
+            updateBorrowStatus:function(data){
+                return $http({
+                    method:'POST',
+                    url:ApiEndpoint+'/book/updateBorrowStatus',
+                    data:data
+                }).then(function(res){
+                    return res.data;
+                })
             }
         }
     })
