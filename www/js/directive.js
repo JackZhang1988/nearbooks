@@ -1,6 +1,6 @@
 angular.module('starter.directive', [])
     .directive('chatMsg', function($compile) {
-        var bookTpl = '<div class="book"><a ui-sref="borrowhistory({id:content.info.borrowId})">我想借《{{content.info.bookName}}》</a></div>';
+        var bookTpl = '<div class="book"><a nav-direction="forward" ui-sref="borrowhistory({id:content.info.borrowId})">我想借《{{content.info.bookName}}》</a></div>';
         var textTpl = '<div class="message" >{{content.info}}</div>';
 
         function getTemplate(contentType) {

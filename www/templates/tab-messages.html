@@ -1,10 +1,10 @@
 <ion-view view-title="我的消息">
     <ion-content class="has-header">
         <div class="list">
-            <a class="item item-avatar" ui-sref="chat({sender:msg[0].sender.id,name:msg[0].sender.name})" ng-repeat="msg in msgList | groupBy:'sender.name'">
+            <a class="item item-avatar" nav-direction="forward" ui-sref="chat({sender:msg[0].sender.id,name:msg[0].sender.name})" ng-repeat="msg in msgList | groupBy:'sender.name'">
                 <img src="img/user1.jpg">
                 <h2>{{msg[0].sender.name}}</h2>
-                <p>{{msg[0] | msgOutput}}</p>
+                <p>{{msg[0] | msgOutput | outputStatus}}</p>
                 <p>{{msg[0].date | date:'MM-dd HH:mm'}}</p>
             </a>
         </div>

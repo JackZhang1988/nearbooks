@@ -29,8 +29,8 @@ gulp.task('ng_annotate', function(done) {
             single_quotes: true
         }))
         .pipe(template({
-            // serverhost: 'http://172.16.28.80:3000'
-            serverhost: 'http://192.168.1.104:3000'
+            serverhost: 'http://172.16.28.80:3000'
+            // serverhost: 'http://192.168.1.101:3000'
         }))
         .pipe(gulp.dest(paths.dest_js))
         .on('end', done);

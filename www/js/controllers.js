@@ -257,6 +257,7 @@ angular.module('starter.controllers', [])
           if(res.status == 0){
             $window.localStorage.token = res.token;
             $window.localStorage.user = JSON.stringify(res.user);
+            $window.location.reload(true);//re-bootstrap everything
             $state.go('tab.account');
           }else{
             var alertPopup = $ionicPopup.alert({

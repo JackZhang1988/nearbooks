@@ -1,4 +1,4 @@
-<ion-view  id="userMessagesView" cache-view="false" view-title="<i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{toUser.name}}</div>">
+<ion-view id="userMessagesView" cache-view="false" view-title="<i class='icon ion-chatbubble user-messages-top-icon'></i> <div class='msg-header-username'>{{toUser.name}}</div>">
     <div class="loader-center" ng-if="!doneLoading">
         <div class="loader">
             <i class="icon ion-loading-c"></i>
@@ -6,8 +6,8 @@
     </div>
     <ion-content has-bouncing="true" class="has-header has-footer" delegate-handle="userMessageScroll">
         <div ng-repeat="message in messages" class="message-wrapper">
-            <div ng-if="user._id !== message.sender">
-                <img class="profile-pic left" src="../img/user2.png"/>
+            <div ng-if="message.content.contentType != 'borrow_history' && user._id !== message.sender">
+                <img class="profile-pic left" src="../img/user2.png" />
                 <div class="chat-bubble left">
                     <!-- <div class="message" ng-bind-html="message.content.info">
                     </div> -->
@@ -19,8 +19,8 @@
                     </div> -->
                 </div>
             </div>
-            <div ng-if="user._id === message.sender">
-                <img class="profile-pic right" src="../img/user1.jpg"/>
+            <div ng-if="message.content.contentType != 'borrow_history' && user._id === message.sender">
+                <img class="profile-pic right" src="../img/user1.jpg" />
                 <div class="chat-bubble right">
                     <chat-msg content="message.content">
                     </chat-msg>
@@ -29,6 +29,9 @@
                         <span></span>
                     </div> -->
                 </div>
+            </div>
+            <div ng-if="message.content.contentType == 'borrow_history'">
+                <p class="borrow-history">{{message | outputStatus:user }}</p>
             </div>
             <div class="cf"></div>
         </div>
