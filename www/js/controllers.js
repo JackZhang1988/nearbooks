@@ -297,7 +297,7 @@ angular.module('starter.controllers', [])
           if(res.status == 0){
             $window.localStorage.token = res.token;
             $window.localStorage.user = JSON.stringify(res.user);
-            $state.go('signinuserinfo');
+            $state.go('userinfo',{action:'sigin'});
             // var alertPopup = $ionicPopup.alert({
             //     title: '注册成功!'
             // });
@@ -313,11 +313,17 @@ angular.module('starter.controllers', [])
       };
     }
 })
-.controller('SigninUserInfoCtrl',function($scope,$state, UserService,ApiEndpoint){
+.controller('UserInfoCtrl',function($scope,$state, $stateParams, UserService,ApiEndpoint){
   $scope.userInfo ={};
   $scope.curUser = UserService.getUser();
   $scope.signature = '';
   $scope.addUserImgAction = ApiEndpoint+'/user/userAvatar';
+  if($stateParams.action =='update'){
+    UserService.getUserInfo($scope.curUser._id).then(function(res){
+      $scope.userInfo=res.user;
+      $scope.avatarUrl = res.user.avatar;
+    })
+  }
   $scope.fileChange = function(element){
     var imgFile = element.files[0];
     $scope.loading = true;
@@ -333,7 +339,7 @@ angular.module('starter.controllers', [])
       $scope.loading= false;
     })
   }
-  $scope.signinUserInfo = function(){
+  $scope.updateUserInfo = function(){
     UserService.updateUserInfo({
       userId:$scope.curUser._id,
       sex:$scope.userInfo.sex,
@@ -578,10 +584,25 @@ angular.module('starter.controllers', [])
   }
 })
 
-.controller('AccountCtrl', function($scope) {
-  $scope.settings = {
-    enableFriends: true
-  };
+.controller('AccountCtrl', function($scope, $state, UserService, Api) {
+  $scope.userInfo={};
+  $scope.curUser = UserService.getUser();
+  if($scope.curUser && $scope.curUser._id){
+    UserService.getUserInfo($scope.curUser._id).then(function(res){
+      if(res.status == 0){
+        console.log(res.user);
+        $scope.userInfo = res.user;
+      }
+    })
+    Api.getUserBooks($scope.curUser._id).then(function(res){
+      if(res.status == 0){
+        console.log(res.books);
+        $scope.userBooks = res.books;
+      }
+    })
+  }else{
+    $state.go('login');
+  }
 })
 
 .controller('BorrowHistoryCtrl', function($scope,$stateParams,$ionicPopup,Api,UserService){

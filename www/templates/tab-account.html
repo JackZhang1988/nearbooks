@@ -4,14 +4,32 @@
     </ion-nav-buttons>
     <ion-content class="has-header">
         <!-- <a href="#login" class="button button-block button-calm">登陆</a>
-	<a href="#signin" class="button button-block button-balanced">注册</a> -->
+    <a href="#signin" class="button button-block button-balanced">注册</a> -->
         <div class="profile">
             <div class="base-info">
-                <div class="avatar"></div>
-                <div class="user-name"></div>
+                <a class="avatar" ng-if="userInfo.avatar" ui-sref="userinfo({action:'update'})" nav-direction="forward">
+                    <!--                     <div ng-if="userInfo.sex != ''">
+                        <span ng-class="userInfo.sex==1 ? ion-male : ion-female"></span>
+                    </div> -->
+                    <img ng-src="{{userInfo.avatar | addserverhost}}" alt="" class="avatar-img" >
+                </a>
+                <a ng-if="!userInfo.avatar" class="avatar" ui-sref="userinfo({action:'update'})" nav-direction="forward">
+                    <span class="avatar-img icon icon ion-ios-person-outline"></span>
+                </a>
+                <h4 class="user-name">{{userInfo.name}}</h4>
+                <div class="signature">{{userInfo.signature}}</div>
             </div>
             <div class="book-info"></div>
         </div>
-        <div class="user-books"></div>
+        <div class="hr">
+            <span>我的书籍</span>
+        </div>
+        <div class="list" ng-repeat="book in userBooks">
+            <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})">
+                <img ng-src="{{book.bookImgs[0] | addserverhost}}">
+                <h2>{{book.name}}</h2>
+                <p>{{book.desc}}</p>
+            </a>
+        </div>
     </ion-content>
 </ion-view>

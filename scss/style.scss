@@ -73,12 +73,32 @@ img {
         position: absolute;
         top: 0;
         left: 0;
-        z-index: 11;
+        z-index: 9;
+        background-color: white;
     }
     .img-add-block {
         border-radius: 50%;
-        border:1px solid $img-add-border-color;
+        border: 1px solid $img-add-border-color;
         float: none;
+    }
+}
+
+.profile {
+    padding: 10px 30px;
+    text-align: center;
+    .avatar {
+        text-align: center;
+        .avatar-img {
+            width: $img-add-size;
+            height: $img-add-size;
+            border-radius: 50%;
+            border: 1px solid $img-add-border-color;
+            display: block;
+            margin: 0 auto;
+            font-size: 60px;
+            color: #ccc;
+            line-height: 60px;
+        }
     }
 }
 

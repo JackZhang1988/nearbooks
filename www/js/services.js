@@ -153,6 +153,17 @@ angular.module('starter.services', ['angular-jwt'])
                     return res.data;
                 })
             },
+            getUserBooks: function(userId) {
+                return $http({
+                    method: 'GET',
+                    url: ApiEndpoint + '/book/user',
+                    params: {
+                        userId:userId
+                    }
+                }).then(function(res) {
+                    return res.data;
+                })
+            },
             getBookById: function(id) {
                 return $http({
                     method: 'GET',
@@ -314,6 +325,17 @@ angular.module('starter.services', ['angular-jwt'])
                     method:'POST',
                     url: ApiEndpoint+'/user/userinfo',
                     data:data
+                }).then(function(res){
+                    return res.data;
+                })
+            },
+            getUserInfo:function(userId){
+                return $http({
+                    method:'GET',
+                    url:ApiEndpoint+'/user',
+                    params:{
+                        userId:userId
+                    }
                 }).then(function(res){
                     return res.data;
                 })

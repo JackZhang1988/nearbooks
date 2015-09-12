@@ -9522,11 +9522,28 @@ img {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 11; }
+    z-index: 9;
+    background-color: white; }
   .user-avatar-add .img-add-block {
     border-radius: 50%;
     border: 1px solid #ccc;
     float: none; }
+
+.profile {
+  padding: 10px 30px;
+  text-align: center; }
+  .profile .avatar {
+    text-align: center; }
+    .profile .avatar .avatar-img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 1px solid #ccc;
+      display: block;
+      margin: 0 auto;
+      font-size: 60px;
+      color: #ccc;
+      line-height: 60px; }
 
 #mapContainer {
   width: 100%;
