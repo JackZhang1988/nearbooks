@@ -1,0 +1,36 @@
+<ion-view view-title="注册用户信息" name="signin-userinfo-view">
+    <ion-content>
+        <div class="user-avatar-add">
+            <label class="item-img-add">
+                <span class="img-add-block">
+                    <ion-spinner ng-show="loading"></ion-spinner>
+                    <img ng-src="{{avatarUrl | addserverhost}}" class="prev-img user-avatar-img" ng-show="avatarUrl">
+                    <em class="icon ion-ios-person-outline img-add-icon"></em>
+                        <div class="img-input-wrap">
+                        <form action={{addUserImgAction}} enctype="multipart/form-data" class="img-add-input">
+                            <input type="file" accept="image/x-png, image/gif, image/jpeg" class="img-add-input" onchange="angular.element(this).scope().fileChange(this)">
+                        </form>
+                    </div>
+                </span>
+            </label>
+        </div>
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    性别
+                </div>
+                <select ng-model="userInfo.sex" name="sexSelect">
+                    <option value="1">男</option>
+                    <option value="0">女</option>
+                </select>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">个人签名</span>
+                <textarea type="text" ng-model="userInfo.signature"></textarea>
+            </label>
+        </div>
+        <div class="padding">
+            <button class="button button-block button-calm" ng-disabled="" ng-click="signinUserInfo()">完成注册</button>
+        </div>
+    </ion-content>
+</ion-view>

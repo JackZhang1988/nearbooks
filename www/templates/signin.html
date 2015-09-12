@@ -4,9 +4,9 @@
             <label class="item item-input">
                 <input type="text" placeholder="用户名" ng-model="data.name">
             </label>
-            <label class="item item-input">
+<!--             <label class="item item-input">
                 <input type="tel" placeholder="手机号" ng-model="data.phone">
-            </label>
+            </label> -->
             <label class="item item-input">
                 <input type="password" placeholder="密码" ng-model="data.password">
             </label>
@@ -18,7 +18,7 @@
             </label>
         </div>
         <div class="padding">
-          <button class="button button-block button-calm padding" ng-click="signin()">登陆</button>
+          <button class="button button-block button-calm" ng-disabled="!data.name || err" ng-click="signin()">注册</button>
         </div>
     </ion-content>
 </ion-view>

@@ -9413,11 +9413,8 @@ img.profile-pic.right {
   position: relative;
   top: -3px; }
 
-input,
-textarea,
-.item-input,
-.item-input-wrapper {
-  background-color: #f4f4f4 !important; }
+.chat-textarea {
+  background-color: #f4f4f4; }
 
 .bold {
   font-weight: bold; }
@@ -9514,6 +9511,22 @@ img {
 .item-img-add .spinner svg {
   width: 70px;
   height: 70px; }
+
+.user-avatar-add {
+  text-align: center;
+  margin: 10px 0; }
+  .user-avatar-add .user-avatar-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 11; }
+  .user-avatar-add .img-add-block {
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    float: none; }
 
 #mapContainer {
   width: 100%;

@@ -269,7 +269,7 @@ angular.module('starter.controllers', [])
     }
 
 })
-.controller('SigninCtrl', function($scope,UserService,$ionicPopup,$state){
+.controller('SigninCtrl', function($scope,UserService,$ionicPopup,$state,$window){
     $scope.data={};
     $scope.err='';
     $scope.$watch('data',function(newValue, oldValue){
@@ -278,8 +278,6 @@ angular.module('starter.controllers', [])
       }
       if(!$scope.data.name){
         $scope.err = '用户名不能为空';
-      }else if(!$scope.data.phone){
-        $scope.err = '手机号不能为空';
       }else if(!$scope.data.password){
         $scope.err = '密码不能为空';
       }else if($scope.data.password != $scope.data.password2){
@@ -297,13 +295,14 @@ angular.module('starter.controllers', [])
           password:$scope.data.password
         }).then(function(res){
           if(res.status == 0){
-            var alertPopup = $ionicPopup.alert({
-                title: '注册成功!',
-                template: '现在就去登陆吧'
-            });
-            alertPopup.then(function(){
-              $state.go('login',{phone:$scope.data.phone});
-            })
+            $window.localStorage.token = res.token;
+            $window.localStorage.user = JSON.stringify(res.user);
+            $state.go('signinuserinfo');
+            // var alertPopup = $ionicPopup.alert({
+            //     title: '注册成功!'
+            // });
+            // alertPopup.then(function(){
+            // })
           }else{
             $ionicPopup.alert({
                 title: '注册失败!',
@@ -313,6 +312,39 @@ angular.module('starter.controllers', [])
         })       
       };
     }
+})
+.controller('SigninUserInfoCtrl',function($scope,$state, UserService,ApiEndpoint){
+  $scope.userInfo ={};
+  $scope.curUser = UserService.getUser();
+  $scope.signature = '';
+  $scope.addUserImgAction = ApiEndpoint+'/user/userAvatar';
+  $scope.fileChange = function(element){
+    var imgFile = element.files[0];
+    $scope.loading = true;
+    var fd = new FormData();
+    fd.append('file',element.files[0]);
+    UserService.addUserAvatar(fd).success(function(res){
+      console.log(res);
+      if(res.status == 0){
+        $scope.loading=false;
+        $scope.avatarUrl = res.data.url;
+      }
+    }).error(function(err){
+      $scope.loading= false;
+    })
+  }
+  $scope.signinUserInfo = function(){
+    UserService.updateUserInfo({
+      userId:$scope.curUser._id,
+      sex:$scope.userInfo.sex,
+      signature:$scope.userInfo.signature,
+      avatarUrl:$scope.avatarUrl
+    }).then(function(res){
+      if(res.status == 0){
+        $state.go('tab.booklist');
+      }
+    })
+  }
 })
 .controller('BookDetailCtrl',function($scope,$state,$stateParams,$ionicPopup,$ionicSlideBoxDelegate,$ionicModal,Api,Map,UserService){
 	$scope.book = {};

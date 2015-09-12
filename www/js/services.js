@@ -287,6 +287,37 @@ angular.module('starter.services', ['angular-jwt'])
                     return res.data;
                 })
             },
+            isSigned:function(name){
+                return $http({
+                    method:'GET',
+                    url:ApiEndpoint+'/user/isSigned',
+                    params:{
+                        name:name
+                    }
+                }).then(function(res){
+                    return res.data;
+                })
+            },
+            addUserAvatar: function(imgData) {
+                return $http({
+                    method: 'POST',
+                    url: ApiEndpoint + '/user/userAvatar',
+                    data: imgData,
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    transformRequest: angular.identity
+                });
+            },
+            updateUserInfo:function(data){
+                return $http({
+                    method:'POST',
+                    url: ApiEndpoint+'/user/userinfo',
+                    data:data
+                }).then(function(res){
+                    return res.data;
+                })
+            },
             isLogin: function() {
                 var token = $window.localStorage.token;
                 return token ? (jwtHelper.isTokenExpired(token) ? false : true) : false;

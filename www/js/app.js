@@ -64,6 +64,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             controller: 'SigninCtrl',
             templateUrl: 'signin.html'
         })
+        .state('signinuserinfo',{
+            url:'/signinuserinfo',
+            controller:'SigninUserInfoCtrl',
+            templateUrl:'signin-userinfo.html'
+        })
         .state('login', {
             url: '/login',
             controller: 'LoginCtrl',
