@@ -55,10 +55,19 @@ angular.module('starter.controllers', [])
 
   $ionicModal.fromTemplateUrl('/templates/book-add.html',{
     scope:$scope,
-    animation:'slide-in-up'
+    animation:'slide-in-up',
+    focusFirstInput:true
   }).then(function(modal){
     $scope.addBookModal = modal;
   });
+  
+  $scope.showAddActionList = false;
+  $scope.toggleAddActionList = function($event){
+    //打开添加图书、添加行程列表
+    if($event.currentTarget.className.indexOf('item') == -1){
+      $scope.showAddActionList = !$scope.showAddActionList;
+    }
+  }
 
   $scope.getDoubanInfo = function(){
     Api.getDoubanInfo($scope.bookInfo.bookName).then(function(res){
@@ -100,6 +109,16 @@ angular.module('starter.controllers', [])
       $scope.bookInfo={};
       $scope.addBookModal.show();
       $scope.user = UserService.getUser();
+    }else{
+      UserService.doLogin();
+    }
+  }
+  $scope.openAddScheduleModal = function(){
+    if(UserService.isLogin()){
+      // $scope.prevImgList = [];
+      // $scope.bookInfo={};
+      // $scope.addBookModal.show();
+      // $scope.user = UserService.getUser();
     }else{
       UserService.doLogin();
     }
@@ -602,6 +621,12 @@ angular.module('starter.controllers', [])
     })
   }else{
     $state.go('login');
+  }
+})
+
+.controller('ConfigCtrl',function($scope,UserService){
+  $scope.logout = function(){
+    UserService.logout();
   }
 })
 

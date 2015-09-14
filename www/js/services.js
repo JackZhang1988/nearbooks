@@ -344,9 +344,10 @@ angular.module('starter.services', ['angular-jwt'])
                 var token = $window.localStorage.token;
                 return token ? (jwtHelper.isTokenExpired(token) ? false : true) : false;
             },
-            loginOut: function() {
+            logout: function() {
                 $window.localStorage.token = null;
                 $window.localStorage.user = null;
+                $state.go('login');
             },
             doLogin: function() {
                 $state.go('login');

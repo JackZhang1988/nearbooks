@@ -74,7 +74,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             controller: 'LoginCtrl',
             templateUrl: 'login.html'
         })
-
+        .state('config',{
+            url:'/config',
+            controller:'ConfigCtrl',
+            templateUrl:'config.html'
+        })
         .state('bookdetail', {
             url: '/book/:id',
             templateUrl: 'book-detail.html',

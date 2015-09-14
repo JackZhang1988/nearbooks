@@ -172,3 +172,20 @@ img {
         background-color: white;
     }
 }
+
+.action-select-wrapper {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    background-color: transparent;
+    z-index: 10;
+    .add-action-list {
+        position: relative;
+        width: 50%;
+        right: 5px;
+        float: right;
+    }
+}
+
