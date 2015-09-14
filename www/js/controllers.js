@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
   var lnglat = {};
   $ionicPlatform.ready(function() {
       var posOptions = {
-          timeout: 5000,
+          timeout: 3000,
           enableHighAccuracy: false
       };
       $cordovaGeolocation
@@ -50,7 +50,9 @@ angular.module('starter.controllers', [])
   // 用户当前选择的地理信息
   $scope.selectedLocation = $scope.usrLocations[0];
   if($scope.usrLocations.length){
-   $scope.location.name = $scope.usrLocations[0].name; 
+   $scope.location.name = $scope.usrLocations[0].name;
+   $scope.selectedLocation = $scope.usrLocations[0];
+   // $scope.schdule.locationName = $scope.usrLocations[0].name; 
   }
 
   $ionicModal.fromTemplateUrl('/templates/book-add.html',{
@@ -113,16 +115,7 @@ angular.module('starter.controllers', [])
       UserService.doLogin();
     }
   }
-  $scope.openAddScheduleModal = function(){
-    if(UserService.isLogin()){
-      // $scope.prevImgList = [];
-      // $scope.bookInfo={};
-      // $scope.addBookModal.show();
-      // $scope.user = UserService.getUser();
-    }else{
-      UserService.doLogin();
-    }
-  }
+
   $scope.closeAddBookModal = function(){
     $scope.addBookModal.hide();
   }
@@ -263,6 +256,73 @@ angular.module('starter.controllers', [])
   $scope.selectSuggestLocation = function(index){
     $scope.location = $scope.usrLocations[index];
     $scope.showLocation = false;
+  }
+
+  // Add Schdule
+  $ionicModal.fromTemplateUrl('/templates/schdule-add.html',{
+    scope:$scope,
+    animation:'slide-in-up',
+    focusFirstInput:true
+  }).then(function(modal){
+    $scope.addSchduleModal = modal;
+  });
+
+  $scope.schdule = {};
+
+  $scope.openAddSchduleModal = function(){
+    if(UserService.isLogin()){
+      $scope.schdule={};
+      $scope.user = UserService.getUser();
+      $scope.addSchduleModal.show();
+    }else{
+      UserService.doLogin();
+    }
+  }
+  $scope.closeAddSchduleModal = function(){
+    $scope.addSchduleModal.hide();
+  }
+  var validateSchdule = function(){
+    if(!$scope.schdule.desc){
+      return '请输入行程描述';
+    }else if(!$scope.schdule.starttime){
+      return '请输入开始时间';
+    }else if($scope.schdule.starttime < new Date()){
+      return '开始时间已经过去了';
+    }else if(!$scope.schdule.endtime){
+      return '请输入结束时间';
+    }else if($scope.schdule.starttime >= $scope.schdule.endtime){
+      return '开始时间不能大于结束时间';
+    }else if(!$scope.selectedLocation.lnglat){
+      return '请选择行程地理位置';
+    }else {
+      return false;
+    }
+  }
+  $scope.addSchdule = function(){
+    console.log($scope.schdule);
+    var validateResut = validateSchdule();
+    if(!validateResut){
+      UserService.addSchdule({
+        userId:$scope.user._id,
+        desc:$scope.schdule.desc,
+        starttime:$scope.schdule.starttime,
+        endtime:$scope.schdule.endtime,
+        lnglat:$scope.selectedLocation.lnglat
+      }).then(function(res){
+        if(res.status == 0){
+          var addSchduleAlert = $ionicPopup.alert({title:'添加行程成功'});
+          addSchduleAlert.then(function(){
+            $scope.addSchduleModal.hide();
+          });
+          $timeout(function(){
+            addSchduleAlert.close();
+            $scope.addSchduleModal.hide();
+          },3000);
+        }
+      })
+    }else{
+      $ionicPopup.alert({title:validateResut});
+    }
   }
 }) 
 .controller('LoginCtrl', function($scope,UserService,$ionicPopup,$state,$window) {

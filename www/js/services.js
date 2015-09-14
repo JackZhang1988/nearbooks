@@ -354,6 +354,15 @@ angular.module('starter.services', ['angular-jwt'])
             },
             getUser: function() {
                 return JSON.parse($window.localStorage.user);
+            },
+            addSchdule:function(data){
+                return $http({
+                    method:'POST',
+                    url:ApiEndpoint+'/user/addSchdule',
+                    data:data
+                }).then(function(res){
+                    return res.data;
+                })
             }
         }
     })
