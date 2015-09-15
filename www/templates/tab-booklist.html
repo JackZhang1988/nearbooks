@@ -9,26 +9,30 @@
     <div class="action-select-wrapper" ng-show="showAddActionList" ng-click="toggleAddActionList($event)">
         <div class="list add-action-list has-header">
             <a class="item item-icon-left" ng-click="openAddBookModal()">
-                <i class="icon ion-ios-book"></i>
-                添加图书
+                <i class="icon ion-ios-book"></i> 添加图书
             </a>
             <a class="item item-icon-left" ng-click="openAddScheduleModal()">
-                <i class="icon ion-ios-calendar"></i>
-                添加行程
+                <i class="icon ion-ios-calendar"></i> 添加行程
             </a>
         </div>
     </div>
     <ion-content>
         <div class="list card" ng-repeat="book in booklist">
-            <div class="item item-avatar">
-                <img src="../img/user1.jpg" alt="">
-                <h2>{{book.name}}</h2>
-            </div>
-            <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})">
+            <a class="item item-avatar">
+                <img ng-src="{{book._user.avatar | addserverhost}}" alt="">
+                <h2>{{book._user.name}}</h2>
+            </a>
+            <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})" ng-if="book.addDate">
                 <img ng-src="{{book.bookImgs[0] | addserverhost}}">
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
             </a>
+            <div ng-if="book.starttime" class="item">
+                <strong>#行程#</strong>
+                <span>{{book.starttime}}</span>
+                <span>我会在xxx</span>
+                <p>快来和我交换图书吧</p>
+            </div>
         </div>
     </ion-content>
 </ion-view>
