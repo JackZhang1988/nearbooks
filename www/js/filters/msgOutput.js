@@ -1,4 +1,4 @@
-angular.module('starter.filter', [])
+angular.module('starter.filter')
     .filter('msgOutput', function() {
         return function(msg) {
             // todo: 优化时间格式，改为 xx天前 xx小时前

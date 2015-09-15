@@ -1,4 +1,4 @@
-angular.module('starter.filter', [])
+angular.module('starter.filter')
     .filter('outputStatus', function(UserService) {
         return function(msg) {
             if (msg.content && msg.content.contentType == 'borrow_history') {

@@ -140,3 +140,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     $urlRouterProvider.otherwise('/tab/booklist');
 
 }]);
+angular.module('starter.controllers', []);
+angular.module('starter.directive', []);
+angular.module('starter.filter', []);
+angular.module('starter.services', ['angular-jwt']);

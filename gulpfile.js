@@ -85,7 +85,7 @@ gulp.task('useref', function(done) {
         .on('end', done);
 });
 
-gulp.task('default', ['sass', 'templatecache', 'ng_annotate', 'useref']);
+gulp.task('default', ['sass', 'templatecache', 'scripts', 'useref']);
 
 gulp.task('sass', function(done) {
     gulp.src('./scss/ionic.app.scss')
@@ -107,7 +107,7 @@ gulp.task('watch', function() {
     console.log('watch run');
     gulp.watch(paths.sass, ['sass']);
     gulp.watch(paths.templatecache, ['templatecache']);
-    gulp.watch(paths.ng_annotate, ['ng_annotate']);
+    gulp.watch(paths.ng_annotate, ['scripts']);
     gulp.watch(paths.useref, ['useref']);
 });
 

@@ -1,4 +1,4 @@
-angular.module('starter.directive', [])
+angular.module('starter.directive')
     .directive('borrowAction', function($compile) {
         function getActionTpl(scope) {
             switch (scope.bHis.status) {

@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('MessagesCtrl', function($scope, SocketService, Api, UserService) {
         $scope.msgList = []; // todo: 合并相同用户的msg
         var user = UserService.getUser();

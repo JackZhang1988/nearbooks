@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('AccountCtrl', function($scope, $state, UserService, Api) {
         $scope.userInfo = {};
         $scope.curUser = UserService.getUser();

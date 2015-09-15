@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('BorrowHistoryCtrl', function($scope, $stateParams, $ionicPopup, Api, UserService) {
         $scope.bHis = {};
         $scope.curUser = UserService.getUser();

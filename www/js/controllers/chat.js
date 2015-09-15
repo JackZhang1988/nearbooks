@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('ChatCtrl', function($scope, $state, $stateParams, $ionicPopup, $ionicScrollDelegate, $timeout, Api, UserService, SocketService) {
         if ($stateParams.sender) {
             $scope.user = UserService.getUser();

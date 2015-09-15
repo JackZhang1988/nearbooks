@@ -1,4 +1,4 @@
-angular.module('starter.services', ['angular-jwt'])
+angular.module('starter.services')
     .service('UserService', function($http, ApiEndpoint, $window, $state, jwtHelper) {
         return {
             loginUser: function(data) {

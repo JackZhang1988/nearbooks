@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('SigninCtrl', function($scope, UserService, $ionicPopup, $state, $window) {
         $scope.data = {};
         $scope.err = '';

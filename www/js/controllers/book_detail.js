@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('BookDetailCtrl', function($scope, $state, $stateParams, $ionicPopup, $ionicSlideBoxDelegate, $ionicModal, Api, Map, UserService) {
         $scope.book = {};
         $scope.curUser = UserService.getUser();

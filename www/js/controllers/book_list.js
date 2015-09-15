@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers')
     .controller('BookListCtrl', function($scope, $state, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $cordovaGeolocation, $ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map, UserService) {
 
         var lnglat = {};
