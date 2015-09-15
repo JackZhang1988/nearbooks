@@ -84,6 +84,17 @@ angular.module('starter.services')
                 }).then(function(res) {
                     return res.data;
                 })
+            },
+            getSchedule:function(scheduleId){
+                return $http({
+                    method:'GET',
+                    url:ApiEndpoint+'/user/schedule',
+                    params:{
+                        scheduleId:scheduleId
+                    }
+                }).then(function(res){
+                    return res.data;
+                })
             }
         }
     })

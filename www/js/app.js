@@ -5,10 +5,10 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filter', 'starter.directive','ngCordova', 'templates','angular.filter'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filter', 'starter.directive', 'ngCordova', 'templates', 'angular.filter'])
 
 .constant('ApiEndpoint', 'http://172.16.28.80:3000/api')
-.constant('ImgUrl','http://172.16.28.80:3000')
+    .constant('ImgUrl', 'http://172.16.28.80:3000')
 
 .run(['$ionicPlatform', function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -59,43 +59,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     // Set up the various states which the app can be in.
     // Each state's controller can be found in controllers.js
     $stateProvider
-        .state('signin', {
-            url: '/signin',
-            controller: 'SigninCtrl',
-            templateUrl: 'signin.html'
-        })
-        .state('userinfo',{
-            url:'/userinfo/:action',
-            controller:'UserInfoCtrl',
-            templateUrl:'userinfo.html'
-        })
-        .state('login', {
-            url: '/login',
-            controller: 'LoginCtrl',
-            templateUrl: 'login.html'
-        })
-        .state('config',{
-            url:'/config',
-            controller:'ConfigCtrl',
-            templateUrl:'config.html'
-        })
-        .state('bookdetail', {
-            url: '/book/:id',
-            templateUrl: 'book-detail.html',
-            controller: 'BookDetailCtrl'
-        })
-        
-        .state('borrowhistory',{
-            url:'/borrowhistory/:id',
-            templateUrl:'borrow-history.html',
-            controller:'BorrowHistoryCtrl'
-        })
-        .state('useraccount',{
-            url:'/useraccount/:id',
-            templateUrl:'tab-account.html',
-            controller:'AccountCtrl'
-        })
-        // setup an abstract state for the tabs directive
+    // setup an abstract state for the tabs directive
         .state('tab', {
             url: "/tab",
             abstract: true,
@@ -129,10 +93,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                 }
             }
         })
-        .state('chat',{
-            url:'/chat/:sender/:name',
-            controller:'ChatCtrl',
-            templateUrl:'chat-detail.html'
+        .state('chat', {
+            url: '/chat/:sender/:name',
+            controller: 'ChatCtrl',
+            templateUrl: 'chat-detail.html'
         })
 
         .state('tab.account', {
@@ -146,6 +110,47 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             data: {
                 requireLogin: true
             }
+        })
+        .state('signin', {
+            url: '/signin',
+            controller: 'SigninCtrl',
+            templateUrl: 'signin.html'
+        })
+        .state('userinfo', {
+            url: '/userinfo/:action',
+            controller: 'UserInfoCtrl',
+            templateUrl: 'userinfo.html'
+        })
+        .state('login', {
+            url: '/login',
+            controller: 'LoginCtrl',
+            templateUrl: 'login.html'
+        })
+        .state('config', {
+            url: '/config',
+            controller: 'ConfigCtrl',
+            templateUrl: 'config.html'
+        })
+        .state('bookdetail', {
+            url: '/book/:id',
+            templateUrl: 'book-detail.html',
+            controller: 'BookDetailCtrl'
+        })
+
+        .state('borrowhistory', {
+            url: '/borrowhistory/:id',
+            templateUrl: 'borrow-history.html',
+            controller: 'BorrowHistoryCtrl'
+        })
+        .state('useraccount', {
+            url: '/useraccount/:id',
+            templateUrl: 'tab-account.html',
+            controller: 'AccountCtrl'
+        })
+        .state('schedule',{
+            url:'/schedule/:id/:userId',
+            templateUrl:'schedule-detail.html',
+            controller:'ScheduleCtrl'
         });
 
     // if none of the above states are matched, use this as the fallback

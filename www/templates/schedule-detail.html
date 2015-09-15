@@ -1,0 +1,36 @@
+<ion-modal-view view-title="行程">
+    <ion-content class="has-header">
+        <div class="card">
+            <div class="item item-avatar">
+                <img ng-src="{{schedule._user.avatar | addserverhost}}">
+                <h2>{{schedule._user.name}}</h2>
+            </div>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">行程介绍:</span> {{schedule.desc}}
+            </label>
+            <label class="item item-input">
+                <span class="input-label">开始时间:</span> {{schedule.starttime | date:'m月d日 H点m分'}}
+            </label>
+            <label class="item item-input">
+                <span class="input-label">结束时间:</span> {{schedule.endtime | date:'m月d日 H点m分'}}
+            </label>
+        </div>
+        <div class="hr">
+            <span>行程地址</span>
+        </div>
+        <p class="tac">{{schedule.locationName}}</h3>
+
+        <imgmap lnglat="schedule.lnglat"></imgmap>
+
+        <div class="hr">
+            <span><em ng-if="schedule._user.sex==1">他</em><em ng-if="schedule._user.sex==0">她</em>的书籍</span>
+        </div>
+        <div class="list" ng-repeat="book in userBooks">
+            <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})">
+                <img ng-src="{{book.bookImgs[0] | addserverhost}}">
+                <h2>{{book.name}}</h2>
+                <p>{{book.desc}}</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-modal-view>

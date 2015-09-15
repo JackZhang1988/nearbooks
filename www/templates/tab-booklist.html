@@ -28,11 +28,11 @@
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
             </a>
-            <div ng-if="book.starttime" class="item">
+            <a ng-if="book.starttime" class="item" nav-direction="forward" ui-sref="schedule({id:book._id,userId:book._user._id})">
                 <strong>{{book.starttime | date:'M月d日'}}</strong>
                 我在<strong>{{book.locationName}}</strong>
                 <p>快来和我交换图书吧</p>
-            </div>
+            </a>
         </div>
     </ion-content>
 </ion-view>
