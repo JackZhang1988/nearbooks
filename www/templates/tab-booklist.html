@@ -18,7 +18,7 @@
     </div>
     <ion-content>
         <div class="list card" ng-repeat="book in booklist">
-            <a class="item item-avatar">
+            <a class="item item-avatar" nav-direction="forward" ui-sref="useraccount({id:book._user._id})">
                 <img ng-src="{{book._user.avatar | addserverhost}}" alt="">
                 <h2>{{book._user.name}}</h2>
             </a>

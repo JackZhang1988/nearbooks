@@ -90,7 +90,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             templateUrl:'borrow-history.html',
             controller:'BorrowHistoryCtrl'
         })
-
+        .state('useraccount',{
+            url:'/useraccount/:id',
+            templateUrl:'tab-account.html',
+            controller:'AccountCtrl'
+        })
         // setup an abstract state for the tabs directive
         .state('tab', {
             url: "/tab",
