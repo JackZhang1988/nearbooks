@@ -21,6 +21,7 @@
             <a class="item item-avatar" nav-direction="forward" ui-sref="useraccount({id:book._user._id})">
                 <img ng-src="{{book._user.avatar | addserverhost}}" alt="">
                 <h2>{{book._user.name}}</h2>
+                <strong ng-if="book.starttime">#行程#</strong>
             </a>
             <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})" ng-if="book.addDate">
                 <img ng-src="{{book.bookImgs[0] | addserverhost}}">
@@ -28,9 +29,8 @@
                 <p>{{book.desc}}</p>
             </a>
             <div ng-if="book.starttime" class="item">
-                <strong>#行程#</strong>
-                <span>{{book.starttime | date:'M月d日'}}</span>
-                <span>我在xxx</span>
+                <strong>{{book.starttime | date:'M月d日'}}</strong>
+                我在<strong>{{book.locationName}}</strong>
                 <p>快来和我交换图书吧</p>
             </div>
         </div>

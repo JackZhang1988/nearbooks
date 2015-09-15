@@ -52,7 +52,7 @@ angular.module('starter.controllers')
         if ($scope.usrLocations.length) {
             $scope.location.name = $scope.usrLocations[0].name;
             $scope.selectedLocation = $scope.usrLocations[0];
-            // $scope.Schedule.locationName = $scope.usrLocations[0].name; 
+            // $scope.schedule.locationName = $scope.usrLocations[0].name; 
         }
 
         $ionicModal.fromTemplateUrl('/templates/book-add.html', {
@@ -271,11 +271,11 @@ angular.module('starter.controllers')
             $scope.addScheduleModal = modal;
         });
 
-        $scope.Schedule = {};
+        $scope.schedule = {};
 
         $scope.openAddScheduleModal = function() {
             if (UserService.isLogin()) {
-                $scope.Schedule = {};
+                $scope.schedule = {};
                 $scope.user = UserService.getUser();
                 $scope.addScheduleModal.show();
             } else {
@@ -286,15 +286,15 @@ angular.module('starter.controllers')
             $scope.addScheduleModal.hide();
         }
         var validateSchedule = function() {
-            if (!$scope.Schedule.desc) {
+            if (!$scope.schedule.desc) {
                 return '请输入行程描述';
-            } else if (!$scope.Schedule.starttime) {
+            } else if (!$scope.schedule.starttime) {
                 return '请输入开始时间';
-            } else if ($scope.Schedule.starttime < new Date()) {
+            } else if ($scope.schedule.starttime < new Date()) {
                 return '开始时间已经过去了';
-            } else if (!$scope.Schedule.endtime) {
+            } else if (!$scope.schedule.endtime) {
                 return '请输入结束时间';
-            } else if ($scope.Schedule.starttime >= $scope.Schedule.endtime) {
+            } else if ($scope.schedule.starttime >= $scope.schedule.endtime) {
                 return '开始时间不能大于结束时间';
             } else if (!$scope.selectedLocation.lnglat) {
                 return '请选择行程地理位置';
@@ -303,14 +303,15 @@ angular.module('starter.controllers')
             }
         }
         $scope.addSchedule = function() {
-            console.log($scope.Schedule);
+            console.log($scope.schedule);
             var validateResut = validateSchedule();
             if (!validateResut) {
                 UserService.addSchedule({
                     userId: $scope.user._id,
-                    desc: $scope.Schedule.desc,
-                    starttime: $scope.Schedule.starttime,
-                    endtime: $scope.Schedule.endtime,
+                    desc: $scope.schedule.desc,
+                    starttime: $scope.schedule.starttime,
+                    endtime: $scope.schedule.endtime,
+                    locationName:$scope.selectedLocation.name,
                     lnglat: $scope.selectedLocation.lnglat
                 }).then(function(res) {
                     if (res.status == 0) {
