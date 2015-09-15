@@ -3,4 +3,7 @@ angular.module('starter.controllers')
         $scope.logout = function() {
             UserService.logout();
         }
+        $scope.goBack = function() {
+            window.history.go(-1);
+        }
     })
