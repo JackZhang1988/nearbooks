@@ -52,7 +52,7 @@ angular.module('starter.controllers', [])
   if($scope.usrLocations.length){
    $scope.location.name = $scope.usrLocations[0].name;
    $scope.selectedLocation = $scope.usrLocations[0];
-   // $scope.schdule.locationName = $scope.usrLocations[0].name; 
+   // $scope.Schedule.locationName = $scope.usrLocations[0].name; 
   }
 
   $ionicModal.fromTemplateUrl('/templates/book-add.html',{
@@ -258,39 +258,39 @@ angular.module('starter.controllers', [])
     $scope.showLocation = false;
   }
 
-  // Add Schdule
-  $ionicModal.fromTemplateUrl('/templates/schdule-add.html',{
+  // Add Schedule
+  $ionicModal.fromTemplateUrl('/templates/Schedule-add.html',{
     scope:$scope,
     animation:'slide-in-up',
     focusFirstInput:true
   }).then(function(modal){
-    $scope.addSchduleModal = modal;
+    $scope.addScheduleModal = modal;
   });
 
-  $scope.schdule = {};
+  $scope.Schedule = {};
 
-  $scope.openAddSchduleModal = function(){
+  $scope.openAddScheduleModal = function(){
     if(UserService.isLogin()){
-      $scope.schdule={};
+      $scope.Schedule={};
       $scope.user = UserService.getUser();
-      $scope.addSchduleModal.show();
+      $scope.addScheduleModal.show();
     }else{
       UserService.doLogin();
     }
   }
-  $scope.closeAddSchduleModal = function(){
-    $scope.addSchduleModal.hide();
+  $scope.closeAddScheduleModal = function(){
+    $scope.addScheduleModal.hide();
   }
-  var validateSchdule = function(){
-    if(!$scope.schdule.desc){
+  var validateSchedule = function(){
+    if(!$scope.Schedule.desc){
       return '请输入行程描述';
-    }else if(!$scope.schdule.starttime){
+    }else if(!$scope.Schedule.starttime){
       return '请输入开始时间';
-    }else if($scope.schdule.starttime < new Date()){
+    }else if($scope.Schedule.starttime < new Date()){
       return '开始时间已经过去了';
-    }else if(!$scope.schdule.endtime){
+    }else if(!$scope.Schedule.endtime){
       return '请输入结束时间';
-    }else if($scope.schdule.starttime >= $scope.schdule.endtime){
+    }else if($scope.Schedule.starttime >= $scope.Schedule.endtime){
       return '开始时间不能大于结束时间';
     }else if(!$scope.selectedLocation.lnglat){
       return '请选择行程地理位置';
@@ -298,25 +298,25 @@ angular.module('starter.controllers', [])
       return false;
     }
   }
-  $scope.addSchdule = function(){
-    console.log($scope.schdule);
-    var validateResut = validateSchdule();
+  $scope.addSchedule = function(){
+    console.log($scope.Schedule);
+    var validateResut = validateSchedule();
     if(!validateResut){
-      UserService.addSchdule({
+      UserService.addSchedule({
         userId:$scope.user._id,
-        desc:$scope.schdule.desc,
-        starttime:$scope.schdule.starttime,
-        endtime:$scope.schdule.endtime,
+        desc:$scope.Schedule.desc,
+        starttime:$scope.Schedule.starttime,
+        endtime:$scope.Schedule.endtime,
         lnglat:$scope.selectedLocation.lnglat
       }).then(function(res){
         if(res.status == 0){
-          var addSchduleAlert = $ionicPopup.alert({title:'添加行程成功'});
-          addSchduleAlert.then(function(){
-            $scope.addSchduleModal.hide();
+          var addScheduleAlert = $ionicPopup.alert({title:'添加行程成功'});
+          addScheduleAlert.then(function(){
+            $scope.addScheduleModal.hide();
           });
           $timeout(function(){
-            addSchduleAlert.close();
-            $scope.addSchduleModal.hide();
+            addScheduleAlert.close();
+            $scope.addScheduleModal.hide();
           },3000);
         }
       })
