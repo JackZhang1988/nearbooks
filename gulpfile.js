@@ -13,6 +13,9 @@ var ngAnnotate = require('gulp-ng-annotate');
 var useref = require('gulp-useref');
 var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
+var fs = require('fs');
+var path = require('path');
+var merge = require('merge-stream');
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -20,11 +23,37 @@ var paths = {
     useref: ['./www/*.html'],
     src_js: './www/js/**/*.js',
     ng_annotate: ['./www/js/**/*.js'],
-    dest_js: './www/dist/dist_js/app'
+    dest_js: './www/dist/dist_js/app',
+    scripts: './www/js'
 };
 
-gulp.task('ng_annotate', function(done) {
-    gulp.src(paths.src_js)
+function getFolders(dir) {
+    return fs.readdirSync(dir)
+        .filter(function(file) {
+            return fs.statSync(path.join(dir, file)).isDirectory();
+        });
+}
+
+
+gulp.task('scripts', function(done) {
+    var folders = getFolders(paths.scripts);
+
+    var tasks = folders.map(function(folder) {
+        return gulp.src(path.join(paths.scripts, folder, '/**/*.js'))
+            .pipe(ngAnnotate({
+                single_quotes: true
+            }))
+            .pipe(template({
+                // serverhost: 'http://192.168.1.104:3000'
+                serverhost: 'http://172.16.28.80:3000'
+            }))
+            .pipe(concat(folder + '.js', {
+                newLine: ';'
+            }))
+            .pipe(gulp.dest(paths.dest_js));
+    });
+    // process all remaining files in scriptsPath root into main.js and main.min.js files
+    var root = gulp.src(path.join(paths.scripts, '/*.js'))
         .pipe(ngAnnotate({
             single_quotes: true
         }))
@@ -32,8 +61,10 @@ gulp.task('ng_annotate', function(done) {
             // serverhost: 'http://192.168.1.104:3000'
             serverhost: 'http://172.16.28.80:3000'
         }))
-        .pipe(gulp.dest(paths.dest_js))
-        .on('end', done);
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest(paths.dest_js));
+
+    return merge(tasks, root);
 });
 gulp.task('templatecache', function(done) {
     gulp.src(paths.templatecache)
