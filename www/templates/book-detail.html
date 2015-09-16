@@ -1,6 +1,6 @@
 <ion-view view-title="{{book.name}}" name="book-detail" animation="slide-left-right">
     <ion-nav-buttons side="primary">
-        <button ng-click="goBack()" class="button back-button buttons button-clear header-item">
+        <button ng-click="goBack()" class="button back-button buttons button-clear header-item" ng-if="!isConfig">
             <i class="icon ion-ios-arrow-back"></i>
         </button>
     </ion-nav-buttons>
@@ -29,7 +29,7 @@
                 <p class="item item-text-wrap" ng-show="summaryShow">内容简介：{{book.doubanInfo.summary}}</p>
             </div>
             <div class="hr">
-                <span>取物地址</span>   
+                <span>取物地址</span>
             </div>
             <img ng-src="{{book.locationImg}}" alt="" class="book-location-img" ng-click="showMapModal()">
         </div>

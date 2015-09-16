@@ -10,6 +10,9 @@ angular.module('starter.controllers')
                 });
                 return;
             }
+            $scope.goBack = function(){
+                window.history.go(-1);
+            }
 
             $scope.toUser = {
                 _id: $stateParams.sender,

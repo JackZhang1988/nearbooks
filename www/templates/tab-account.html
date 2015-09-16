@@ -1,9 +1,9 @@
 <ion-view view-title="我">
     <ion-nav-buttons side="primary">
-        <button ng-click="goBack()" class="button back-button buttons button-clear header-item" ng-show="!isConfig">
+        <button ng-click="goBack()" class="button back-button buttons button-clear header-item" ng-if="!isConfig">
             <i class="icon ion-ios-arrow-back"></i>
         </button>
-        <a class="button button-icon icon ion-ios-gear-outline" nav-direction="forward" ui-sref="config" ng-show="isConfig"></a>
+        <a class="button button-icon icon ion-ios-gear-outline" nav-direction="forward" ui-sref="config" ng-if="isConfig"></a>
     </ion-nav-buttons>
     <ion-content class="has-header">
         <!-- <a href="#login" class="button button-block button-calm">登陆</a>
