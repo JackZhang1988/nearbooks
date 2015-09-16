@@ -1,6 +1,6 @@
 angular.module('starter.controllers')
     .controller('BookListCtrl', function($scope, $state, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $cordovaGeolocation, $ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map, UserService) {
-
+        $scope.platform = ionic.Platform.platform();
         var lnglat = {};
         $ionicPlatform.ready(function() {
             var posOptions = {

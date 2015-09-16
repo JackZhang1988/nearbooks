@@ -3,19 +3,6 @@
         <a class="button button-icon icon ion-map"></a>
     </ion-nav-buttons>
  -->
-    <ion-nav-buttons side="secondary">
-        <a class="button button-icon icon ion-plus-round" ng-click="toggleAddActionList($event)"></a>
-    </ion-nav-buttons>
-    <div class="action-select-wrapper" ng-show="showAddActionList" ng-click="toggleAddActionList($event)">
-        <div class="list add-action-list has-header">
-            <a class="item item-icon-left" ng-click="openAddBookModal()">
-                <i class="icon ion-ios-book"></i> 添加图书
-            </a>
-            <a class="item item-icon-left" ng-click="openAddScheduleModal()">
-                <i class="icon ion-ios-calendar"></i> 添加行程
-            </a>
-        </div>
-    </div>
     <ion-content>
         <div class="list card" ng-repeat="book in booklist">
             <a class="item item-avatar" nav-direction="forward" ui-sref="useraccount({id:book._user._id})">
@@ -35,4 +22,33 @@
             </a>
         </div>
     </ion-content>
+    <div class="action-select-wrapper ios" ng-show="showAddActionList" ng-click="toggleAddActionList($event)" ng-if="platform == 'ios'">
+        <div class="list add-action-list has-header">
+            <a class="item item-icon-left" ng-click="openAddBookModal()">
+                <i class="icon ion-ios-book"></i> 添加图书
+            </a>
+            <a class="item item-icon-left" ng-click="openAddScheduleModal()">
+                <i class="icon ion-ios-calendar"></i> 添加行程
+            </a>
+        </div>
+    </div>
+    <div class="action-select-wrapper android" ng-show="showAddActionList" ng-click="toggleAddActionList($event)" ng-if="platform == 'android'">
+        <div class="list add-action-list-android">
+            <div class="button-fab-menu" ng-class="{ 'fab1-animate' : !showAddActionList }">
+                <span>添加图书</span>
+                <button class="button button-fab" ng-click="openAddBookModal()">
+                    <i class="icon ion-ios-book"></i>
+                </button>
+            </div>
+            <div class="button-fab-menu" ng-class="{ 'fab2-animate' : !showAddActionList }">
+                <span>添加行程</span>
+                <button class="button button-fab" ng-click="openAddScheduleModal()">
+                    <i class="icon ion-ios-calendar"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <button href="" class="button button-fab button-fab-bottom-right" ng-click="toggleAddActionList($event)">
+        <i class="icon ion-plus-round"></i>
+    </button>
 </ion-view>

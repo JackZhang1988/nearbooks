@@ -1,17 +1,21 @@
 @import './slider.scss';
 @import './chat.scss';
+@import './button_fab.scss';
 $img-add-size:70px;
 $img-add-border-color:#ccc;
 img {
     width: 100%;
 }
-.tac{
+
+.tac {
     text-align: center;
 }
-.imgmap{
+
+.imgmap {
     width: 80%;
     margin-top: 20px;
 }
+
 .item-img-add {
     .img-add-block {
         float: left;
@@ -193,5 +197,36 @@ img {
         right: 5px;
         float: right;
     }
+    &.android {
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+    .add-action-list-android {
+        bottom: 78px;
+        display: flex;
+        flex-direction: column-reverse;
+        height: 122px;
+        justify-content: space-between;
+        text-align: right;
+        right: 16px;
+        position: absolute;
+        .button-fab-menu {
+            margin-bottom: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: bolder;
+            transition: all .3s cubic-bezier(.55, 0, .55, .2);
+            span {
+                line-height: 56px;
+                padding-right: 10px;
+            }
+            &.fab1-animate{
+                transform: translateY(74px);
+                visibility: hidden;
+            }
+            &.fab2-animate{
+                transform: translateY(139px);
+                visibility: hidden;
+            }
+        }
+    }
 }
-
