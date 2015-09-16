@@ -1,5 +1,9 @@
 angular.module('starter.controllers')
     .controller('AccountCtrl', function($scope, $state, $stateParams, UserService, Api) {
+        if(!UserService.isLogin()){
+            $state.go('login');
+            return;
+        }
         $scope.userInfo = {};
         $scope.isConfig = true;
         var userId;
