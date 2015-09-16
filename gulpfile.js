@@ -34,6 +34,9 @@ function getFolders(dir) {
         });
 }
 
+// serverhost: 'http://192.168.1.104:3000'
+// var serverhost = 'http://182.92.223.32';
+var serverhost = 'http://192.168.1.106:3000';
 
 gulp.task('scripts', function(done) {
     var folders = getFolders(paths.scripts);
@@ -44,8 +47,7 @@ gulp.task('scripts', function(done) {
                 single_quotes: true
             }))
             .pipe(template({
-                // serverhost: 'http://192.168.1.104:3000'
-                serverhost: 'http://172.16.28.80:3000'
+                serverhost: serverhost
             }))
             .pipe(concat(folder + '.js', {
                 newLine: ';'
@@ -58,14 +60,15 @@ gulp.task('scripts', function(done) {
             single_quotes: true
         }))
         .pipe(template({
-            // serverhost: 'http://192.168.1.104:3000'
-            serverhost: 'http://172.16.28.80:3000'
+            serverhost: serverhost
         }))
         .pipe(concat('app.js'))
         .pipe(gulp.dest(paths.dest_js));
 
     return merge(tasks, root);
 });
+
+
 gulp.task('templatecache', function(done) {
     gulp.src(paths.templatecache)
         .pipe(templateCache({

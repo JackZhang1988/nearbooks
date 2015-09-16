@@ -7,8 +7,8 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filter', 'starter.directive', 'ngCordova', 'templates', 'angular.filter'])
 
-.constant('ApiEndpoint', 'http://172.16.28.80:3000/api')
-    .constant('ImgUrl', 'http://172.16.28.80:3000')
+.constant('ApiEndpoint', '<%= serverhost%>/api')
+    .constant('ImgUrl', '<%= serverhost%>')
 
 .run(['$ionicPlatform', function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -22,13 +22,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             StatusBar.styleLightContent();
         }
         //启动极光推送服务 
-        document.addEventListener('deviceready', function(data) {
-            window.plugins.jPushPlugin.init();
-            //调试模式 
+        // document.addEventListener('deviceready', function(data) {
+        //     window.plugins.jPushPlugin.init();
+        //     //调试模式 
 
-            window.plugins.jPushPlugin.setDebugMode(true);
+        //     window.plugins.jPushPlugin.setDebugMode(true);
 
-        }, false);
+        // }, false);
     });
 }])
 
@@ -37,7 +37,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
         // Allow same origin resource loads.
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
-        'http://172.16.28.80:3000/**'
+        '<%= serverhost%>/**'
     ]);
 
     // The blacklist overrides the whitelist so the open redirect here is blocked.
