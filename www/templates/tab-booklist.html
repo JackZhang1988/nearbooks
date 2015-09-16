@@ -3,6 +3,9 @@
         <a class="button button-icon icon ion-map"></a>
     </ion-nav-buttons>
  -->
+    <ion-nav-buttons side="secondary">
+        <a class="button button-icon icon ion-plus-round" ng-click="toggleAddActionList($event)"></a>
+    </ion-nav-buttons>
     <ion-content>
         <div class="list card" ng-repeat="book in booklist">
             <a class="item item-avatar" nav-direction="forward" ui-sref="useraccount({id:book._user._id})">
@@ -48,7 +51,7 @@
             </div>
         </div>
     </div>
-    <button href="" class="button button-fab button-fab-bottom-right" ng-click="toggleAddActionList($event)">
+    <button href="" class="button button-fab button-fab-bottom-right" ng-click="toggleAddActionList($event)" ng-if="platform == 'android'">
         <i class="icon ion-plus-round"></i>
     </button>
 </ion-view>
