@@ -9838,6 +9838,7 @@ img {
     right: 16px;
     position: absolute; }
     .action-select-wrapper .add-action-list-android .button-fab-menu {
+      display: inherit;
       margin-bottom: 10px;
       color: white;
       font-size: 16px;

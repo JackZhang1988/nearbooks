@@ -14,7 +14,7 @@ angular.module('starter.directive')
                 lnglat: '='
             },
             controller: function($scope) {
-                $ionicModal.fromTemplateUrl('/templates/modal-map.html', {
+                $ionicModal.fromTemplateUrl('modal-map.html', {
                     scope: $scope,
                     animation: 'slide-in-up'
                 }).then(function(modal) {

@@ -30,7 +30,7 @@ angular.module('starter.controllers')
                 }
             })
         }
-        $ionicModal.fromTemplateUrl('/templates/modal-slider.html', {
+        $ionicModal.fromTemplateUrl('modal-slider.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
@@ -45,7 +45,7 @@ angular.module('starter.controllers')
             $scope.slideModal.hide();
         };
 
-        $ionicModal.fromTemplateUrl('/templates/modal-map.html', {
+        $ionicModal.fromTemplateUrl('modal-map.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {

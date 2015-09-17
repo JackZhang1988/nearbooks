@@ -13,6 +13,7 @@ var ngAnnotate = require('gulp-ng-annotate');
 var useref = require('gulp-useref');
 var gulpif = require('gulp-if');
 var uglify = require('gulp-uglify');
+var autoprefixer = require('gulp-autoprefixer');
 var fs = require('fs');
 var path = require('path');
 var merge = require('merge-stream');
@@ -98,6 +99,11 @@ gulp.task('sass', function(done) {
         .pipe(gulp.dest('./www/css/'))
         .pipe(minifyCss({
             keepSpecialComments: 0
+        }))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions', "> 5%", "IE 8"],
+            cascade: false,
+            remove: true
         }))
         .pipe(rename({
             extname: '.min.css'

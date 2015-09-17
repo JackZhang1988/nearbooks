@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filter', 'starter.directive', 'ngCordova', 'templates', 'angular.filter'])
+angular.module('starter', ['ionic', 'templates', 'starter.controllers', 'starter.services', 'starter.filter', 'starter.directive', 'ngCordova', 'angular.filter'])
 
 .constant('ApiEndpoint', '<%= serverhost%>/api')
     .constant('ImgUrl', '<%= serverhost%>')

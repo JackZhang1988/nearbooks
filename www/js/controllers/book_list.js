@@ -55,7 +55,7 @@ angular.module('starter.controllers')
             // $scope.schedule.locationName = $scope.usrLocations[0].name; 
         }
 
-        $ionicModal.fromTemplateUrl('/templates/book-add.html', {
+        $ionicModal.fromTemplateUrl('book-add.html', {
             scope: $scope,
             animation: 'slide-in-up',
             focusFirstInput: true
@@ -180,7 +180,7 @@ angular.module('starter.controllers')
         }
 
 
-        $ionicModal.fromTemplateUrl('/templates/modal-location-add.html', {
+        $ionicModal.fromTemplateUrl('modal-location-add.html', {
             scope: $scope,
             animation: 'slide-in-up'
         }).then(function(modal) {
@@ -263,7 +263,7 @@ angular.module('starter.controllers')
         }
 
         // Add Schedule
-        $ionicModal.fromTemplateUrl('/templates/Schedule-add.html', {
+        $ionicModal.fromTemplateUrl('schedule-add.html', {
             scope: $scope,
             animation: 'slide-in-up',
             focusFirstInput: true
