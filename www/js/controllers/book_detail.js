@@ -65,15 +65,15 @@ angular.module('starter.controllers')
             $scope.mapModal.hide();
         }
 
-        document.addEventListener("deviceready", function() {
-            var scheme;
-            $cordovaAppAvailability.check('twitter://')
-                .then(function() {
-                    // is available
-                }, function() {
-                    // not available
-                });
-        }, false);
+        // document.addEventListener("deviceready", function() {
+        //     var scheme;
+        //     $cordovaAppAvailability.check('twitter://')
+        //         .then(function() {
+        //             // is available
+        //         }, function() {
+        //             // not available
+        //         });
+        // }, false);
 
         $scope.borrow = function() {
             Api.borrowBook({

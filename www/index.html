@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline' http://*.amap.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' http://*.amap.com https://api.douban.com http://localhost:* http://172.16.28.80:*">
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src &apos;self&apos; &apos;unsafe-inline&apos; http://*.amap.com; script-src &apos;self&apos; &apos;unsafe-inline&apos; &apos;unsafe-eval&apos; http://*.amap.com https://api.douban.com http://localhost:* http://172.16.28.80:*">
 
     <title></title>
 
@@ -28,12 +28,12 @@
     <script src="http://webapi.amap.com/maps?v=1.3&amp;key=94c55418103341a31e9370faa5d4a0fc"></script>
 
     <!-- build:js dist_js/app.js -->
+    <!-- endbuild -->
     <script src="dist/dist_js/app/app.js"></script>
     <script src="dist/dist_js/app/controllers.js"></script>
     <script src="dist/dist_js/app/services.js"></script>
     <script src="dist/dist_js/app/filters.js"></script>
     <script src="dist/dist_js/app/directives.js"></script>
-    <!-- endbuild -->
   </head>
   <body ng-app="starter" ng-strict-di="">
     <!--
