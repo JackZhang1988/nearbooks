@@ -1,5 +1,5 @@
 angular.module('starter.services')
-    .service('UserService', function($http, ApiEndpoint, $window, $state, jwtHelper) {
+    .service('UserService', function($http, ApiEndpoint, $window, $state, $ionicHistory, jwtHelper) {
         return {
             loginUser: function(data) {
                 return $http({
@@ -68,9 +68,12 @@ angular.module('starter.services')
             logout: function() {
                 $window.localStorage.removeItem('token');
                 $window.localStorage.removeItem('user');
-                $state.go('login');
+                $window.location.reload(true);
             },
             doLogin: function() {
+                $ionicHistory.nextViewOptions({
+                    disableBack: true
+                });
                 $state.go('login');
             },
             getUser: function() {
@@ -85,14 +88,14 @@ angular.module('starter.services')
                     return res.data;
                 })
             },
-            getSchedule:function(scheduleId){
+            getSchedule: function(scheduleId) {
                 return $http({
-                    method:'GET',
-                    url:ApiEndpoint+'/user/schedule',
-                    params:{
-                        scheduleId:scheduleId
+                    method: 'GET',
+                    url: ApiEndpoint + '/user/schedule',
+                    params: {
+                        scheduleId: scheduleId
                     }
-                }).then(function(res){
+                }).then(function(res) {
                     return res.data;
                 })
             }
