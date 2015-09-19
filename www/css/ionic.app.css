@@ -9672,8 +9672,9 @@ img {
   text-align: center; }
 
 .imgmap {
-  width: 80%;
-  margin-top: 20px; }
+  width: 90%;
+  margin: 20px auto;
+  display: block; }
 
 .item-img-add .img-add-block {
   float: left;
