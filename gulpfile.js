@@ -79,7 +79,7 @@ gulp.task('templatecache', function(done) {
         .on('end', done);
 });
 
-gulp.task('useref', function(done) {
+gulp.task('useref', ['sass', 'templatecache', 'scripts',], function(done) {
     var assets = useref.assets();
     gulp.src('./www/*.html')
         .pipe(assets)
@@ -89,7 +89,7 @@ gulp.task('useref', function(done) {
         .on('end', done);
 });
 
-gulp.task('default', ['sass', 'templatecache', 'scripts', 'useref']);
+gulp.task('default', ['useref']);
 
 gulp.task('sass', function(done) {
     gulp.src('./scss/ionic.app.scss')

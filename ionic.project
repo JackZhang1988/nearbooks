@@ -2,9 +2,6 @@
   "name": "nearbooks_ionic",
   "app_id": "f2b9169e",
   "gulpStartupTasks": [
-    "sass",
-    "templatecache",
-    "scripts",
     "useref",
     "watch"
   ],
