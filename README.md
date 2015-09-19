@@ -28,4 +28,4 @@
 > ionic serve
 
 
-android app 测试包：http://pan.baidu.com/s/1pJvJU6B
+android 测试包下载：http://pan.baidu.com/s/1kTD3bBD
