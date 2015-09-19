@@ -9853,3 +9853,8 @@ img {
       .action-select-wrapper .add-action-list-android .button-fab-menu.fab2-animate {
         transform: translateY(139px);
         visibility: hidden; }
+
+.user-actions {
+  text-align: center;
+  position: relative;
+  bottom: 20px; }

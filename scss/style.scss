@@ -220,14 +220,20 @@ img {
                 line-height: 56px;
                 padding-right: 10px;
             }
-            &.fab1-animate{
+            &.fab1-animate {
                 transform: translateY(74px);
                 visibility: hidden;
             }
-            &.fab2-animate{
+            &.fab2-animate {
                 transform: translateY(139px);
                 visibility: hidden;
             }
         }
     }
+}
+
+.user-actions {
+    text-align: center;
+    position: relative;
+    bottom: 20px;
 }
