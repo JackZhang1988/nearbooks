@@ -164,7 +164,7 @@ angular.module('starter.controllers')
                         $timeout(function() {
                             submitAlert.close();
                             $scope.addBookModal.hide();
-                        }, 5000)
+                        }, 3000)
                     } else {
                         $ionicPopup.alert({
                             title: res.err
@@ -203,10 +203,15 @@ angular.module('starter.controllers')
                             $scope.curCity = result.city;
                         })
                     }, function(error) {
-                        alert(error.message);
+                        // 手机未插入Sim卡时，无法获得地理位置信息
+                        alert('无法获得您的位置信息');
+                        $scope.addLocationModal.hide();
+                        $scope.addBookModal.hide();
+                        $scope.addScheduleModal.hide();
                     }, {
-                        enableHighAccuracy: true,
-                        timeout: '5000'
+                        // maximumAge: 0,
+                        enableHighAccuracy: false,
+                        timeout: 3000
                     });
                 } else {}
 
