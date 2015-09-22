@@ -1,5 +1,5 @@
 angular.module('starter.controllers')
-    .controller('BookListCtrl', function($scope, $state, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $cordovaGeolocation, $ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map, UserService) {
+    .controller('BookListCtrl', function($scope, $state, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $cordovaGeolocation, $ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map, UserService, QiniuService) {
         $scope.platform = ionic.Platform.platform();
         var lnglat = {};
         $ionicPlatform.ready(function() {
@@ -44,7 +44,9 @@ angular.module('starter.controllers')
         $scope.location = {};
 
         // 添加图片的接口地址
-        $scope.addNewBookAction = ApiEndpoint + '/bookImg';
+        // $scope.addNewBookAction = ApiEndpoint + '/bookImg';
+        // $scope.addNewBookAction = 'http://upload.qiniu.com/';
+
         // 用户保存过得位置信息，从localStorage 读取
         $scope.usrLocations = JSON.parse(window.localStorage.getItem('commonLocation')) || [];
         // 用户当前选择的地理信息
@@ -90,20 +92,37 @@ angular.module('starter.controllers')
         }
 
         $scope.fileChange = function(element) {
-            var imgFile = element.files[0];
             $scope.bookInfo.loading = true;
+            var imgFile = element.files[0];
             var fd = new FormData();
             fd.append('file', element.files[0]);
-            Api.addBookImg(fd).success(function(res) {
+            QiniuService.addImage(element.files[0]).then(function(res){
                 console.log(res);
-                if (res.status == 0) {
+                if (res.hash) {
                     $scope.bookInfo.loading = false;
                     // $scope.bookImgList = res.data.url;
-                    $scope.prevImgList.push(res.data.url)
+                    $scope.prevImgList.push(res.hash);
                 }
-            }).error(function(err) {
-                $scope.bookInfo.loading = false;
             })
+            // Api.addBookImg(fd).success(function(res) {
+            //     console.log(res);
+            //     if (res.status == 0) {
+            //         $scope.bookInfo.loading = false;
+            //         // $scope.bookImgList = res.data.url;
+            //         $scope.prevImgList.push(res.data.url)
+            //     }
+            // }).error(function(err) {
+            //     $scope.bookInfo.loading = false;
+            // })
+            // QiniuService.getQiniuToken().then(function(token){
+            //     if(token){
+            //         $scope.qiniuToken = token;
+            //         document.getElementById('addBookImgSubmit').click();
+            //     }
+            // })
+        }
+        $scope.test = function(){
+            console.log($scope.qiniuToken);
         }
         $scope.openAddBookModal = function() {
             if (UserService.isLogin()) {

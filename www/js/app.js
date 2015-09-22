@@ -8,7 +8,7 @@
 angular.module('starter', ['ionic', 'templates', 'starter.controllers', 'starter.services', 'starter.filter', 'starter.directive', 'ngCordova', 'angular.filter'])
 
 .constant('ApiEndpoint', '<%= serverhost%>/api')
-    .constant('ImgUrl', '<%= serverhost%>')
+    .constant('ImgUrl', 'http://7xluz5.com1.z0.glb.clouddn.com/')
 
 .run(['$ionicPlatform', function($ionicPlatform) {
     $ionicPlatform.ready(function() {
@@ -37,7 +37,8 @@ angular.module('starter', ['ionic', 'templates', 'starter.controllers', 'starter
         // Allow same origin resource loads.
         'self',
         // Allow loading from our assets domain.  Notice the difference between * and **.
-        '<%= serverhost%>/**'
+        '<%= serverhost%>/**',
+        'http://upload.qiniu.com/**'
     ]);
 
     // The blacklist overrides the whitelist so the open redirect here is blocked.

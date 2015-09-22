@@ -7,15 +7,17 @@
         <label class="item item-img-add">
             <ul ng-show="prevImgList.length" class="img-prev">
                 <li class="prev-item" ng-repeat="imgUrl in prevImgList" >
-                    <img ng-src="{{imgUrl | addserverhost}}" class="prev-img">
+                    <img ng-src="{{imgUrl | addserverhost | imageview:'avatar'}}" class="prev-img">
                 </li>
             </ul>
             <ion-spinner ng-show="bookInfo.loading"></ion-spinner>
             <span class="img-add-block" ng-show="!bookInfo.loading && prevImgList.length <= 3">
                 <em class="icon ion-ios-plus-empty img-add-icon"></em>
                 <div class="img-input-wrap">
-                <form action={{addNewBookAction}} enctype="multipart/form-data" class="img-add-input">
+                <form enctype="multipart/form-data" class="img-add-input" method="post" ng-submit="test()">
+                    <input name="token" type="hidden" ng-modal="{{qiniuToken}}">
                     <input type="file" accept="image/x-png, image/gif, image/jpeg" class="img-add-input" onchange="angular.element(this).scope().fileChange(this)">
+                    <input type="submit" id="addBookImgSubmit">
                 </form>
                 </div>
             </span>

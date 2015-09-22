@@ -3,8 +3,8 @@
         <a class="button button-icon icon ion-map"></a>
     </ion-nav-buttons>
  -->
-    <ion-nav-buttons side="secondary" ng-if="platform == 'ios'">
-        <a class="button button-icon icon ion-plus-round" ng-click="toggleAddActionList($event)"></a>
+    <ion-nav-buttons side="secondary">
+        <a class="button button-icon icon ion-plus-round" ng-click="toggleAddActionList($event)" ng-if="platform == 'ios'"></a>
     </ion-nav-buttons>
     <ion-content>
         <div class="list card" ng-repeat="book in booklist">
