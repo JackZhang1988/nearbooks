@@ -35,8 +35,8 @@ function getFolders(dir) {
         });
 }
 
-// var serverhost = 'http://182.92.223.32';
-var serverhost = 'http://172.16.28.80:3000';
+var serverhost = 'http://182.92.223.32';
+// var serverhost = 'http://172.16.28.80:3000';
 // var serverhost = 'http://192.168.1.106:3000';
 
 gulp.task('scripts', function(done) {
