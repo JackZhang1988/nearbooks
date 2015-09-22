@@ -1,7 +1,7 @@
 <div class="modal image-modal transparent" ng-click="closeSlideModal()">
     <ion-slide-box>
         <ion-slide ng-repeat="oImage in book.bookImgs">
-            <img ng-src="{{oImage|addserverhost}}" class="fullscreen-image" />
+            <img ng-src="{{oImage|addserverhost|imageview:origin}}" class="fullscreen-image" />
         </ion-slide>
     </ion-slide-box>
 </div>

@@ -7,7 +7,7 @@
     <ion-content class="has-header">
         <div class="card">
             <div class="item item-avatar">
-                <img ng-src="{{schedule._user.avatar | addserverhost}}">
+                <img ng-src="{{schedule._user.avatar | addserverhost |imageview:avatar}}">
                 <h2>{{schedule._user.name}}</h2>
             </div>
             <label class="item item-input item-stacked-label">
@@ -32,7 +32,7 @@
         </div>
         <div class="list" ng-repeat="book in userBooks">
             <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})">
-                <img ng-src="{{book.bookImgs[0] | addserverhost}}">
+                <img ng-src="{{book.bookImgs[0] | addserverhost |imageview:thumbnail}}">
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
             </a>

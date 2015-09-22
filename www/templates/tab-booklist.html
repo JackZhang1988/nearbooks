@@ -9,12 +9,12 @@
     <ion-content>
         <div class="list card" ng-repeat="book in booklist">
             <a class="item item-avatar" nav-direction="forward" ui-sref="useraccount({id:book._user._id})">
-                <img ng-src="{{book._user.avatar | addserverhost}}" alt="">
+                <img ng-src="{{book._user.avatar | addserverhost | imageview:avatar}}" alt="">
                 <h2>{{book._user.name}}</h2>
                 <strong ng-if="book.starttime">#行程#</strong>
             </a>
             <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})" ng-if="book.addDate">
-                <img ng-src="{{book.bookImgs[0] | addserverhost}}">
+                <img ng-src="{{book.bookImgs[0] | addserverhost| imageview:thumbnail}}">
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
             </a>

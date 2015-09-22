@@ -14,7 +14,7 @@
                     <!--                     <div ng-if="userInfo.sex != ''">
                         <span ng-class="userInfo.sex==1 ? ion-male : ion-female"></span>
                     </div> -->
-                    <img ng-src="{{userInfo.avatar | addserverhost}}" alt="" class="avatar-img" >
+                    <img ng-src="{{userInfo.avatar | addserverhost | imageview:thumbnail}}" alt="" class="avatar-img" >
                 </a>
                 <a ng-if="!userInfo.avatar" class="avatar" ui-sref="userinfo({action:'update'})" nav-direction="forward">
                     <span class="avatar-img icon icon ion-ios-person-outline"></span>
@@ -32,7 +32,7 @@
         </div>
         <div class="list" ng-repeat="book in userBooks">
             <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})">
-                <img ng-src="{{book.bookImgs[0] | addserverhost}}">
+                <img ng-src="{{book.bookImgs[0] | addserverhost |imageview:thumbnail}}">
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
             </a>

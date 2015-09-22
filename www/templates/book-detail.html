@@ -7,7 +7,7 @@
     <ion-content>
         <ion-slide-box>
             <ion-slide ng-repeat="img in book.bookImgs" does-continue="true">
-                <div class="img-slider-wrap" style="background:url({{img|addserverhost}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
+                <div class="img-slider-wrap" style="background:url({{img|addserverhost|imageview:mural}}) no-repeat;background-size:cover;" ng-click="showSlideModal($index)">
                     <div class="img-slider-mask">
                     </div>
                 </div>
@@ -16,7 +16,7 @@
         <div class="book-info">
             <h3 class="title">{{book.name}}</h3>
             <div class="book-user-info">
-                <img src="../img/user1.jpg" alt="" class="avatar">
+                <img ng-src="{{user.avatar |addserverhost|imageview:avatar}}" alt="" class="avatar">
                 <div>{{user.name}}</div>
             </div>
             <div class="book-desc">{{book.desc}}</div>

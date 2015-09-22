@@ -4,7 +4,7 @@
             <label class="item-img-add">
                 <span class="img-add-block">
                     <ion-spinner ng-show="loading"></ion-spinner>
-                    <img ng-src="{{avatarUrl | addserverhost}}" class="prev-img user-avatar-img" ng-show="avatarUrl">
+                    <img ng-src="{{avatarUrl | addserverhost | imageview:thumbnail}}" class="prev-img user-avatar-img" ng-show="avatarUrl">
                     <em class="icon ion-ios-person-outline img-add-icon"></em>
                         <div class="img-input-wrap">
                         <form action={{addUserImgAction}} enctype="multipart/form-data" class="img-add-input">

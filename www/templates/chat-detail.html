@@ -16,7 +16,7 @@
     <ion-content has-bouncing="true" class="has-header has-footer" delegate-handle="userMessageScroll">
         <div ng-repeat="message in messages" class="message-wrapper">
             <div ng-if="message.content.contentType != 'borrow_history' && user._id !== message.sender">
-                <img class="profile-pic left" src="../img/user2.png" />
+                <img class="profile-pic left" ng-src="{{message.sender.avatar |addserverhost|imageview:avatar}}" />
                 <div class="chat-bubble left">
                     <!-- <div class="message" ng-bind-html="message.content.info">
                     </div> -->
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div ng-if="message.content.contentType != 'borrow_history' && user._id === message.sender">
-                <img class="profile-pic right" src="../img/user1.jpg" />
+                <img class="profile-pic right" ng-src="{{message.sender.avatar |addserverhost|imageview:avatar}}" />
                 <div class="chat-bubble right">
                     <chat-msg content="message.content">
                     </chat-msg>

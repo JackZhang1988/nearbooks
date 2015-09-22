@@ -5,12 +5,12 @@
                 {{bHis.statusStr}}
             </div>
             <div class="item item-avatar">
-                <img src="../img/user2.png">
+                <img ng-src="{{bHis.user.avatar|addserverhost|imageview:thumbnail}}">
                 <p>{{bHis.borrower.name}}</p>
             </div>
             <div class="item item-body">
                 <h2>《{{bHis.book.name}}》</h2>
-                <img class="full-image" ng-src="{{bHis.book.bookImgs[0] | addserverhost}}">
+                <img class="full-image" ng-src="{{bHis.book.bookImgs[0] | addserverhost|imageview:mural}}">
                 <p>
                     {{bHis.book.desc}}
                 </p>
