@@ -7,23 +7,28 @@
         <a class="button button-icon icon ion-plus-round" ng-click="toggleAddActionList($event)" ng-if="platform == 'ios'"></a>
     </ion-nav-buttons>
     <ion-content>
+        <ion-refresher pulling-text="下拉刷新" on-refresh="doRefresh()">
+        </ion-refresher>
         <div class="list card" ng-repeat="book in booklist">
             <a class="item item-avatar" nav-direction="forward" ui-sref="useraccount({id:book._user._id})">
                 <img ng-src="{{book._user.avatar | addserverhost | imageview:avatar}}" alt="">
                 <h2>{{book._user.name}}</h2>
-                <strong ng-if="book.starttime">#行程#</strong>
+                <strong ng-if="book.starttime">#行程# 快来和我交换图书吧</strong>
             </a>
             <a class="item item-thumbnail-left" nav-direction="forward" ui-sref="bookdetail({id:book._id})" ng-if="book.addDate">
                 <img ng-src="{{book.bookImgs[0] | addserverhost| imageview:thumbnail}}">
                 <h2>{{book.name}}</h2>
                 <p>{{book.desc}}</p>
+                <p>距离：{{book.dis | formatStr:'dis'}}</p>
             </a>
             <a ng-if="book.starttime" class="item" nav-direction="forward" ui-sref="schedule({id:book._id,userId:book._user._id})">
                 <strong>{{book.starttime | date:'M月d日'}}</strong> 我在
                 <strong>{{book.locationName}}</strong>
-                <p>快来和我交换图书吧</p>
+                <p>距离：{{book.dis | formatStr:'dis'}}</p>
             </a>
         </div>
+        <ion-infinite-scroll on-infinite="loadMore()" distance="1%" ng-if="moreDataCanBeLoaded">
+        </ion-infinite-scroll>
     </ion-content>
     <div class="action-select-wrapper ios" ng-show="showAddActionList" ng-click="toggleAddActionList($event)" ng-if="platform == 'ios'">
         <div class="list add-action-list has-header">

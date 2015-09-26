@@ -1,37 +1,6 @@
 angular.module('starter.controllers')
     .controller('BookListCtrl', function($scope, $state, $ionicModal, $ionicPopup, $timeout, $ionicLoading, $cordovaGeolocation, $ionicPlatform, $timeout, ApiEndpoint, ImgUrl, Api, Map, UserService, QiniuService) {
         $scope.platform = ionic.Platform.platform();
-        var lnglat = {};
-        $ionicPlatform.ready(function() {
-            var posOptions = {
-                timeout: 3000,
-                enableHighAccuracy: false
-            };
-            $cordovaGeolocation
-                .getCurrentPosition(posOptions)
-                .then(function(position) {
-                    lnglat = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    }
-                    Api.getAllBooks(lnglat).then(function(res) {
-                        $ionicLoading.hide();
-                        if (res.status == 0) {
-                            $scope.booklist = res.data;
-                        }
-                    })
-                }, function(err) {
-                    // error
-                    Api.getAllBooks().then(function(res) {
-                        $ionicLoading.hide();
-                        if (res.status == 0) {
-                            $scope.booklist = res.data;
-                        }
-                    })
-                });
-
-
-        });
         // $scope.booklist = Booklist.all(); // mock data
         $scope.booklist = [];
         $ionicLoading.show();
@@ -56,6 +25,68 @@ angular.module('starter.controllers')
             $scope.selectedLocation = $scope.usrLocations[0];
             // $scope.schedule.locationName = $scope.usrLocations[0].name; 
         }
+
+        var query = {};
+        var curPage = 0;
+        $scope.moreDataCanBeLoaded = true;
+        // 获得搜索结果，分页，是否是pull refresh
+        function getQueryResult(page, isRefresh) {
+            var posOptions = {
+                timeout: 3000,
+                enableHighAccuracy: false
+            };
+            $cordovaGeolocation
+                .getCurrentPosition(posOptions)
+                .then(function(position) {
+                    query = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude,
+                        page: isRefresh ? 0 : page
+                    }
+                    Api.getAllBooks(query).then(function(res) {
+                        renderResult(res, isRefresh);
+                    })
+                }, function(err) {
+                    // todo 获取地理位置失败时，不返回结果
+                    renderResult(res, isRefresh);
+                });
+
+        }
+
+        function renderResult(res, isRefresh) {
+            $ionicLoading.hide();
+            if (res.status == 0) {
+                if (isRefresh) {
+                    $scope.$broadcast('scroll.refreshComplete');
+                    $scope.booklist = res.data;
+                    if (res.data.length < 10) {
+                        $scope.moreDataCanBeLoaded = false;
+                    }
+                } else {
+                    $scope.$broadcast('scroll.infiniteScrollComplete');
+                    $scope.$broadcast('scroll.resize');
+                    if (res.data.length < 10) {
+                        $scope.moreDataCanBeLoaded = false;
+                    } else {
+                        $scope.booklist.push(res.data);
+                    }
+                }
+            }
+        }
+        $ionicPlatform.ready(function() {
+            getQueryResult(curPage, true);
+        });
+
+
+        $scope.doRefresh = function() {
+            getQueryResult(curPage, true);
+        }
+
+        $scope.loadMore = function() {
+            console.log('loading more');
+            getQueryResult(++curPage, false);
+        }
+
 
         $ionicModal.fromTemplateUrl('book-add.html', {
             scope: $scope,
@@ -96,32 +127,32 @@ angular.module('starter.controllers')
             var imgFile = element.files[0];
             var fd = new FormData();
             fd.append('file', element.files[0]);
-            QiniuService.addImage(element.files[0]).then(function(res){
-                console.log(res);
-                if (res.hash) {
-                    $scope.bookInfo.loading = false;
-                    // $scope.bookImgList = res.data.url;
-                    $scope.prevImgList.push(res.hash);
-                }
-            })
-            // Api.addBookImg(fd).success(function(res) {
-            //     console.log(res);
-            //     if (res.status == 0) {
-            //         $scope.bookInfo.loading = false;
-            //         // $scope.bookImgList = res.data.url;
-            //         $scope.prevImgList.push(res.data.url)
-            //     }
-            // }).error(function(err) {
-            //     $scope.bookInfo.loading = false;
-            // })
-            // QiniuService.getQiniuToken().then(function(token){
-            //     if(token){
-            //         $scope.qiniuToken = token;
-            //         document.getElementById('addBookImgSubmit').click();
-            //     }
-            // })
+            QiniuService.addImage(element.files[0]).then(function(res) {
+                    console.log(res);
+                    if (res.hash) {
+                        $scope.bookInfo.loading = false;
+                        // $scope.bookImgList = res.data.url;
+                        $scope.prevImgList.push(res.hash);
+                    }
+                })
+                // Api.addBookImg(fd).success(function(res) {
+                //     console.log(res);
+                //     if (res.status == 0) {
+                //         $scope.bookInfo.loading = false;
+                //         // $scope.bookImgList = res.data.url;
+                //         $scope.prevImgList.push(res.data.url)
+                //     }
+                // }).error(function(err) {
+                //     $scope.bookInfo.loading = false;
+                // })
+                // QiniuService.getQiniuToken().then(function(token){
+                //     if(token){
+                //         $scope.qiniuToken = token;
+                //         document.getElementById('addBookImgSubmit').click();
+                //     }
+                // })
         }
-        $scope.test = function(){
+        $scope.test = function() {
             console.log($scope.qiniuToken);
         }
         $scope.openAddBookModal = function() {
@@ -335,7 +366,7 @@ angular.module('starter.controllers')
                     desc: $scope.schedule.desc,
                     starttime: $scope.schedule.starttime,
                     endtime: $scope.schedule.endtime,
-                    locationName:$scope.selectedLocation.name,
+                    locationName: $scope.selectedLocation.name,
                     lnglat: $scope.selectedLocation.lnglat
                 }).then(function(res) {
                     if (res.status == 0) {
@@ -357,4 +388,5 @@ angular.module('starter.controllers')
                 });
             }
         }
+
     })

@@ -17,6 +17,7 @@ var autoprefixer = require('gulp-autoprefixer');
 var fs = require('fs');
 var path = require('path');
 var merge = require('merge-stream');
+var argv = require('yargs').argv;
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -34,11 +35,11 @@ function getFolders(dir) {
             return fs.statSync(path.join(dir, file)).isDirectory();
         });
 }
-
-var serverhost = 'http://182.92.223.32';
-// var serverhost = 'http://172.16.28.80:3000';
-// var serverhost = 'http://192.168.1.106:3000';
-
+if (argv.e == 'pro') {
+    serverhost = 'http://182.92.223.32';
+} else {
+    serverhost = 'http://172.16.28.80:3000';
+}
 gulp.task('scripts', function(done) {
     var folders = getFolders(paths.scripts);
 
@@ -79,12 +80,15 @@ gulp.task('templatecache', function(done) {
         .on('end', done);
 });
 
-gulp.task('useref', ['sass', 'templatecache', 'scripts',], function(done) {
+gulp.task('useref', ['sass', 'templatecache', 'scripts', ], function(done) {
     var assets = useref.assets();
     gulp.src('./www/*.html')
         .pipe(assets)
         .pipe(assets.restore())
         .pipe(useref())
+        .pipe(template({
+            serverhost: serverhost
+        }))
         .pipe(gulp.dest('./www/dist'))
         .on('end', done);
 });
@@ -114,9 +118,6 @@ gulp.task('sass', function(done) {
 
 gulp.task('watch', function() {
     console.log('watch run');
-    gulp.watch(paths.sass, ['sass']);
-    gulp.watch(paths.templatecache, ['templatecache']);
-    gulp.watch(paths.ng_annotate, ['scripts']);
     gulp.watch(paths.useref, ['useref']);
 });
 
