@@ -17,7 +17,6 @@ var autoprefixer = require('gulp-autoprefixer');
 var fs = require('fs');
 var path = require('path');
 var merge = require('merge-stream');
-var argv = require('yargs').argv;
 
 var paths = {
     sass: ['./scss/**/*.scss'],
@@ -35,7 +34,7 @@ function getFolders(dir) {
             return fs.statSync(path.join(dir, file)).isDirectory();
         });
 }
-if (argv.e == 'pro') {
+if (process.env.NODE_ENV == 'pro') {
     serverhost = 'http://182.92.223.32';
 } else {
     serverhost = 'http://172.16.28.80:3000';
